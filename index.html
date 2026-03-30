@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Megatec — Apontamento de Produção</title>
+<style>
+:root{
+  --v:#1b5e20;--v2:#2e7d32;--v3:#43a047;
+  --am:#f9a825;--vm:#c62828;--az:#1565c0;
+  --bg:#f4f6f8;--bd:#dde1e7;--tx:#1a1a2e;
+  --mt:#6b7280;--wh:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:linear-gradient(135deg,var(--v),var(--v2));color:#fff;height:60px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 20px;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;background:rgba(255,255,255,.1)}
+.brand-title{font-size:17px;font-weight:700}
+.brand-sub{font-size:11px;opacity:.8}
+.hdate{font-size:12px;opacity:.85}
+.tabs{display:flex;gap:2px;padding:10px 16px 0;background:#fff;
+  border-bottom:2px solid var(--bd);position:sticky;top:60px;z-index:40;overflow-x:auto}
+.tab{padding:10px 16px;border:none;background:none;cursor:pointer;font-size:13px;
+  font-weight:600;color:var(--mt);border-radius:8px 8px 0 0;
+  border-bottom:3px solid transparent;transition:.2s;white-space:nowrap}
+.tab.on{color:var(--v2);border-bottom-color:var(--v2);background:#f0f7f0}
+.tab:hover:not(.on){background:#f5f5f5}
+.pag{display:none;padding:20px;max-width:1400px;margin:0 auto}
+.pag.on{display:block}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:22px}
+.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.07);border:1px solid var(--bd)}
+.card-val{font-size:28px;font-weight:800;margin-bottom:4px}
+.card-lbl{font-size:11px;color:var(--mt);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.card.vd .card-val{color:var(--v2)}
+.card.vm .card-val{color:var(--vm)}
+.card.am .card-val{color:#e65100}
+.card.az .card-val{color:var(--az)}
+.sec-title{font-size:15px;font-weight:700;margin-bottom:12px}
+.prob-card{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;
+  border-left:4px solid var(--vm);box-shadow:0 1px 5px rgba(0,0,0,.06)}
+.prob-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prob-tt{font-weight:700;font-size:13px}
+.prob-ds{font-size:12px;color:var(--mt);margin-top:3px}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.bvd{background:#e8f5e9;color:#1b5e20}
+.bvm{background:#ffebee;color:#c62828}
+.bam{background:#fff8e1;color:#e65100}
+.baz{background:#e3f2fd;color:#1565c0}
+.bcz{background:#f5f5f5;color:#555}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{background:#f8f9fa;padding:10px 8px;text-align:left;font-weight:700;
+  font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.5px;
+  border-bottom:2px solid var(--bd)}
+tbody tr{border-bottom:1px solid var(--bd);transition:.15s}
+tbody tr:hover{background:#f9fbff}
+tbody td{padding:9px 8px;vertical-align:middle}
+.pw{display:flex;align-items:center;gap:6px;min-width:90px}
+.pb{flex:1;height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.pf{height:100%;border-radius:3px;transition:.3s}
+.pvd{background:var(--v3)}
+.pam{background:var(--am)}
+.pvm{background:#ef5350}
+.pt{font-size:11px;font-weight:700;min-width:28px}
+.filtros{background:#fff;border-radius:12px;padding:14px;margin-bottom:14px;
+  border:1px solid var(--bd);display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.filtros label{font-size:11px;font-weight:700;color:var(--mt);display:block;margin-bottom:4px}
+.fi{padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:13px;outline:none;background:#fff}
+.fi:focus{border-color:var(--v2)}
+.btn{padding:8px 16px;border:none;border-radius:8px;cursor:pointer;font-size:13px;
+  font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-p{background:var(--v2);color:#fff}
+.btn-p:hover{background:var(--v)}
+.btn-s{background:#f5f5f5;color:#333;border:1px solid var(--bd)}
+.btn-s:hover{background:#e0e0e0}
+.btn-d{background:#ffebee;color:var(--vm);border:1px solid #ffcdd2}
+.btn-d:hover{background:#ffcdd2}
+.btn-sm{padding:5px 10px;font-size:11px}
+.tw{background:#fff;border-radius:12px;border:1px solid var(--bd);overflow:auto}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fgr{display:flex;flex-direction:column;gap:5px}
+.fgr label{font-size:12px;font-weight:700;color:var(--mt)}
+.fgr input,.fgr select,.fgr textarea{
+  padding:9px 12px;border:1px solid var(--bd);border-radius:8px;
+  font-size:13px;outline:none;font-family:inherit}
+.fgr input:focus,.fgr select:focus,.fgr textarea:focus{border-color:var(--v2)}
+.fgr textarea{resize:vertical;min-height:70px}
+.ff{grid-column:1/-1}
+.cx{display:none}
+.cx.on{display:grid;grid-column:1/-1;grid-template-columns:1fr 1fr;gap:14px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--v2);color:#fff;
+  border-radius:10px;padding:14px 20px;font-size:14px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,0,0,.25);z-index:9999;
+  animation:tin .3s ease;display:none}
+@keyframes tin{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.toast.err{background:var(--vm)}
+.empty{text-align:center;padding:32px;color:var(--mt);font-size:13px}
+@media(max-width:600px){.fg{grid-template-columns:1fr}.cards-grid{grid-template-columns:1fr 1fr}}
+
+/* Pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+.pcol{background:#fff;border-radius:12px;border:1px solid var(--bd);overflow:hidden}
+.phd{padding:10px 12px;color:#fff;font-size:12px;font-weight:700;display:flex;justify-content:space-between}
+.phd.c1{background:#37474f}.phd.c2{background:#1565c0}.phd.c3{background:#6a1b9a}
+.phd.c4{background:#e65100}.phd.c5{background:var(--v2)}
+.pbd{padding:8px}
+.pitem{background:#f8f9fa;border-radius:8px;padding:9px 10px;margin-bottom:6px;
+  font-size:11px;border-left:3px solid var(--v2);cursor:pointer;transition:.2s}
+.pitem:hover{box-shadow:0 2px 8px rgba(0,0,0,.1);transform:translateY(-1px)}
+.pitem.prob{border-left-color:#ef5350;background:#fff8f8}
+.pitem.attn{border-left-color:var(--am);background:#fffdf4}
+.pit1{font-weight:700;font-size:12px}
+.pit2{color:var(--mt);margin-top:2px;font-size:10px}
+@media(max-width:900px){.pipe{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.pipe{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo">M</div>
+    <div>
+      <div class="brand-title">Megatec Indústria</div>
+      <div class="brand-sub">Apontamento de Produção</div>
+    </div>
+  </div>
+  <div class="hdate" id="lblHoje"></div>
+</header>
+
+<div class="tabs">
+  <button class="tab on" onclick="mudar('dash')">📊 Dashboard</button>
+  <button class="tab" onclick="mudar('linha')">🏭 Linha de Produção</button>
+  <button class="tab" onclick="mudar('prod')">📋 Produção</button>
+  <button class="tab" onclick="mudar('prob')">⚠️ Problemas</button>
+  <button class="tab" onclick="mudar('form')">✏️ Apontamento</button>
+  <button class="tab" onclick="mudar('hist')">📁 Histórico</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="pag on" id="pag-dash">
+  <div class="cards-grid" id="kpi-cards"></div>
+  <div class="sec-title">⚠️ Problemas em Destaque</div>
+  <div id="dash-probs"></div>
+  <div class="sec-title" style="margin-top:20px">📅 Últimos Apontamentos</div>
+  <div class="tw"><table><thead><tr>
+    <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th><th>Nº</th><th>%</th><th>Material</th><th>Projeto</th>
+  </tr></thead><tbody id="dash-tab"></tbody></table></div>
+</div>
+
+<!-- LINHA DE PRODUÇÃO -->
+<div class="pag" id="pag-linha">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div class="sec-title">🏭 Linha de Produção — Situação Atual</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge bvm" id="pipe-probs">● 0 c/ problema</span>
+      <span class="badge bvd" id="pipe-ok">✓ 0 normais</span>
+    </div>
+  </div>
+  <div class="pipe" id="pipeBoard"></div>
+</div>
+
+<!-- PRODUÇÃO -->
+<div class="pag" id="pag-prod">
+  <div class="filtros">
+    <div><label>Setor</label>
+      <select class="fi" id="f-setor" onchange="filtrarProd()">
+        <option value="">Todos</option>
+        <option>Corte e Dobra</option><option>Pré Montagem</option>
+        <option>Montagem</option><option>Pintura</option><option>Acabamento</option>
+      </select>
+    </div>
+    <div><label>Produto</label><input class="fi" id="f-prod" oninput="filtrarProd()" placeholder="Buscar produto..."></div>
+    <div><label>Cliente</label><input class="fi" id="f-cli" oninput="filtrarProd()" placeholder="Buscar cliente..."></div>
+    <div><label>Data</label><input class="fi" type="date" id="f-data" onchange="filtrarProd()"></div>
+    <div style="align-self:flex-end">
+      <button class="btn btn-s btn-sm" onclick="limparFiltros()">Limpar</button>
+      <button class="btn btn-p btn-sm" onclick="exportarCSV()" style="margin-left:6px">⬇ CSV</button>
+    </div>
+  </div>
+  <div class="tw"><table><thead><tr>
+    <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
+    <th>Nº</th><th>%</th><th>Material</th><th>Projeto</th><th>Obs</th>
+  </tr></thead><tbody id="tabela-prod"></tbody></table></div>
+</div>
+
+<!-- PROBLEMAS -->
+<div class="pag" id="pag-prob">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div class="sec-title">⚠️ Registros com Problema</div>
+    <div style="display:flex;gap:8px">
+      <span class="badge bvm" id="cnt-mat">Material: 0</span>
+      <span class="badge bam" id="cnt-proj">Projeto: 0</span>
+    </div>
+  </div>
+  <div id="lista-prob"></div>
+</div>
+
+<!-- APONTAMENTO -->
+<div class="pag" id="pag-form">
+  <div class="sec-title">✏️ Novo Apontamento</div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="fg" style="padding:18px">
+      <div class="fgr"><label>Data *</label><input type="date" id="fData"></div>
+      <div class="fgr"><label>Setor *</label>
+        <select id="fSetor">
+          <option value="">Selecione...</option>
+          <option>Corte e Dobra</option><option>Pré Montagem</option>
+          <option>Montagem</option><option>Pintura</option><option>Acabamento</option>
+        </select>
+      </div>
+      <div class="fgr"><label>Produto *</label><input type="text" id="fProduto" placeholder="Ex: Transbordo MGT 22.000"></div>
+      <div class="fgr"><label>Cliente *</label><input type="text" id="fCliente" placeholder="Ex: Atvos Bioenergia"></div>
+      <div class="fgr"><label>Número / Lote</label><input type="text" id="fNumero" placeholder="Ex: 3 ou Lote 10"></div>
+      <div class="fgr"><label>% de Evolução</label>
+        <select id="fPerc">
+          <option value="0">0%</option><option value="10">10%</option>
+          <option value="20">20%</option><option value="30">30%</option>
+          <option value="40">40%</option><option value="50">50%</option>
+          <option value="60">60%</option><option value="70">70%</option>
+          <option value="80">80%</option><option value="90">90%</option>
+          <option value="100">100%</option>
+        </select>
+      </div>
+      <div class="fgr"><label>Falta de Material?</label>
+        <select id="fMaterial" onchange="toggleMat()">
+          <option value="Não">Não</option><option value="Sim">Sim</option>
+        </select>
+      </div>
+      <div class="fgr"><label>Problema de Projeto?</label>
+        <select id="fProjeto" onchange="toggleProj()">
+          <option value="Não">Não</option><option value="Sim">Sim</option>
+        </select>
+      </div>
+      <div class="cx" id="boxMat">
+        <div class="fgr ff"><label>Descreva o problema de material</label>
+          <textarea id="fMatDesc" placeholder="Qual material está faltando?"></textarea></div>
+      </div>
+      <div class="cx" id="boxProj">
+        <div class="fgr ff"><label>Descreva o problema de projeto</label>
+          <textarea id="fProjDesc" placeholder="Qual problema de projeto/engenharia?"></textarea></div>
+      </div>
+      <div class="fgr ff"><label>Observações Gerais</label>
+        <textarea id="fObs" placeholder="Outras observações sobre o andamento..."></textarea></div>
+    </div>
+    <div style="padding:14px 18px;border-top:1px solid var(--bd);display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-s" onclick="limparForm()">🗑 Limpar</button>
+      <button class="btn btn-p" onclick="salvar()">💾 Salvar Apontamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="pag" id="pag-hist">
+  <div class="filtros">
+    <div><label>Data Início</label><input class="fi" type="date" id="h-ini" onchange="filtrarHist()"></div>
+    <div><label>Data Fim</label><input class="fi" type="date" id="h-fim" onchange="filtrarHist()"></div>
+    <div><label>Setor</label>
+      <select class="fi" id="h-setor" onchange="filtrarHist()">
+        <option value="">Todos</option>
+        <option>Corte e Dobra</option><option>Pré Montagem</option>
+        <option>Montagem</option><option>Pintura</option><option>Acabamento</option>
+      </select>
+    </div>
+    <div><label>Produto</label><input class="fi" id="h-prod" oninput="filtrarHist()" placeholder="Produto..."></div>
+    <div style="align-self:flex-end">
+      <button class="btn btn-s btn-sm" onclick="limparHist()">Limpar</button>
+      <button class="btn btn-p btn-sm" onclick="exportarCSVHist()" style="margin-left:6px">⬇ CSV</button>
+    </div>
+  </div>
+  <div class="tw"><table><thead><tr>
+    <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
+    <th>Nº</th><th>%</th><th>Material</th><th>Projeto</th><th>Obs</th>
+  </tr></thead><tbody id="tabela-hist"></tbody></table></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =================== DADOS DA PLANILHA ===================
+const dadosBase = [
+  {data:'2025-05-29',setor:'Montagem',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'5',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:20,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Falta cota de assoalho',obs:''},
+  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'Lote 10',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'Lote 10',perc:20,material:'Sim',matDesc:'Faltou chapa 2,65',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:30,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'Lote 10',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Pintura',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Pintura',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'6',perc:50,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-02',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:70,material:'Sim',matDesc:'Falta de mangueiras hidráulicas',projeto:'Sim',projDesc:'Peças sendo produzidas após inicio da montagem',obs:''},
+  {data:'2025-06-02',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Falta espelhos, chapa de mancal, chapas de assoalho, tela expandida',projeto:'Sim',projDesc:'Desenho incompleto e com poucas informações',obs:'Fabricação de peças paralelo a montagem'},
+  {data:'2025-06-02',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Faltando arcos amarração para lona, 1 reforço inferior traseiro',projeto:'Sim',projDesc:'Quantidade de arcos desatualizada na ficha técnica',obs:'Hidráulica pronta'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Só falta colocar placa traseira'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Semirreboque Aplicador de Vinhaça',cliente:'SJC',num:'1',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Falta fazer furo do fluxometro na tubulação de inox'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Semirreboque Aplicador de Vinhaça',cliente:'SJC',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Montagem pronta, falta pintar para por tanque e finalizar'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Bitrem Transbordo Traseiro',cliente:'SJC',num:'2',perc:10,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Iniciar finalização 03/06'},
+  {data:'2025-06-03',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras hidráulicas, Espigão 2"',projeto:'Sim',projDesc:'Projeto incompleto',obs:''},
+  {data:'2025-06-03',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:60,material:'Sim',matDesc:'Espelhos 2,65 caixa, Espelhos mancal de giro, Chapas do assoalho',projeto:'Sim',projDesc:'Projeto faltando informações',obs:'Frente parada'},
+  {data:'2025-06-03',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Falta suportes engraxadeira duplo, Reforço inferior traseiro, Arcos de lona',projeto:'Não',projDesc:'',obs:'Aguardando preparar na pintura'},
+  {data:'2025-06-03',setor:'Acabamento',produto:'Carroceria Prancha',cliente:'Atvos Bioenergia',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-03',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'4',perc:50,material:'Sim',matDesc:'Colocar pistão do fominha',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-04',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras hidráulicas, Espigão de 2"',projeto:'Sim',projDesc:'Projeto incompleto, Peças sendo fabricadas na hora',obs:''},
+  {data:'2025-06-04',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Mesma situação do dia 03/06',projeto:'Sim',projDesc:'Mesma situação 03/06',obs:'Produto parado'},
+  {data:'2025-06-04',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'4',perc:100,material:'Sim',matDesc:'Faltou anel de trava rótula do pistão, Chapas de fixação lona fominha',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-05',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:60,material:'Sim',matDesc:'chapa de esfrega, tela expandida, chapas assoalho',projeto:'Sim',projDesc:'Projeto faltando informações',obs:''},
+  {data:'2025-06-09',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Mesma situação 05/06',projeto:'Sim',projDesc:'projeto faltando informações',obs:'produto parado'},
+  {data:'2025-06-13',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:20,material:'Sim',matDesc:'em fabricação',projeto:'Sim',projDesc:'falta projeto',obs:''},
+  {data:'2025-06-16',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:20,material:'Sim',matDesc:'Falta peças',projeto:'Sim',projDesc:'Falta projeto',obs:''},
+  {data:'2025-06-16',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'2',perc:20,material:'Sim',matDesc:'Falta peças',projeto:'Sim',projDesc:'Falta projeto',obs:''},
+  {data:'2025-06-17',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:20,material:'Sim',matDesc:'Falta peças',projeto:'Sim',projDesc:'Falta projeto',obs:'Parado'},
+  {data:'2025-06-17',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'2',perc:20,material:'Sim',matDesc:'Falta peças',projeto:'Sim',projDesc:'Falta projeto',obs:'Parado'},
+  {data:'2025-07-28',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Rafael Dib',num:'1',perc:40,material:'Sim',matDesc:'berços de fixação, chapas para fixação guarda corpo, rodas montadas',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-08-06',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Rafael Carrilo',num:'1',perc:10,material:'Sim',matDesc:'OP NAO ESTÁ COMPLETA!!',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-08-06',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Zé Verdureiro',num:'1',perc:10,material:'Sim',matDesc:'OP NÃO ESTÁ COMPLETA!!',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-16',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-16',setor:'Montagem',produto:'Transbordo Sobre Chassi',cliente:'Usina Santa Terezinha',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-17',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:90,material:'Sim',matDesc:'Guarda corpo',projeto:'Sim',projDesc:'Medida da arvore',obs:''},
+  {data:'2026-03-18',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:30,material:'Sim',matDesc:'Guarda corpo',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-20',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:70,material:'Sim',matDesc:'Mangueiras',projeto:'Sim',projDesc:'Mangueiras erradas',obs:''},
+  {data:'2026-03-23',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras erradas',projeto:'Sim',projDesc:'Mangueiras erradas, precisa ser feita novas',obs:''},
+  {data:'2026-03-24',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Usina Santa Terezinha',num:'2',perc:70,material:'Sim',matDesc:'Espigão, parafusos de fixação',projeto:'Sim',projDesc:'Mangueiras tamanhos errados',obs:''},
+  {data:'2026-03-25',setor:'Pré Montagem',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Projeto errado',obs:''},
+  {data:'2026-03-27',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Atena',num:'4',perc:100,material:'Sim',matDesc:'Usinagem do cabeçalho móvel quantidade errada',projeto:'Sim',projDesc:'A lista de peças esta incorreta com relação a usinagem do cabeçalho',obs:'Revisar projeto'},
+  {data:'2026-03-30',setor:'Acabamento',produto:'Reboque 01+01',cliente:'Pedra Agroindustrial',num:'2',perc:90,material:'Sim',matDesc:'Adaptador macho 22 X 16',projeto:'Não',projDesc:'',obs:''},
+];
+
+// Carregar do localStorage e mesclar
+let registros = JSON.parse(localStorage.getItem('meg_reg') || '[]');
+if(registros.length === 0) {
+  registros = dadosBase.map((r,i)=>({...r,id:'B'+i}));
+  salvarLS();
+}
+
+function salvarLS(){ localStorage.setItem('meg_reg', JSON.stringify(registros)); }
+
+// =================== UTILIDADES ===================
+function fmtData(d){
+  if(!d) return '—';
+  const p = d.split('-');
+  if(p.length<3) return d;
+  return p[2]+'/'+p[1]+'/'+p[0];
+}
+function setorBadge(s){
+  const m={'Corte e Dobra':'bcz','Pré Montagem':'baz','Montagem':'bam','Pintura':'bvm','Acabamento':'bvd'};
+  return m[s]||'bcz';
+}
+function percClass(p){
+  if(p>=80) return 'pvd';
+  if(p>=40) return 'pam';
+  return 'pvm';
+}
+function toast(msg,tipo){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast'+(tipo==='err'?' err':'');
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
+}
+function gerarCSV(dados,nome){
+  if(!dados.length){toast('Sem dados para exportar','err');return;}
+  const h=['data','setor','produto','cliente','num','perc','material','matDesc','projeto','projDesc','obs'];
+  const linhas=[h.join(';'),...dados.map(r=>h.map(c=>`"${String(r[c]||'').replace(/"/g,'""')}"`).join(';'))];
+  const blob=new Blob(['\ufeff'+linhas.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=nome;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+
+// =================== NAVEGAÇÃO ===================
+function mudar(id){
+  document.querySelectorAll('.pag').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('pag-'+id).classList.add('on');
+  event.currentTarget.classList.add('on');
+  if(id==='dash') renderDash();
+  if(id==='linha') renderLinha();
+  if(id==='prod') filtrarProd();
+  if(id==='prob') renderProb();
+  if(id==='hist') filtrarHist();
+}
+
+// =================== DASHBOARD ===================
+function renderDash(){
+  const tot=registros.length;
+  const probs=registros.filter(r=>r.material==='Sim'||r.projeto==='Sim');
+  const mat=registros.filter(r=>r.material==='Sim').length;
+  const proj=registros.filter(r=>r.projeto==='Sim').length;
+  const c100=registros.filter(r=>r.perc>=100).length;
+
+  document.getElementById('kpi-cards').innerHTML=`
+    <div class="card vd"><div class="card-lbl">Total Registros</div><div class="card-val">${tot}</div></div>
+    <div class="card am"><div class="card-lbl">c/ Prob. Material</div><div class="card-val">${mat}</div></div>
+    <div class="card vm"><div class="card-lbl">c/ Prob. Projeto</div><div class="card-val">${proj}</div></div>
+    <div class="card az"><div class="card-lbl">100% Concluídos</div><div class="card-val">${c100}</div></div>
+  `;
+
+  const ultProbs = probs.slice().reverse().slice(0,5);
+  document.getElementById('dash-probs').innerHTML = ultProbs.length ? ultProbs.map(r=>`
+    <div class="prob-card">
+      <div class="prob-hd">
+        <span class="prob-tt">${r.produto} — ${r.cliente} (Nº ${r.num||'—'})</span>
+        <span class="badge ${setorBadge(r.setor)}">${r.setor}</span>
+      </div>
+      <div class="prob-ds">📅 ${fmtData(r.data)}</div>
+      ${r.material==='Sim'?`<div class="prob-ds" style="color:#c62828;margin-top:4px">🔩 <b>Material:</b> ${r.matDesc||'Não descrito'}</div>`:''}
+      ${r.projeto==='Sim'?`<div class="prob-ds" style="color:#1565c0;margin-top:4px">📐 <b>Projeto:</b> ${r.projDesc||'Não descrito'}</div>`:''}
+      ${r.obs?`<div class="prob-ds" style="margin-top:4px">📝 ${r.obs}</div>`:''}
+    </div>`).join('') : '<div class="empty">Nenhum problema registrado ✓</div>';
+
+  const ultimos = registros.slice().reverse().slice(0,10);
+  document.getElementById('dash-tab').innerHTML = ultimos.map(r=>{
+    const p=parseInt(r.perc)||0;
+    return `<tr>
+      <td>${fmtData(r.data)}</td>
+      <td><span class="badge ${setorBadge(r.setor)}">${r.setor}</span></td>
+      <td style="font-weight:600">${r.produto||'—'}</td>
+      <td>${r.cliente||'—'}</td>
+      <td style="text-align:center">${r.num||'—'}</td>
+      <td><div class="pw"><div class="pb"><div class="pf ${percClass(p)}" style="width:${p}%"></div></div><div class="pt">${p}%</div></div></td>
+      <td>${r.material==='Sim'?'<span class="badge bvm">⚠ Sim</span>':'<span class="badge bvd">✓ Não</span>'}</td>
+      <td>${r.projeto==='Sim'?'<span class="badge bam">⚠ Sim</span>':'<span class="badge bvd">✓ Não</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// =================== LINHA DE PRODUÇÃO ===================
+function renderLinha(){
+  const setores=['Corte e Dobra','Pré Montagem','Montagem','Pintura','Acabamento'];
+  const cls=['c1','c2','c3','c4','c5'];
+  const icn=['✂️','🔩','🔧','🎨','✅'];
+
+  // Pega o apontamento mais recente por (produto+cliente+num+setor)
+  const ultimos = {};
+  registros.forEach(r=>{
+    const k=r.setor+'|'+r.produto+'|'+r.cliente+'|'+r.num;
+    if(!ultimos[k]||r.data>ultimos[k].data) ultimos[k]=r;
+  });
+  const ativos = Object.values(ultimos);
+
+  let totalProb=0, totalOk=0;
+  const board = setores.map((s,i)=>{
+    const items = ativos.filter(r=>r.setor===s);
+    const html = items.length ? items.map(r=>{
+      const temProb=r.material==='Sim'||r.projeto==='Sim';
+      if(temProb) totalProb++; else totalOk++;
+      return `<div class="pitem ${temProb?'prob':''}">
+        <div class="pit1">${r.produto} ${r.num?'#'+r.num:''}</div>
+        <div class="pit2">${r.cliente} — ${r.perc}%</div>
+        ${r.material==='Sim'?'<span class="badge bvm" style="margin-top:4px">🔩 Material</span>':''}
+        ${r.projeto==='Sim'?'<span class="badge bam" style="margin-top:4px">📐 Projeto</span>':''}
+      </div>`;
+    }).join('') : '<div class="empty" style="padding:16px;font-size:12px">Sem itens</div>';
+
+    return `<div class="pcol">
+      <div class="phd ${cls[i]}">${icn[i]} ${s}<span>${items.length}</span></div>
+      <div class="pbd">${html}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('pipeBoard').innerHTML=board;
+  document.getElementById('pipe-probs').textContent=`● ${totalProb} c/ problema`;
+  document.getElementById('pipe-ok').textContent=`✓ ${totalOk} normais`;
+}
+
+// =================== PRODUÇÃO ===================
+function filtrarProd(){
+  const setor=document.getElementById('f-setor').value;
+  const prod=document.getElementById('f-prod').value.toLowerCase();
+  const cli=document.getElementById('f-cli').value.toLowerCase();
+  const data=document.getElementById('f-data').value;
+
+  let f=[...registros].reverse();
+  if(setor) f=f.filter(r=>r.setor===setor);
+  if(prod) f=f.filter(r=>r.produto.toLowerCase().includes(prod));
+  if(cli) f=f.filter(r=>r.cliente.toLowerCase().includes(cli));
+  if(data) f=f.filter(r=>r.data===data);
+
+  const tb=document.getElementById('tabela-prod');
+  tb.innerHTML = f.length ? f.map(r=>{
+    const p=parseInt(r.perc)||0;
+    return `<tr>
+      <td>${fmtData(r.data)}</td>
+      <td><span class="badge ${setorBadge(r.setor)}">${r.setor}</span></td>
+      <td style="font-weight:600">${r.produto}</td>
+      <td>${r.cliente}</td>
+      <td style="text-align:center">${r.num||'—'}</td>
+      <td><div class="pw"><div class="pb"><div class="pf ${percClass(p)}" style="width:${p}%"></div></div><div class="pt">${p}%</div></div></td>
+      <td>${r.material==='Sim'?'<span class="badge bvm">⚠ Sim</span>':'<span class="badge bvd">✓ Não</span>'}</td>
+      <td>${r.projeto==='Sim'?'<span class="badge bam">⚠ Sim</span>':'<span class="badge bvd">✓ Não</span>'}</td>
+      <td style="font-size:11px;color:var(--mt);max-width:180px">${r.obs||'—'}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="9" class="empty">Nenhum registro encontrado.</td></tr>';
+}
+function limparFiltros(){
+  ['f-setor','f-prod','f-cli','f-data'].forEach(id=>{
+    const el=document.getElementById(id);if(el) el.value='';
+  });
+  filtrarProd();
+}
+function exportarCSV(){
+  const setor=document.getElementById('f-setor').value;
+  let f=[...registros];
+  if(setor) f=f.filter(r=>r.setor===setor);
+  gerarCSV(f,'producao_megatec.csv');
+  toast('CSV exportado!');
+}
+
+// =================== PROBLEMAS ===================
+function renderProb(){
+  const probs=registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').reverse();
+  const mat=probs.filter(r=>r.material==='Sim').length;
+  const proj=probs.filter(r=>r.projeto==='Sim').length;
+  document.getElementById('cnt-mat').textContent='Material: '+mat;
+  document.getElementById('cnt-proj').textContent='Projeto: '+proj;
+
+  document.getElementById('lista-prob').innerHTML = probs.length ? probs.map(r=>`
+    <div class="prob-card">
+      <div class="prob-hd">
+        <span class="prob-tt">${r.produto} — ${r.cliente} (Nº ${r.num||'—'})</span>
+        <span class="badge ${setorBadge(r.setor)}">${r.setor}</span>
+      </div>
+      <div class="prob-ds">📅 ${fmtData(r.data)}</div>
+      ${r.material==='Sim'?`<div class="prob-ds" style="color:#c62828;margin-top:4px">🔩 <b>Material:</b> ${r.matDesc||'—'}</div>`:''}
+      ${r.projeto==='Sim'?`<div class="prob-ds" style="color:#1565c0;margin-top:4px">📐 <b>Projeto:</b> ${r.projDesc||'—'}</div>`:''}
+      ${r.obs?`<div class="prob-ds" style="margin-top:4px">📝 ${r.obs}</div>`:''}
+    </div>`).join('') : '<div class="empty">Nenhum problema registrado ✓</div>';
+}
+
+// =================== FORMULÁRIO ===================
+function toggleMat(){
+  document.getElementById('boxMat').classList.toggle('on',document.getElementById('fMaterial').value==='Sim');
+}
+function toggleProj(){
+  document.getElementById('boxProj').classList.toggle('on',document.getElementById('fProjeto').value==='Sim');
+}
+function limparForm(){
+  ['fProduto','fCliente','fNumero','fMatDesc','fProjDesc','fObs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fSetor').value='';
+  document.getElementById('fPerc').value='0';
+  document.getElementById('fMaterial').value='Não';
+  document.getElementById('fProjeto').value='Não';
+  document.getElementById('fData').value=new Date().toISOString().split('T')[0];
+  toggleMat();toggleProj();
+}
+function salvar(){
+  const data=document.getElementById('fData').value;
+  const setor=document.getElementById('fSetor').value;
+  const produto=document.getElementById('fProduto').value.trim();
+  const cliente=document.getElementById('fCliente').value.trim();
+  if(!data||!setor||!produto||!cliente){toast('Preencha Data, Setor, Produto e Cliente','err');return;}
+
+  const reg={
+    id:'U'+Date.now(),
+    data,setor,produto,cliente,
+    num:document.getElementById('fNumero').value.trim(),
+    perc:parseInt(document.getElementById('fPerc').value)||0,
+    material:document.getElementById('fMaterial').value,
+    matDesc:document.getElementById('fMatDesc').value.trim(),
+    projeto:document.getElementById('fProjeto').value,
+    projDesc:document.getElementById('fProjDesc').value.trim(),
+    obs:document.getElementById('fObs').value.trim()
+  };
+  registros.push(reg);
+  salvarLS();
+  limparForm();
+  toast('Apontamento salvo com sucesso!');
+}
+
+// =================== HISTÓRICO ===================
+function filtrarHist(){
+  const ini=document.getElementById('h-ini').value;
+  const fim=document.getElementById('h-fim').value;
+  const setor=document.getElementById('h-setor').value;
+  const prod=document.getElementById('h-prod').value.toLowerCase();
+
+  let f=[...registros].reverse();
+  if(ini) f=f.filter(r=>r.data>=ini);
+  if(fim) f=f.filter(r=>r.data<=fim);
+  if(setor) f=f.filter(r=>r.setor===setor);
+  if(prod) f=f.filter(r=>r.produto.toLowerCase().includes(prod));
+
+  const tb=document.getElementById('tabela-hist');
+  tb.innerHTML = f.length ? f.map(r=>{
+    const p=parseInt(r.perc)||0;
+    return `<tr>
+      <td>${fmtData(r.data)}</td>
+      <td><span class="badge ${setorBadge(r.setor)}">${r.setor}</span></td>
+      <td style="font-weight:600">${r.produto}</td>
+      <td>${r.cliente}</td>
+      <td style="text-align:center">${r.num||'—'}</td>
+      <td><div class="pw"><div class="pb"><div class="pf ${percClass(p)}" style="width:${p}%"></div></div><div class="pt">${p}%</div></div></td>
+      <td>${r.material==='Sim'?'<span class="badge bvm">⚠ Sim</span>':'<span class="badge bvd">✓ Não</span>'}</td>
+      <td>${r.projeto==='Sim'?'<span class="badge bam">⚠ Sim</span>':'<span class="badge bvd">✓ Não</span>'}</td>
+      <td style="font-size:11px;color:var(--mt)">${r.obs||'—'}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="9" class="empty">Nenhum registro.</td></tr>';
+}
+function limparHist(){
+  ['h-ini','h-fim','h-setor','h-prod'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  filtrarHist();
+}
+function exportarCSVHist(){
+  const ini=document.getElementById('h-ini').value;
+  const fim=document.getElementById('h-fim').value;
+  let f=[...registros];
+  if(ini) f=f.filter(r=>r.data>=ini);
+  if(fim) f=f.filter(r=>r.data<=fim);
+  gerarCSV(f,'historico_megatec.csv');
+  toast('CSV exportado!');
+}
+
+// =================== INIT ===================
+(function(){
+  const n=new Date();
+  const d=String(n.getDate()).padStart(2,'0');
+  const m=String(n.getMonth()+1).padStart(2,'0');
+  document.getElementById('lblHoje').textContent=`${d}/${m}/${n.getFullYear()}`;
+  document.getElementById('fData').value=n.toISOString().split('T')[0];
+  renderDash();
+})();
+</script>
+</body>
+</html>
