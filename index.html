@@ -236,280 +236,529 @@ tbody tr:hover{background:#f9fbff}
 </div>
 
 <script>
-// ======= Dados (amostra reduzida a partir da planilha) =======
-const registros = [
-  // Vou trazer alguns exemplos de cada setor para não estourar o tamanho da mensagem.
-  // Quando você validar o layout, posso gerar só o array completo em outra resposta.
-  {data:'2025-05-29',setor:'Montagem',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'Lote 10',perc:20,material:'Sim',matDesc:'Faltou chapa 2,65',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-02',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:70,material:'Sim',matDesc:'Falta de mangueiras hidráulicas',projeto:'Sim',projDesc:'Falta ficha técnica completa',obs:''},
-  {data:'2025-06-02',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Falta espelhos, chapa mancal, assoalho, tela',projeto:'Sim',projDesc:'Desenho incompleto',obs:''},
-  {data:'2025-06-02',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Faltando arcos amarração lona, reforço traseiro',projeto:'Sim',projDesc:'Qtd arcos desatualizada',obs:'Hidráulica pronta'},
-  {data:'2025-06-02',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Só falta colocar placa traseira'},
-  {data:'2025-06-03',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras hidráulicas; espigão 2"',projeto:'Sim',projDesc:'Projeto incompleto',obs:''},
-  {data:'2025-06-03',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'7',perc:80,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Ponto de observação pistão giro',obs:''},
-  {data:'2025-06-03',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'4',perc:50,material:'Sim',matDesc:'Colocar pistão do fominha',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-05',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'4',perc:100,material:'Sim',matDesc:'Faltou anel trava rótula, chapas lona, arcos',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-09',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'10',perc:80,material:'Sim',matDesc:'Chapa 3/8 e 5/16',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-09',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Mesma situação 05/06',projeto:'Sim',projDesc:'Projeto faltando informações',obs:'Produto parado'},
-  {data:'2026-02-26',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'São João de Araras',num:'13',perc:90,material:'Sim',matDesc:'Falta chapa 5/16x1200x2100 e 3/8',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-27',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:70,material:'Sim',matDesc:'Bomba, guarda corpo',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-04',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:90,material:'Sim',matDesc:'Aguardando eixo tomada de força',projeto:'Sim',projDesc:'',obs:''},
-  {data:'2026-03-05',setor:'Montagem',produto:'Rodomuda',cliente:'Da Mata',num:'8',perc:60,material:'Sim',matDesc:'Reforços caixa, quadro, chassis',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-09',setor:'Montagem',produto:'Reboque 01+01',cliente:'Pedra Agroindustrial',num:'1',perc:90,material:'Sim',matDesc:'Mola',projeto:'Não',projDesc:'',obs:'Parado aguardando mola para suspensão'},
-  {data:'2026-03-12',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Atvos Bioenergia',num:'14',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-18',setor:'Pré Montagem',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'2',perc:20,material:'Sim',matDesc:'',projeto:'Sim',projDesc:'Projeto errado',obs:''},
-  {data:'2026-03-23',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:70,material:'Sim',matDesc:'Mangueiras',projeto:'Sim',projDesc:'Mangueiras erradas',obs:''},
-  {data:'2026-03-30',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Atena',num:'4',perc:100,material:'Sim',matDesc:'Usinagem cabeçalho quantidade errada',projeto:'Sim',projDesc:'Lista peças incorreta',obs:''}
+// ─── DADOS INICIAIS (EXEMPLO) ───────────────────────────────────────
+const ETAPAS = ['Corte e Dobra', 'Pré-Montagem', 'Montagem', 'Pintura', 'Acabamento/Finalização'];
+
+let ordens = [
+  { os:'OS-2847', cliente:'Raízen', produto:'Transbordo 20T', etapa:'Corte e Dobra', status:'Em andamento', inicio:'2025-11-10', entrega:'2025-11-25', perc:20, problema:null },
+  { os:'OS-2848', cliente:'Cosan', produto:'Semirreboque Plantio', etapa:'Corte e Dobra', status:'Em andamento', inicio:'2025-11-10', entrega:'2025-11-28', perc:15, problema:null },
+  { os:'OS-2849', cliente:'São Martinho', produto:'Rodocarga', etapa:'Montagem', status:'Parado', inicio:'2025-11-05', entrega:'2025-11-20', perc:60,
+    problema:{tipo:'Problema de Material', desc:'Ausência de perfil estrutural 150x150mm — aguardando fornecedor', resp:'Compras', aberto:true, id:'P001', solucao:'', resolvidoPor:'', resolvidoEm:''} },
+  { os:'OS-2850', cliente:'Virgolino', produto:'Tanque Pipa', etapa:'Pré-Montagem', status:'Em andamento', inicio:'2025-11-12', entrega:'2025-11-30', perc:10, problema:null },
+  { os:'OS-2851', cliente:'Biosev', produto:'Aplicador de Vinhaça', etapa:'Montagem', status:'Parado', inicio:'2025-11-06', entrega:'2025-11-22', perc:55,
+    problema:{tipo:'Problema de Engenharia/Projeto', desc:'Revisão de projeto — dimensão do coletor divergente do memorial descritivo rev.3', resp:'Engenharia', aberto:true, id:'P002', solucao:'', resolvidoPor:'', resolvidoEm:''} },
+  { os:'OS-2852', cliente:'CMAA', produto:'Carroceria Plataforma Prancha', etapa:'Pintura', status:'Em andamento', inicio:'2025-11-04', entrega:'2025-11-18', perc:75, problema:null },
+  { os:'OS-2853', cliente:'Zilor', produto:'Transbordo 15T', etapa:'Corte e Dobra', status:'Aguardando', inicio:'2025-11-14', entrega:'2025-12-05', perc:0, problema:null },
+  { os:'OS-2844', cliente:'Odebrecht Agro', produto:'Semirreboque Plantio', etapa:'Acabamento/Finalização', status:'Em andamento', inicio:'2025-10-28', entrega:'2025-11-15', perc:88,
+    problema:{tipo:'Problema de Material', desc:'Falta de tinta epóxi cor branca — solicitado pedido emergencial', resp:'Almoxarifado', aberto:true, id:'P003', solucao:'', resolvidoPor:'', resolvidoEm:''} },
+  { os:'OS-2840', cliente:'Bunge', produto:'Rodocarga', etapa:'Acabamento/Finalização', status:'Concluído', inicio:'2025-10-20', entrega:'2025-11-08', perc:100, problema:null },
+  { os:'OS-2838', cliente:'ADM', produto:'Tanque Pipa', etapa:'Acabamento/Finalização', status:'Concluído', inicio:'2025-10-15', entrega:'2025-11-05', perc:100, problema:null },
 ];
 
-// ======= Utilitários =======
-function fmtData(iso){
-  if(!iso) return '';
+let problemas = [
+  { id:'P001', os:'OS-2849', cliente:'São Martinho', tipo:'Problema de Material', desc:'Ausência de perfil estrutural 150x150mm — aguardando fornecedor', resp:'Compras', data:'2025-11-11 08:32', aberto:true,  solucao:'', resolvidoPor:'', resolvidoEm:'' },
+  { id:'P002', os:'OS-2851', cliente:'Biosev', tipo:'Problema de Engenharia/Projeto', desc:'Revisão de projeto — dimensão do coletor divergente do memorial descritivo rev.3', resp:'Engenharia', data:'2025-11-09 14:15', aberto:true,  solucao:'', resolvidoPor:'', resolvidoEm:'' },
+  { id:'P003', os:'OS-2844', cliente:'Odebrecht Agro', tipo:'Problema de Material', desc:'Falta de tinta epóxi cor branca — solicitado pedido emergencial', resp:'Almoxarifado', data:'2025-11-11 10:50', aberto:true,  solucao:'', resolvidoPor:'', resolvidoEm:'' },
+  { id:'P004', os:'OS-2841', cliente:'Copersucar', tipo:'Problema de Engenharia/Projeto', desc:'Ajuste dimensional aprovado e implementado', resp:'Engenharia', data:'2025-11-07 16:00', aberto:false, solucao:'Ajuste realizado e validado', resolvidoPor:'Engenharia', resolvidoEm:'2025-11-08 09:10' },
+  { id:'P005', os:'OS-2839', cliente:'Virgolino', tipo:'Problema de Material', desc:'Material reposto, produção retomada', resp:'Compras', data:'2025-11-06 09:20', aberto:false, solucao:'Peça recebida; linha liberada', resolvidoPor:'Compras', resolvidoEm:'2025-11-06 15:30' },
+];
+
+let notificacoes = [
+  { id:'N001', titulo:'⚠️ Parada — OS-2849 São Martinho', sub:'Problema de Material: Perfil 150x150mm', time:'hoje 08:32', resolvido:false, probId:'P001' },
+  { id:'N002', titulo:'⚠️ Parada — OS-2851 Biosev', sub:'Problema de Engenharia: Revisão de projeto', time:'09/11 14:15', resolvido:false, probId:'P002' },
+  { id:'N003', titulo:'⚠️ Parada — OS-2844 Odebrecht Agro', sub:'Problema de Material: Tinta epóxi branca', time:'hoje 10:50', resolvido:false, probId:'P003' },
+];
+
+// ======== Persistência opcional no navegador ========
+function salvarLocal() {
+  localStorage.setItem('megatec_ordens', JSON.stringify(ordens));
+  localStorage.setItem('megatec_problemas', JSON.stringify(problemas));
+  localStorage.setItem('megatec_notifs', JSON.stringify(notificacoes));
+}
+function carregarLocal() {
+  const o = localStorage.getItem('megatec_ordens');
+  const p = localStorage.getItem('megatec_problemas');
+  const n = localStorage.getItem('megatec_notifs');
+  if (o) ordens = JSON.parse(o);
+  if (p) problemas = JSON.parse(p);
+  if (n) notificacoes = JSON.parse(n);
+}
+
+// ======== Utilidades ========
+function formatDate(iso) {
+  if (!iso) return '';
   const [a,m,d] = iso.split('-');
   return `${d}/${m}/${a}`;
 }
-function percClass(p){
-  if(p>=90) return 'p-verde';
-  if(p>=50) return 'p-am';
-  return 'p-verm';
-}
-function countProblema(reg){
-  return (reg.material==='Sim' || reg.projeto==='Sim');
-}
-
-// ======= Tabs =======
-function changeTab(btn){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  const page = btn.dataset.page;
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.getElementById('page-'+page).classList.add('on');
-}
-
-// ======= Dashboard =======
-let currentSetor = null;
-
-function buildDashboard(){
-  const total = registros.length;
-  const concluidos = registros.filter(r=>(parseInt(r.perc)||0)>=100).length;
-  const comProb = registros.filter(r=>countProblema(r)).length;
-  const mediaPerc = registros.reduce((s,r)=>s+(parseInt(r.perc)||0),0) / (total||1);
-
-  const kpi = document.getElementById('kpiCards');
-  kpi.innerHTML = `
-    <div class="card vd">
-      <div class="card-lbl">Registros</div>
-      <div class="card-val">${total}</div>
-      <div class="card-extra">Total de apontamentos históricos</div>
+function showToast(msg, tipo='info') {
+  const cont = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  if (tipo === 'ok') t.style.borderLeftColor = '#2e7d32';
+  t.innerHTML = `
+    <div class="toast-icon">${tipo==='ok'?'✅':'⚠️'}</div>
+    <div class="toast-content">
+      <div class="toast-title">${tipo==='ok'?'Sucesso':'Atenção'}</div>
+      <div class="toast-msg">${msg}</div>
     </div>
-    <div class="card az">
-      <div class="card-lbl">% médio</div>
-      <div class="card-val">${mediaPerc.toFixed(0)}%</div>
-      <div class="card-extra">Progresso médio dos produtos</div>
-    </div>
-    <div class="card vm">
-      <div class="card-lbl">Com problemas</div>
-      <div class="card-val">${comProb}</div>
-      <div class="card-extra">Material ou projeto marcados como "Sim"</div>
-    </div>
-    <div class="card am">
-      <div class="card-lbl">Concluídos</div>
-      <div class="card-val">${concluidos}</div>
-      <div class="card-extra">Registros com 100% de evolução</div>
-    </div>
+    <button class="toast-close" onclick="this.parentElement.remove()">×</button>
   `;
+  cont.appendChild(t);
+  setTimeout(()=>t.remove(), 5000);
+}
 
-  const setores = ['Corte e Dobra','Pré Montagem','Montagem','Pintura','Acabamento'];
-  const cont = document.getElementById('setorCards');
-  cont.innerHTML = setores.map(setor=>{
-    const arr = registros.filter(r=>r.setor===setor);
-    if(!arr.length) return '';
-    const qtd = arr.length;
-    const media = arr.reduce((s,r)=>s+(parseInt(r.perc)||0),0)/(qtd||1);
-    const prob = arr.filter(r=>countProblema(r)).length;
+// ======== Navegação entre abas ========
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-'+pageId).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    if (t.textContent.includes('Dashboard') && pageId==='dashboard') t.classList.add('active');
+    if (t.textContent.includes('Linha') && pageId==='linha') t.classList.add('active');
+    if (t.textContent.includes('Ordens') && pageId==='ordens') t.classList.add('active');
+    if (t.textContent.includes('Apontamento') && pageId==='apontamento') t.classList.add('active');
+    if (t.textContent.includes('Problemas') && pageId==='problemas') t.classList.add('active');
+  });
+  if (pageId==='ordens') renderTabelaOrdens();
+  if (pageId==='linha') renderPipeline();
+  if (pageId==='problemas') renderProblemas();
+}
+
+// ======== Notificações ========
+function toggleNotifPanel() {
+  const p = document.getElementById('notifPanel');
+  p.classList.toggle('active');
+}
+function renderNotificacoes() {
+  const list = document.getElementById('notifList');
+  const aberto = notificacoes.filter(n=>!n.resolvido);
+  document.getElementById('notifBadge').textContent = aberto.length;
+  if (!notificacoes.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">Nenhuma notificação.</div></div>';
+    return;
+  }
+  list.innerHTML = notificacoes.map(n=>`
+    <div class="notif-item ${n.resolvido?'resolvido':''}" onclick="abrirProblemaPorNotif('${n.probId}')">
+      <div class="notif-item-title">${n.titulo}</div>
+      <div class="notif-item-sub">${n.sub}</div>
+      <div class="notif-item-time">${n.time}</div>
+    </div>
+  `).join('');
+}
+function abrirProblemaPorNotif(id) {
+  showPage('problemas');
+  const el = document.getElementById('P'+id);
+  if (el) el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+// ======== Tabela de Ordens (com editar) ========
+function renderTabelaOrdens() {
+  const tbody = document.getElementById('tabelaOrdensBody');
+  const bus = document.getElementById('searchInput').value.toLowerCase();
+  const etapa = document.getElementById('filterEtapa').value;
+  const status = document.getElementById('filterStatus').value;
+
+  let arr = [...ordens];
+  if (bus) arr = arr.filter(o =>
+    o.os.toLowerCase().includes(bus) ||
+    o.cliente.toLowerCase().includes(bus) ||
+    o.produto.toLowerCase().includes(bus)
+  );
+  if (etapa) arr = arr.filter(o => o.etapa===etapa);
+  if (status) arr = arr.filter(o => o.status===status);
+
+  // Ordenar por data de início (mais antiga primeiro)
+  arr.sort((a,b)=> (a.inicio||'').localeCompare(b.inicio||''));
+
+  if (!arr.length) {
+    tbody.innerHTML = '<tr><td colspan="9" class="empty-state-text" style="text-align:center;padding:16px">Nenhuma ordem encontrada.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = arr.map(o=>{
+    const p = o.perc||0;
+    let barClass = 'progress-bar';
+    if (p<40) barClass += ' vermelho';
+    else if (p<80) barClass += ' amarelo';
+    const statusBadge =
+      o.status==='Concluído' ? '<span class="badge badge-verde">Concluído</span>' :
+      o.status==='Parado' ? '<span class="badge badge-vermelho">Parado</span>' :
+      o.status==='Aguardando' ? '<span class="badge badge-amarelo">Aguardando</span>' :
+      '<span class="badge badge-azul">Em andamento</span>';
+
     return `
-      <div class="card" onclick="openDetail('${setor}')">
-        <div class="card-lbl">${setor}</div>
-        <div class="card-val">${media.toFixed(0)}%</div>
-        <div class="card-extra">${qtd} apontamentos • ${prob} com problema</div>
-        <div class="card-extra" style="color:${prob? '#b71c1c':'#1b5e20'};">
-          ${prob? '⚠ Há pendências registradas':'✓ Sem problemas marcados'}
+      <tr>
+        <td>${o.os}</td>
+        <td>${o.cliente}</td>
+        <td>${o.produto}</td>
+        <td>${o.etapa}</td>
+        <td>${statusBadge}</td>
+        <td>${formatDate(o.inicio)}</td>
+        <td>${formatDate(o.entrega)}</td>
+        <td>
+          <div style="min-width:130px">
+            <div>${p}%</div>
+            <div class="progress-bar-wrap">
+              <div class="${barClass}" style="width:${p}%"></div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline" onclick="carregarApontamento('${o.os}')">Editar</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// Carregar dados de uma OS no formulário de apontamento para edição
+function carregarApontamento(os) {
+  const o = ordens.find(x=>x.os===os);
+  if (!o) return;
+  showPage('apontamento');
+  document.getElementById('ap_os').value = o.os;
+  document.getElementById('ap_cliente').value = o.cliente;
+  document.getElementById('ap_produto').value = o.produto;
+  document.getElementById('ap_etapa').value = o.etapa;
+  document.getElementById('ap_inicio').value = o.inicio;
+  document.getElementById('ap_entrega').value = o.entrega;
+  document.getElementById('ap_responsavel').value = o.responsavel || '';
+  document.getElementById('ap_perc').value = o.perc || 0;
+  document.getElementById('ap_obs').value = o.obs || '';
+
+  // Se existe problema ligado à OS, já pré-preenche área de problema
+  if (o.problema && o.problema.aberto) {
+    document.getElementById('ap_temProblema').value = 'sim';
+    toggleProblema();
+    document.getElementById('ap_tipoProblema').value = o.problema.tipo;
+    document.getElementById('ap_descProblema').value = o.problema.desc;
+    document.getElementById('ap_respProblema').value = o.problema.resp;
+  } else {
+    document.getElementById('ap_temProblema').value = 'nao';
+    toggleProblema();
+    document.getElementById('ap_tipoProblema').value = 'Problema de Material';
+    document.getElementById('ap_descProblema').value = '';
+    document.getElementById('ap_respProblema').value = '';
+  }
+}
+
+// Salvar apontamento (novo ou edição)
+function salvarApontamento() {
+  const os = document.getElementById('ap_os').value.trim();
+  if (!os) { showToast('Informe o número da OS','warn'); return; }
+
+  const obj = {
+    os,
+    cliente: document.getElementById('ap_cliente').value.trim(),
+    produto: document.getElementById('ap_produto').value || '',
+    etapa: document.getElementById('ap_etapa').value,
+    inicio: document.getElementById('ap_inicio').value,
+    entrega: document.getElementById('ap_entrega').value,
+    responsavel: document.getElementById('ap_responsavel').value.trim(),
+    perc: parseInt(document.getElementById('ap_perc').value||'0',10),
+    obs: document.getElementById('ap_obs').value.trim(),
+    status: 'Em andamento',
+    problema:null
+  };
+
+  // Status derivado
+  if (obj.perc>=100) obj.status = 'Concluído';
+
+  // Problema
+  const temProb = document.getElementById('ap_temProblema').value === 'sim';
+  if (temProb) {
+    const tipo = document.getElementById('ap_tipoProblema').value;
+    const desc = document.getElementById('ap_descProblema').value.trim();
+    const resp = document.getElementById('ap_respProblema').value.trim();
+    obj.status = 'Parado';
+    obj.problema = {
+      id: obj.os+'_P'+Date.now(),
+      tipo,
+      desc,
+      resp,
+      aberto:true,
+      solucao:'',
+      resolvidoPor:'',
+      resolvidoEm:''
+    };
+    // Se for novo problema, também entra em problemas[]
+    const exists = problemas.find(p=>p.os===obj.os && p.desc===desc && p.aberto);
+    if (!exists) {
+      problemas.push({
+        id: obj.problema.id,
+        os: obj.os,
+        cliente: obj.cliente,
+        tipo,
+        desc,
+        resp,
+        data: new Date().toISOString().slice(0,16).replace('T',' '),
+        aberto:true,
+        solucao:'',
+        resolvidoPor:'',
+        resolvidoEm:''
+      });
+    }
+  }
+
+  // Atualiza ou insere na lista de ordens
+  const idx = ordens.findIndex(x=>x.os===os);
+  if (idx>=0) {
+    // manter id de problema se já existia e não foi alterado
+    if (!obj.problema && ordens[idx].problema) {
+      obj.problema = ordens[idx].problema;
+    }
+    ordens[idx] = {...ordens[idx], ...obj};
+  } else {
+    ordens.push(obj);
+  }
+
+  salvarLocal();
+  showToast('Apontamento salvo com sucesso!','ok');
+  renderTabelaOrdens();
+}
+
+// Limpar formulário
+function limparApontamento() {
+  document.getElementById('ap_os').value='';
+  document.getElementById('ap_cliente').value='';
+  document.getElementById('ap_produto').value='';
+  document.getElementById('ap_etapa').value='Corte e Dobra';
+  document.getElementById('ap_inicio').value='';
+  document.getElementById('ap_entrega').value='';
+  document.getElementById('ap_responsavel').value='';
+  document.getElementById('ap_perc').value='';
+  document.getElementById('ap_obs').value='';
+  document.getElementById('ap_temProblema').value='nao';
+  document.getElementById('ap_tipoProblema').value='Problema de Material';
+  document.getElementById('ap_descProblema').value='';
+  document.getElementById('ap_respProblema').value='';
+  toggleProblema();
+}
+
+// Abrir detalhes da OS (modal)
+function showDetalheOS(os) {
+  const o = ordens.find(x=>x.os===os);
+  if (!o) return;
+  document.getElementById('modalDetalheTitle').textContent = `Detalhes da ${o.os}`;
+  let problemaHtml='';
+  if (o.problema) {
+    problemaHtml = `
+      <h4>Problema</h4>
+      <p><b>Tipo:</b> ${o.problema.tipo}</p>
+      <p><b>Descrição:</b> ${o.problema.desc}</p>
+      <p><b>Responsável:</b> ${o.problema.resp}</p>
+      <p><b>Status:</b> ${o.problema.aberto?'Em aberto':'Resolvido'}</p>
+      ${o.problema.solucao ? `<p><b>Solução:</b> ${o.problema.solucao}</p>`:''}
+    `;
+  }
+  document.getElementById('modalDetalheBody').innerHTML = `
+    <p><b>Cliente:</b> ${o.cliente}</p>
+    <p><b>Produto:</b> ${o.produto}</p>
+    <p><b>Etapa:</b> ${o.etapa}</p>
+    <p><b>Início:</b> ${formatDate(o.inicio)}</p>
+    <p><b>Entrega:</b> ${formatDate(o.entrega)}</p>
+    <p><b>Progresso:</b> ${o.perc||0}%</p>
+    <p><b>Responsável:</b> ${o.responsavel||'-'}</p>
+    <p><b>Observações:</b> ${o.obs||'-'}</p>
+    ${problemaHtml}
+  `;
+  openModal('modalDetalhe');
+}
+
+// ======== Problemas (listar e resolver) ========
+let problemaSelecionado = null;
+
+function renderProblemas() {
+  const lista = document.getElementById('listaProblemas');
+  const filtroTipo = document.getElementById('filtroTipoProb').value;
+  let arr = [...problemas];
+
+  if (filtroTipo) arr = arr.filter(p=>p.tipo===filtroTipo);
+
+  const abertos = arr.filter(p=>p.aberto);
+  const resolvidos = arr.filter(p=>!p.aberto);
+
+  document.getElementById('qtdProblemasAbertos').textContent = `● ${abertos.length} abertos`;
+  document.getElementById('qtdProblemasResolvidos').textContent = `✓ ${resolvidos.length} resolvidos`;
+
+  if (!arr.length) {
+    lista.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✅</div><div class="empty-state-text">Nenhum problema registrado.</div></div>';
+    return;
+  }
+
+  lista.innerHTML = arr.map(p=>{
+    const classe = p.tipo.includes('Material') ? 'material' : 'engenharia';
+    const aberto = p.aberto;
+    const statusBadge = aberto ? '<span class="badge badge-vermelho">Em aberto</span>' : '<span class="badge badge-verde">Resolvido</span>';
+    const solucaoHtml = !aberto && p.solucao ? `<div class="problema-desc"><b>Solução:</b> ${p.solucao} (${p.resolvidoPor||''} - ${p.resolvidoEm||''})</div>` : '';
+
+    return `
+      <div class="problema-item" id="P${p.id}">
+        <div class="problema-icon ${classe}">${classe==='material'?'🔩':'📐'}</div>
+        <div class="problema-info">
+          <div class="problema-titulo">
+            ${p.os} — ${p.cliente} ${statusBadge}
+          </div>
+          <div class="problema-desc">${p.desc}</div>
+          <div class="problema-meta">
+            <span><b>Tipo:</b> ${p.tipo}</span>
+            <span><b>Responsável:</b> ${p.resp}</span>
+            <span><b>Data:</b> ${p.data}</span>
+          </div>
+          ${solucaoHtml}
+        </div>
+        <div class="problema-actions">
+          ${aberto?`<button class="btn btn-sm btn-primary" onclick="abrirLiberacao('${p.id}')">Resolver</button>`:''}
         </div>
       </div>
     `;
   }).join('');
 }
 
-function openDetail(setor){
-  currentSetor = setor;
-  const arr = registros.filter(r=>r.setor===setor);
-  const q = arr.length;
-  const med = arr.reduce((s,r)=>s+(parseInt(r.perc)||0),0)/(q||1);
-  const prob = arr.filter(r=>countProblema(r)).length;
-  document.getElementById('detailTitle').textContent = `Detalhe do setor: ${setor}`;
-  document.getElementById('detailInfo').textContent =
-    `${q} registros • ${med.toFixed(0)}% de média • ${prob} com falta de material ou problema de projeto`;
-  document.getElementById('detailPanel').classList.add('on');
-  document.getElementById('detDataIni').value = '';
-  document.getElementById('detDataFim').value = '';
-  document.getElementById('detCliente').value = '';
-  document.getElementById('detProduto').value = '';
-  renderDetailRows();
+// Abrir modal de liberação para resolver problema
+function abrirLiberacao(id) {
+  problemaSelecionado = problemas.find(p=>p.id===id);
+  if (!problemaSelecionado) return;
+  document.getElementById('lib_responsavel').value = '';
+  document.getElementById('lib_acao').value = '';
+  openModal('modalLiberacao');
 }
 
-function closeDetail(){
-  document.getElementById('detailPanel').classList.remove('on');
-  currentSetor = null;
-}
-
-function renderDetailRows(){
-  if(!currentSetor) return;
-  const ini = document.getElementById('detDataIni').value;
-  const fim = document.getElementById('detDataFim').value;
-  const cli = document.getElementById('detCliente').value.toLowerCase();
-  const prod = document.getElementById('detProduto').value.toLowerCase();
-
-  let arr = registros.filter(r=>r.setor===currentSetor);
-  if(ini) arr = arr.filter(r=>r.data>=ini);
-  if(fim) arr = arr.filter(r=>r.data<=fim);
-  if(cli) arr = arr.filter(r=> (r.cliente||'').toLowerCase().includes(cli));
-  if(prod) arr = arr.filter(r=> (r.produto||'').toLowerCase().includes(prod));
-
-  const tbody = document.getElementById('detailBody');
-  if(!arr.length){
-    tbody.innerHTML = `<tr><td colspan="8" class="empty">Nenhum registro encontrado para os filtros selecionados.</td></tr>`;
+// Confirmar liberação (resolver problema)
+function confirmarLiberacao() {
+  if (!problemaSelecionado) return;
+  const resp = document.getElementById('lib_responsavel').value.trim();
+  const acao = document.getElementById('lib_acao').value.trim();
+  if (!resp || !acao) {
+    showToast('Informe responsável e ação tomada para resolver.','warn');
     return;
   }
-  tbody.innerHTML = arr.map(r=>{
-    const p = parseInt(r.perc)||0;
-    const barClass = percClass(p);
-    const mat = r.material==='Sim';
-    const proj = r.projeto==='Sim';
-    const probTxt = (mat ? 'Material: '+(r.matDesc||'') : '') +
-                    ((mat && proj)? ' | ' : '') +
-                    (proj ? 'Projeto: '+(r.projDesc||'') : '');
-    const obs = r.obs || '';
-    return `
-      <tr>
-        <td>${fmtData(r.data)}</td>
-        <td style="font-weight:600">${r.produto||''}</td>
-        <td>${r.cliente||''}</td>
-        <td style="text-align:center">${r.num||''}</td>
-        <td>
-          <div class="percent-wrap">
-            <div class="bar"><div class="fill ${barClass}" style="width:${p}%"></div></div>
-            <div class="p-txt">${p}%</div>
+
+  // Atualiza na lista de problemas
+  problemas = problemas.map(p=>{
+    if (p.id===problemaSelecionado.id) {
+      return {
+        ...p,
+        aberto:false,
+        solucao:acao,
+        resolvidoPor:resp,
+        resolvidoEm:new Date().toLocaleString('pt-BR')
+      };
+    }
+    return p;
+  });
+
+  // Atualiza também a OS relacionada
+  ordens = ordens.map(o=>{
+    if (o.os===problemaSelecionado.os && o.problema && o.problema.id===problemaSelecionado.id) {
+      return {
+        ...o,
+        status: (o.perc>=100?'Concluído':'Em andamento'),
+        problema: {
+          ...o.problema,
+          aberto:false,
+          solucao:acao,
+          resolvidoPor:resp,
+          resolvidoEm:new Date().toLocaleString('pt-BR')
+        }
+      };
+    }
+    return o;
+  });
+
+  // Marca notificação como resolvida
+  notificacoes = notificacoes.map(n=>{
+    if (n.probId===problemaSelecionado.id) return {...n,resolvido:true};
+    return n;
+  });
+
+  salvarLocal();
+  closeModal('modalLiberacao');
+  showToast('Problema marcado como resolvido e etapa liberada.','ok');
+  renderProblemas();
+  renderTabelaOrdens();
+  renderNotificacoes();
+}
+
+// ======== Linha de produção (pipeline simples) ========
+function renderPipeline() {
+  const board = document.getElementById('pipelineBoard');
+  const cols = {
+    'Corte e Dobra':[],
+    'Pré-Montagem':[],
+    'Montagem':[],
+    'Pintura':[],
+    'Acabamento/Finalização':[]
+  };
+  ordens.forEach(o=>{
+    if (cols[o.etapa]) cols[o.etapa].push(o);
+  });
+
+  board.innerHTML = '';
+  const etapasKeys = ['corte','premontagem','montagem','pintura','acabamento'];
+  const etapasNomes = Object.keys(cols);
+  etapasNomes.forEach((nome,idx)=>{
+    const lista = cols[nome];
+    const cls = ['corte','premontagem','montagem','pintura','acabamento'][idx] || 'corte';
+    const htmlCards = lista.map(o=>{
+      const parado = o.status==='Parado';
+      const atencao = (o.problema && !o.problema.aberto)?false:(!parado && o.perc<50);
+      const classeCard = parado?'pipeline-card parado':(atencao?'pipeline-card atencao':'pipeline-card');
+      const hasProb = o.problema && o.problema.aberto;
+      return `
+        <div class="${classeCard}" onclick="showDetalheOS('${o.os}')">
+          <div class="pipeline-card-os">${o.os}</div>
+          <div class="pipeline-card-cliente">${o.cliente}</div>
+          <div class="pipeline-card-produto">${o.produto}</div>
+          <div style="font-size:11px;margin-top:4px;color:var(--texto-muted)">
+            ${o.perc||0}% • Prev. ${formatDate(o.entrega)}
           </div>
-        </td>
-        <td>${mat?'<span class="badge b-prob">Sim</span>':'<span class="badge b-ok">Não</span>'}</td>
-        <td>${proj?'<span class="badge b-prob">Sim</span>':'<span class="badge b-ok">Não</span>'}</td>
-        <td style="font-size:11px;color:var(--mt)">
-          ${probTxt || obs || '—'}
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function clearDetailFilters(){
-  ['detDataIni','detDataFim','detCliente','detProduto'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
-  renderDetailRows();
-}
-
-// ======= Lista histórica =======
-function renderLista(){
-  const ini = document.getElementById('fDataIni').value;
-  const fim = document.getElementById('fDataFim').value;
-  const setor = document.getElementById('fSetor').value;
-  const cli = document.getElementById('fCliente').value.toLowerCase();
-  const prod = document.getElementById('fProduto').value.toLowerCase();
-
-  let arr = [...registros].reverse();
-  if(ini) arr = arr.filter(r=>r.data>=ini);
-  if(fim) arr = arr.filter(r=>r.data<=fim);
-  if(setor) arr = arr.filter(r=>r.setor===setor);
-  if(cli) arr = arr.filter(r=>(r.cliente||'').toLowerCase().includes(cli));
-  if(prod) arr = arr.filter(r=>(r.produto||'').toLowerCase().includes(prod));
-
-  const tbody = document.getElementById('listaBody');
-  if(!arr.length){
-    tbody.innerHTML = `<tr><td colspan="9" class="empty">Nenhum registro para os filtros selecionados.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = arr.map(r=>{
-    const p=parseInt(r.perc)||0;
-    const barClass=percClass(p);
-    const mat=r.material==='Sim';
-    const proj=r.projeto==='Sim';
-    const probTxt=(mat ? 'Material: '+(r.matDesc||'') : '')+
-                  ((mat && proj)?' | ':'')+
-                  (proj ? 'Projeto: '+(r.projDesc||'') : '');
-    const obs = r.obs || '';
-    return `
-      <tr>
-        <td>${fmtData(r.data)}</td>
-        <td><span class="badge b-setor">${r.setor}</span></td>
-        <td style="font-weight:600">${r.produto||''}</td>
-        <td>${r.cliente||''}</td>
-        <td style="text-align:center">${r.num||''}</td>
-        <td>
-          <div class="percent-wrap">
-            <div class="bar"><div class="fill ${barClass}" style="width:${p}%"></div></div>
-            <div class="p-txt">${p}%</div>
+          <div class="pipeline-card-icons">
+            ${hasProb && o.problema.tipo.includes('Material')?'<div class="icon-alert icon-material">M</div>':''}
+            ${hasProb && o.problema.tipo.includes('Engenharia')?'<div class="icon-alert icon-engenharia">E</div>':''}
           </div>
-        </td>
-        <td>${mat?'<span class="badge b-prob">Sim</span>':'<span class="badge b-ok">Não</span>'}</td>
-        <td>${proj?'<span class="badge b-prob">Sim</span>':'<span class="badge b-ok">Não</span>'}</td>
-        <td style="font-size:11px;color:var(--mt)">${probTxt || obs || '—'}</td>
-      </tr>
+        </div>
+      `;
+    }).join('');
+
+    board.innerHTML += `
+      <div class="pipeline-col">
+        <div class="pipeline-header ${cls}">
+          <span>${nome}</span>
+          <span class="pipeline-count">${lista.length}</span>
+        </div>
+        <div class="pipeline-items">
+          ${lista.length?htmlCards:'<div class="text-muted" style="font-size:12px">Nenhuma OS nesta etapa.</div>'}
+        </div>
+      </div>
     `;
-  }).join('');
-}
-
-function clearListaFilters(){
-  ['fDataIni','fDataFim','fSetor','fCliente','fProduto'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
   });
-  renderLista();
 }
 
-// ======= Exportar CSV =======
-function exportarCSV(){
-  if(!registros.length){alert('Sem dados para exportar.');return;}
-  const cols = ['data','setor','produto','cliente','num','perc','material','matDesc','projeto','projDesc','obs'];
-  const header = cols.join(';');
-  const linhas = [header];
-  registros.forEach(r=>{
-    const linha = cols.map(c=>{
-      const v = (r[c]!==undefined && r[c]!==null)? String(r[c]) : '';
-      return `"${v.replace(/"/g,'""')}"`;
-    }).join(';');
-    linhas.push(linha);
-  });
-  const csv = '\uFEFF'+linhas.join('\n');
-  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'apontamentos_megatec.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+// ======== Form problema toggle ========
+function toggleProblema() {
+  const tem = document.getElementById('ap_temProblema').value==='sim';
+  document.getElementById('grp_tipoProblema').style.display = tem?'block':'none';
+  document.getElementById('grp_descProblema').style.display = tem?'block':'none';
+  document.getElementById('grp_responsavelProblema').style.display = tem?'block':'none';
 }
 
-// ======= Init =======
+// ======== Modal helpers ========
+function openModal(id){ document.getElementById(id).classList.add('active'); }
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+
+// ======== Filtros de ordens (inputs) ========
+function filtrarOrdens(){
+  renderTabelaOrdens();
+}
+
+// ======== Inicialização ========
 (function init(){
-  const hoje = new Date();
-  const d = String(hoje.getDate()).padStart(2,'0');
-  const m = String(hoje.getMonth()+1).padStart(2,'0');
-  const a = hoje.getFullYear();
-  document.getElementById('lblHoje').textContent = `Hoje: ${d}/${m}/${a}`;
-  buildDashboard();
-  renderLista();
+  carregarLocal();
+  renderTabelaOrdens();
+  renderProblemas();
+  renderPipeline();
+  renderNotificacoes();
 })();
 </script>
 </body>
