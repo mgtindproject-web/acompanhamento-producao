@@ -5,879 +5,186 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Megatec — Apontamento de Produção</title>
 <style>
-:root {
-  --verde: #1b5e20; --verde2: #2e7d32; --verde3: #4caf50;
-  --amarelo: #f9a825; --vermelho: #c62828; --vermelho2: #ef5350;
-  --azul: #1565c0; --cinza: #f4f6f8; --borda: #dde1e7;
-  --texto: #1a1a2e; --muted: #6b7280; --branco: #ffffff;
+:root{
+  --verde:#1b5e20;--verde2:#2e7d32;--verde3:#43a047;
+  --amarelo:#f9a825;--vermelho:#c62828;--vermelho2:#ef5350;
+  --azul:#1565c0;--cinza:#f4f6f8;--borda:#dde1e7;
+  --texto:#1a1a2e;--muted:#6b7280;--branco:#fff;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cinza);color:var(--texto)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh}
 
-/* ── HEADER ── */
+/* HEADER */
 header{
-  height:64px;background:linear-gradient(135deg,var(--verde) 0%,var(--verde2) 100%);
-  color:#fff;display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;box-shadow:0 2px 10px rgba(0,0,0,.25);
-  position:sticky;top:0;z-index:50
+  background:linear-gradient(135deg,var(--verde) 0%,var(--verde2) 100%);
+  color:#fff;height:60px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);position:sticky;top:0;z-index:50
 }
 .brand{display:flex;align-items:center;gap:10px}
 .brand-logo{
-  width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
-  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;
-  background:rgba(255,255,255,.1)
+  width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;background:rgba(255,255,255,.1)
 }
-.brand-title{font-size:16px;font-weight:700;line-height:1.2}
-.brand-sub{font-size:11px;opacity:.75}
-.header-right{display:flex;align-items:center;gap:8px}
-.sync-status{
-  display:flex;align-items:center;gap:6px;font-size:11px;
-  background:rgba(255,255,255,.12);border-radius:20px;padding:4px 10px
-}
-.sync-dot{width:8px;height:8px;border-radius:50%;background:#4caf50}
-.sync-dot.off{background:#ef5350}
-.sync-dot.loading{background:#f9a825;animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.btn-header{
-  border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);
-  color:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;
-  cursor:pointer;transition:.2s
-}
-.btn-header:hover{background:rgba(255,255,255,.22)}
+.brand-title{font-size:16px;font-weight:700}
+.brand-sub{font-size:10px;opacity:.75}
+.header-date{font-size:12px;opacity:.85}
 
-/* ── TABS ── */
+/* TABS */
 .tabs{
-  display:flex;gap:0;background:#fff;border-bottom:2px solid var(--borda);
-  padding:0 16px;overflow-x:auto;position:sticky;top:64px;z-index:40
+  display:flex;background:#fff;border-bottom:2px solid var(--borda);
+  padding:0 20px;gap:4px;overflow-x:auto
 }
 .tab{
-  padding:14px 18px;font-size:13px;font-weight:600;color:var(--muted);
-  border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;
-  transition:.15s;margin-bottom:-2px
+  padding:12px 18px;border:none;background:none;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--muted);
+  border-bottom:3px solid transparent;margin-bottom:-2px;
+  white-space:nowrap;transition:.2s
 }
-.tab.active{color:var(--verde2);border-bottom-color:var(--verde2)}
-.tab:hover:not(.active){color:var(--texto);background:#f8f8f8}
+.tab.ativo{color:var(--verde2);border-bottom-color:var(--verde2)}
+.tab:hover:not(.ativo){color:var(--texto)}
 
-/* ── MAIN ── */
-main{max-width:1400px;margin:0 auto;padding:20px 16px}
-.page{display:none}
-.page.active{display:block}
+/* PAGES */
+.page{display:none;padding:20px;max-width:1300px;margin:0 auto}
+.page.ativo{display:block}
 
-/* ── KPIs ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.kpi{
+/* CARDS DASHBOARD */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.card{
   background:#fff;border-radius:12px;padding:16px;
-  border-left:4px solid var(--verde3);box-shadow:0 1px 6px rgba(0,0,0,.05)
+  box-shadow:0 2px 8px rgba(0,0,0,.07);border:1px solid var(--borda)
 }
-.kpi.yellow{border-left-color:var(--amarelo)}
-.kpi.red{border-left-color:var(--vermelho2)}
-.kpi.blue{border-left-color:var(--azul)}
-.kpi-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.kpi-value{font-size:30px;font-weight:800;margin:6px 0 2px}
-.kpi-sub{font-size:11px;color:var(--muted)}
+.card-valor{font-size:28px;font-weight:800;margin:4px 0}
+.card-label{font-size:12px;color:var(--muted);font-weight:600}
+.card.verde .card-valor{color:var(--verde2)}
+.card.amarelo .card-valor{color:var(--amarelo)}
+.card.vermelho .card-valor{color:var(--vermelho)}
+.card.azul .card-valor{color:var(--azul)}
 
-/* ── CARD ── */
-.card{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 5px rgba(0,0,0,.04)}
-.card-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--verde2)}
-.card-title span{font-size:18px}
+/* SEÇÃO */
+.secao{background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--borda);box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.secao-titulo{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--verde2);display:flex;align-items:center;gap:6px}
 
-/* ── SETORES GRID ── */
-.setores-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.setor-card{
-  background:#fff;border-radius:12px;padding:14px 16px;
-  box-shadow:0 1px 5px rgba(0,0,0,.04);border-top:3px solid var(--verde3)
+/* GRÁFICO BARRAS SIMPLES */
+.barras{display:flex;flex-direction:column;gap:8px}
+.barra-item{display:flex;align-items:center;gap:8px;font-size:12px}
+.barra-label{width:130px;text-align:right;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-track{flex:1;background:#f0f0f0;border-radius:20px;height:14px;overflow:hidden}
+.barra-fill{height:100%;border-radius:20px;background:var(--verde3);transition:.5s}
+.barra-val{width:40px;font-weight:700;font-size:12px}
+
+/* PROBLEMAS */
+.prob-card{
+  border-left:4px solid var(--vermelho2);background:#fff5f5;
+  border-radius:8px;padding:12px;margin-bottom:8px;font-size:12px
 }
-.setor-card.corte{border-top-color:#1565c0}
-.setor-card.premontagem{border-top-color:#7b1fa2}
-.setor-card.montagem{border-top-color:#e65100}
-.setor-card.pintura{border-top-color:#00838f}
-.setor-card.acabamento{border-top-color:#2e7d32}
-.setor-nome{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
-.setor-perc{font-size:26px;font-weight:800;margin-bottom:4px}
-.progress-bar{height:6px;background:#eee;border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;border-radius:4px;background:var(--verde3);transition:width .5s}
+.prob-card.projeto{border-left-color:var(--amarelo);background:#fffde7}
+.prob-titulo{font-weight:700;font-size:13px;margin-bottom:4px}
+.prob-desc{color:var(--muted);margin-top:3px}
 
-/* ── TABELA ── */
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{
-  background:#f8f9fa;padding:10px 12px;text-align:left;
-  font-size:11px;font-weight:700;color:var(--muted);
-  text-transform:uppercase;border-bottom:2px solid var(--borda);white-space:nowrap
-}
-tbody tr{border-bottom:1px solid #f0f0f0;transition:.15s}
-tbody tr:hover{background:#fafafa}
-tbody td{padding:10px 12px;vertical-align:middle}
-.badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap
-}
-.badge-red{background:#ffebee;color:#c62828}
-.badge-green{background:#e8f5e9;color:#2e7d32}
-.badge-yellow{background:#fff8e1;color:#f57f17}
-.badge-blue{background:#e3f2fd;color:#1565c0}
-.badge-gray{background:#f5f5f5;color:#555}
-.badge-purple{background:#f3e5f5;color:#6a1b9a}
+/* TABELA */
+.tabela-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--verde2);color:#fff;padding:9px 10px;text-align:left;white-space:nowrap;font-weight:600}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+tr:hover td{background:#f8f9fa}
+tr:nth-child(even) td{background:#fafafa}
+tr:nth-child(even):hover td{background:#f0f4f8}
 
-/* ── PROGRESS INLINE ── */
-.perc-wrap{display:flex;align-items:center;gap:8px;min-width:100px}
-.perc-bar{flex:1;height:6px;background:#eee;border-radius:4px;overflow:hidden}
-.perc-fill{height:100%;border-radius:4px;background:var(--verde3)}
-.perc-fill.low{background:var(--vermelho2)}
-.perc-fill.mid{background:var(--amarelo)}
-.perc-text{font-size:12px;font-weight:700;width:32px;text-align:right}
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-verde{background:#e8f5e9;color:#2e7d32}
+.badge-vermelho{background:#ffebee;color:#c62828}
+.badge-amarelo{background:#fff8e1;color:#f57f17}
+.badge-azul{background:#e3f2fd;color:#1565c0}
+.badge-roxo{background:#f3e5f5;color:#6a1b9a}
+.badge-cinza{background:#f5f5f5;color:#555}
 
-/* ── FORM ── */
+/* BARRA PROGRESSO */
+.prog-wrap{display:flex;align-items:center;gap:6px}
+.prog-track{flex:1;min-width:60px;background:#e0e0e0;border-radius:10px;height:8px;overflow:hidden}
+.prog-fill{height:100%;border-radius:10px}
+.prog-low{background:#ef5350}
+.prog-mid{background:#ffa726}
+.prog-ok{background:#66bb6a}
+.prog-done{background:#2e7d32}
+.prog-text{font-size:11px;font-weight:700;width:30px}
+
+/* FORMULÁRIO */
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.form-group{display:flex;flex-direction:column;gap:5px}
-.form-group label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase}
-.form-group input,
-.form-group select,
-.form-group textarea{
-  padding:9px 12px;border:1.5px solid var(--borda);border-radius:8px;font-size:13px;
-  font-family:inherit;transition:.2s;background:#fff
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:12px;font-weight:700;color:var(--muted)}
+.form-group input,.form-group select,.form-group textarea{
+  border:1px solid var(--borda);border-radius:8px;padding:9px 12px;
+  font-size:13px;outline:none;transition:.2s;background:#fff;font-family:inherit
 }
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-  outline:none;border-color:var(--verde3);box-shadow:0 0 0 3px rgba(76,175,80,.12)
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--verde2);box-shadow:0 0 0 3px rgba(46,125,50,.12)
 }
 .form-group textarea{resize:vertical;min-height:70px}
-.form-full{grid-column:1/-1}
-.conditional{display:none;grid-column:1/-1;background:#fff8e1;border-radius:8px;padding:12px;border:1px solid #ffe082}
-.conditional.show{display:block}
-.btn{
-  padding:10px 20px;border:none;border-radius:8px;font-size:13px;font-weight:700;
-  cursor:pointer;transition:.2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px
-}
+.caixa-extra{background:#fff8f0;border:1px solid #ffe0b2;border-radius:8px;padding:12px;margin-top:4px;display:none}
+.caixa-extra.show{display:block}
+
+/* BOTÕES */
+.btn{border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
 .btn-primary{background:var(--verde2);color:#fff}
 .btn-primary:hover{background:var(--verde)}
-.btn-secondary{background:#f5f5f5;color:var(--texto)}
-.btn-secondary:hover{background:#e8e8e8}
-.btn-danger{background:var(--vermelho);color:#fff}
-.btn-danger:hover{background:#b71c1c}
+.btn-secondary{background:#f0f0f0;color:var(--texto)}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-danger{background:#ffebee;color:var(--vermelho)}
+.btn-danger:hover{background:var(--vermelho);color:#fff}
 .btn-sm{padding:5px 10px;font-size:11px}
-.btn-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
 
-/* ── FILTROS ── */
-.filtros{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:flex-end}
-.filtros .form-group{min-width:140px;margin:0}
-.filtros label{font-size:11px}
+/* FILTROS */
+.filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.filtros input,.filtros select{
+  border:1px solid var(--borda);border-radius:8px;padding:8px 12px;
+  font-size:12px;outline:none;background:#fff
+}
+.filtros input:focus,.filtros select:focus{border-color:var(--verde2)}
 
-/* ── TOAST ── */
-#toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+/* TOAST */
 .toast{
-  background:#323232;color:#fff;padding:12px 18px;border-radius:10px;
-  font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.25);
-  animation:slideIn .3s ease;max-width:320px
+  position:fixed;bottom:24px;right:24px;
+  background:#333;color:#fff;padding:12px 20px;
+  border-radius:10px;font-size:13px;z-index:9999;
+  transform:translateY(60px);opacity:0;transition:.3s;pointer-events:none
 }
-.toast.success{background:#2e7d32}
-.toast.error{background:#c62828}
-@keyframes slideIn{from{transform:translateX(100px);opacity:0}to{transform:none;opacity:1}}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{background:var(--verde2)}
+.toast.err{background:var(--vermelho)}
 
-/* ── LOADING ── */
-.loading-overlay{
-  position:fixed;inset:0;background:rgba(255,255,255,.75);
-  display:flex;align-items:center;justify-content:center;z-index:1000;
-  flex-direction:column;gap:12px;display:none
-}
-.spinner{
-  width:40px;height:40px;border:4px solid #e8f5e9;
-  border-top-color:var(--verde2);border-radius:50%;animation:spin .8s linear infinite
-}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* SPINNER */
+.spin{display:none;width:18px;height:18px;border:3px solid rgba(255,255,255,.4);
+  border-top-color:#fff;border-radius:50%;animation:giro .7s linear infinite;vertical-align:middle}
+@keyframes giro{to{transform:rotate(360deg)}}
 
-/* ── PROBLEMA CARD ── */
-.problema-card{
-  background:#fff3e0;border-left:4px solid var(--amarelo);
-  border-radius:8px;padding:12px 14px;margin-bottom:10px
-}
-.problema-card.projeto{background:#fce4ec;border-left-color:#e91e63}
-.problema-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
-.problema-titulo{font-size:13px;font-weight:700}
-.problema-desc{font-size:12px;color:var(--muted);margin-top:4px}
-
-/* ── RESPONSIVE ── */
+/* RESPONSIVO */
 @media(max-width:600px){
-  .kpi-value{font-size:22px}
-  .tab{padding:10px 12px;font-size:12px}
-  main{padding:12px 10px}
+  .cards-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .brand-sub{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- Loading Overlay -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="spinner"></div>
-  <div style="font-size:13px;color:var(--muted);font-weight:600">Aguarde...</div>
-</div>
-
-<!-- Toast Container -->
-<div id="toast-container"></div>
-
-<!-- HEADER -->
 <header>
   <div class="brand">
-    <div class="brand-logo">MT</div>
+    <div class="brand-logo">M</div>
     <div>
       <div class="brand-title">Megatec Indústria</div>
       <div class="brand-sub">Apontamento de Produção</div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="sync-status">
-      <div class="sync-dot loading" id="syncDot"></div>
-      <span id="syncLabel">Conectando...</span>
-    </div>
-    <button class="btn-header" onclick="exportarCSV()">⬇ Exportar CSV</button>
-    <button class="btn-header" onclick="carregarTudo()">🔄 Atualizar</button>
-  </div>
+  <div class="header-date" id="lblHoje"></div>
 </header>
 
-<!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="mudarAba('dashboard')">📊 Dashboard</div>
-  <div class="tab" onclick="mudarAba('apontamento')">✏️ Apontamento</div>
-  <div class="tab" onclick="mudarAba('producao')">🏭 Produção</div>
-  <div class="tab" onclick="mudarAba('problemas')">⚠️ Problemas</div>
-  <div class="tab" onclick="mudarAba('historico')">📋 Histórico</div>
-</div>
-
-<!-- MAIN -->
-<main>
-
-  <!-- ── DASHBOARD ── -->
-  <div class="page active" id="page-dashboard">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-size:20px;font-weight:800">Dashboard</div>
-        <div style="font-size:12px;color:var(--muted)" id="lblHoje"></div>
-      </div>
-    </div>
-
-    <div class="kpi-grid" id="kpiGrid">
-      <div class="kpi"><div class="kpi-label">Total Apontamentos</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">registros</div></div>
-      <div class="kpi yellow"><div class="kpi-label">Falta de Material</div><div class="kpi-value" id="kpiMaterial">—</div><div class="kpi-sub">ocorrências</div></div>
-      <div class="kpi red"><div class="kpi-label">Problema de Projeto</div><div class="kpi-value" id="kpiProjeto">—</div><div class="kpi-sub">ocorrências</div></div>
-      <div class="kpi blue"><div class="kpi-label">Problemas Abertos</div><div class="kpi-value" id="kpiAbertos">—</div><div class="kpi-sub">aguardando ação</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span>🏭</span> Progresso por Setor (média)</div>
-      <div class="setores-grid" id="setoresGrid">
-        <div style="color:var(--muted);font-size:13px">Carregando...</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span>⚠️</span> Problemas em Destaque</div>
-      <div id="problemasDestaque"><div style="color:var(--muted);font-size:13px">Carregando...</div></div>
-    </div>
-  </div>
-
-  <!-- ── APONTAMENTO ── -->
-  <div class="page" id="page-apontamento">
-    <div class="card">
-      <div class="card-title"><span>✏️</span> <span id="formTitulo">Novo Apontamento</span></div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Data *</label>
-          <input type="date" id="fData"/>
-        </div>
-        <div class="form-group">
-          <label>Setor *</label>
-          <select id="fSetor">
-            <option value="">Selecione...</option>
-            <option>Corte e Dobra</option>
-            <option>Pré Montagem</option>
-            <option>Montagem</option>
-            <option>Pintura</option>
-            <option>Acabamento</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Produto / Equipamento *</label>
-          <input type="text" id="fProduto" placeholder="Ex: Transbordo MGT 22.000" list="listaProdutos"/>
-          <datalist id="listaProdutos">
-            <option>Transbordo MGT 22.000</option>
-            <option>Transbordo MGT 13.000</option>
-            <option>Transbordo Sobre Chassi</option>
-            <option>Rodomuda</option>
-            <option>Rodocargas</option>
-            <option>Aplicador de Vinhaça</option>
-            <option>Canavieiro Tela Expandida</option>
-            <option>Carroceria Prancha</option>
-            <option>Reboque 01+01</option>
-            <option>Semirreboque Aplicador de Vinhaça</option>
-            <option>Bitrem Transbordo</option>
-            <option>Protótipo SR MGT 32.000</option>
-            <option>Protótipo Basculante</option>
-          </datalist>
-        </div>
-        <div class="form-group">
-          <label>Cliente *</label>
-          <input type="text" id="fCliente" placeholder="Nome do cliente"/>
-        </div>
-        <div class="form-group">
-          <label>Número / Lote</label>
-          <input type="text" id="fNumero" placeholder="Ex: 1, Lote 10"/>
-        </div>
-        <div class="form-group">
-          <label>% Evolução</label>
-          <input type="number" id="fPerc" min="0" max="100" placeholder="0 a 100"/>
-        </div>
-        <div class="form-group">
-          <label>Falta de Material?</label>
-          <select id="fMaterial" onchange="toggleMaterial()">
-            <option value="Não">Não</option>
-            <option value="Sim">Sim</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Problema de Projeto?</label>
-          <select id="fProjeto" onchange="toggleProjeto()">
-            <option value="Não">Não</option>
-            <option value="Sim">Sim</option>
-          </select>
-        </div>
-
-        <div class="conditional" id="boxMaterial">
-          <div class="form-group">
-            <label>Descreva o problema de material</label>
-            <textarea id="fMatDesc" placeholder="Descreva o que está faltando..."></textarea>
-          </div>
-        </div>
-
-        <div class="conditional" id="boxProjeto">
-          <div class="form-group">
-            <label>Descreva o problema de projeto</label>
-            <textarea id="fProjDesc" placeholder="Descreva o problema de projeto/engenharia..."></textarea>
-          </div>
-        </div>
-
-        <div class="form-group form-full">
-          <label>Observações Gerais</label>
-          <textarea id="fObs" placeholder="Observações adicionais..."></textarea>
-        </div>
-      </div>
-
-      <div class="btn-actions">
-        <button class="btn btn-primary" onclick="salvarApontamento()">💾 Salvar Apontamento</button>
-        <button class="btn btn-secondary" onclick="limparForm()">✖ Limpar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── PRODUÇÃO ── -->
-  <div class="page" id="page-producao">
-    <div class="card">
-      <div class="card-title"><span>🏭</span> Produção em Andamento</div>
-      <div class="filtros">
-        <div class="form-group">
-          <label>Setor</label>
-          <select id="filtroSetor" onchange="filtrarProducao()">
-            <option value="">Todos</option>
-            <option>Corte e Dobra</option>
-            <option>Pré Montagem</option>
-            <option>Montagem</option>
-            <option>Pintura</option>
-            <option>Acabamento</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Produto</label>
-          <input type="text" id="filtroProduto" placeholder="Buscar produto..." oninput="filtrarProducao()"/>
-        </div>
-        <div class="form-group">
-          <label>Cliente</label>
-          <input type="text" id="filtroCliente" placeholder="Buscar cliente..." oninput="filtrarProducao()"/>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table id="tabelaProducao">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Setor</th>
-              <th>Produto</th>
-              <th>Cliente</th>
-              <th>Nº</th>
-              <th>Evolução</th>
-              <th>Material</th>
-              <th>Projeto</th>
-              <th>Obs</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="corpoProducao">
-            <tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">Carregando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── PROBLEMAS ── -->
-  <div class="page" id="page-problemas">
-    <div class="card">
-      <div class="card-title"><span>⚠️</span> Problemas em Aberto</div>
-      <div id="listaProblemas"><div style="color:var(--muted);font-size:13px">Carregando...</div></div>
-    </div>
-  </div>
-
-  <!-- ── HISTÓRICO ── -->
-  <div class="page" id="page-historico">
-    <div class="card">
-      <div class="card-title"><span>📋</span> Histórico Completo</div>
-      <div class="filtros">
-        <div class="form-group">
-          <label>Data início</label>
-          <input type="date" id="filtroDataIni" oninput="filtrarHistorico()"/>
-        </div>
-        <div class="form-group">
-          <label>Data fim</label>
-          <input type="date" id="filtroDataFim" oninput="filtrarHistorico()"/>
-        </div>
-        <div class="form-group">
-          <label>Setor</label>
-          <select id="filtroSetorHist" onchange="filtrarHistorico()">
-            <option value="">Todos</option>
-            <option>Corte e Dobra</option>
-            <option>Pré Montagem</option>
-            <option>Montagem</option>
-            <option>Pintura</option>
-            <option>Acabamento</option>
-          </select>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
-              <th>Nº</th><th>%</th><th>Material</th><th>Projeto</th><th>Obs</th><th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="corpoHistorico">
-            <tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">Carregando...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<script>
-// ============================================================
-// CONFIGURAÇÃO — Substitua pela sua URL do Apps Script
-// ============================================================
-const API_URL = 'https://script.google.com/macros/s/AKfycbyweBzBS6oa7fn5GpGx3SmA6dEfF0tjiYvwQ-uOpOmsn1HlufdKQaJR1s5Un8V9VlkTJg/exec'; // ex: https://script.google.com/macros/s/AKf.../exec
-
-// ============================================================
-// Estado global
-// ============================================================
-let registros = [];
-let problemas = [];
-let editId = null;
-let abaAtiva = 'dashboard';
-
-// ============================================================
-// Utilidades
-// ============================================================
-function showLoading(show) {
-  document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
-}
-
-function setSyncStatus(status) {
-  const dot = document.getElementById('syncDot');
-  const label = document.getElementById('syncLabel');
-  dot.className = 'sync-dot';
-  if (status === 'ok') { dot.classList.add(''); label.textContent = 'Online'; }
-  else if (status === 'loading') { dot.classList.add('loading'); label.textContent = 'Sincronizando...'; }
-  else { dot.classList.add('off'); label.textContent = 'Offline'; }
-}
-
-function toast(msg, tipo = 'success') {
-  const c = document.getElementById('toast-container');
-  const t = document.createElement('div');
-  t.className = `toast ${tipo}`;
-  t.textContent = msg;
-  c.appendChild(t);
-  setTimeout(() => t.remove(), 3500);
-}
-
-function fmtData(d) {
-  if (!d) return '—';
-  const p = String(d).split('-');
-  if (p.length === 3) return `${p[2]}/${p[1]}/${p[0]}`;
-  return d;
-}
-
-function percClass(p) {
-  const n = parseInt(p) || 0;
-  if (n < 40) return 'low';
-  if (n < 70) return 'mid';
-  return '';
-}
-
-function setorBadgeClass(s) {
-  const m = {
-    'Corte e Dobra': 'blue',
-    'Pré Montagem': 'badge-purple',
-    'Montagem': 'yellow',
-    'Pintura': 'badge-blue',
-    'Acabamento': 'green'
-  };
-  return m[s] || 'gray';
-}
-
-// ============================================================
-// Navegação
-// ============================================================
-function mudarAba(id) {
-  abaAtiva = id;
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.tab')[
-    ['dashboard','apontamento','producao','problemas','historico'].indexOf(id)
-  ].classList.add('active');
-  if (id === 'producao') renderProducao();
-  if (id === 'problemas') renderProblemas();
-  if (id === 'historico') renderHistorico();
-}
-
-// ============================================================
-// API — Funções de comunicação
-// ============================================================
-async function apiGet(params = {}) {
-  setSyncStatus('loading');
-  try {
-    const qs = new URLSearchParams(params).toString();
-    const url = API_URL + (qs ? '?' + qs : '');
-    const res = await fetch(url, { redirect: 'follow' });
-    const data = await res.json();
-    setSyncStatus('ok');
-    return data;
-  } catch (e) {
-    setSyncStatus('error');
-    toast('Erro ao conectar com o servidor', 'error');
-    return null;
-  }
-}
-
-async function apiPost(body) {
-  setSyncStatus('loading');
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      redirect: 'follow'
-    });
-    const data = await res.json();
-    setSyncStatus('ok');
-    return data;
-  } catch (e) {
-    setSyncStatus('error');
-    toast('Erro ao salvar no servidor', 'error');
-    return null;
-  }
-}
-
-// ============================================================
-// Carregar tudo
-// ============================================================
-async function carregarTudo() {
-  showLoading(true);
-  try {
-    const [resA, resP, resDash] = await Promise.all([
-      apiGet({ action: 'listar' }),
-      apiGet({ action: 'problemas', apenas_abertos: 'true' }),
-      apiGet({ action: 'dashboard' })
-    ]);
-
-    if (resA && resA.dados) registros = resA.dados;
-    if (resP && resP.dados) problemas = resP.dados;
-
-    if (resDash) {
-      renderDashboard(resDash);
-    } else {
-      renderDashboardLocal();
-    }
-
-    renderProducao();
-    renderProblemas();
-    renderHistorico();
-  } finally {
-    showLoading(false);
-  }
-}
-
-// ============================================================
-// DASHBOARD
-// ============================================================
-function renderDashboard(dash) {
-  if (!dash) { renderDashboardLocal(); return; }
-
-  const k = dash.kpis || {};
-  document.getElementById('kpiTotal').textContent = k.total ?? '—';
-  document.getElementById('kpiMaterial').textContent = k.comMaterial ?? '—';
-  document.getElementById('kpiProjeto').textContent = k.comProjeto ?? '—';
-  document.getElementById('kpiAbertos').textContent = k.problemasAbertos ?? '—';
-
-  const setores = [
-    { nome: 'Corte e Dobra', cls: 'corte' },
-    { nome: 'Pré Montagem', cls: 'premontagem' },
-    { nome: 'Montagem', cls: 'montagem' },
-    { nome: 'Pintura', cls: 'pintura' },
-    { nome: 'Acabamento', cls: 'acabamento' }
-  ];
-  const grid = document.getElementById('setoresGrid');
-  grid.innerHTML = '';
-  setores.forEach(s => {
-    const perc = (dash.percPorSetor || {})[s.nome] || 0;
-    grid.innerHTML += `
-      <div class="setor-card ${s.cls}">
-        <div class="setor-nome">${s.nome}</div>
-        <div class="setor-perc">${perc}%</div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${perc}%"></div></div>
-      </div>`;
-  });
-
-  renderProblemClick(problemas);
-}
-
-function renderDashboardLocal() {
-  const total = registros.length;
-  const comMat = registros.filter(r => r.material === 'Sim').length;
-  const comProj = registros.filter(r => r.projeto === 'Sim').length;
-  document.getElementById('kpiTotal').textContent = total;
-  document.getElementById('kpiMaterial').textContent = comMat;
-  document.getElementById('kpiProjeto').textContent = comProj;
-  document.getElementById('kpiAbertos').textContent = problemas.length;
-  renderProblemClick(problemas);
-}
-
-function renderProblemClick(probs) {
-  const div = document.getElementById('problemasDestaque');
-  const abertos = probs.filter(p => p.resolvido === 'Não' || !p.resolvido);
-  if (!abertos.length) {
-    div.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">✅ Nenhum problema em aberto.</div>';
-    return;
-  }
-  div.innerHTML = abertos.slice(0, 5).map(p => `
-    <div class="problema-card ${p.tipo === 'Projeto' ? 'projeto' : ''}">
-      <div class="problema-header">
-        <div>
-          <div class="problema-titulo">⚠️ ${p.produto} — ${p.cliente} (Nº ${p.numero})</div>
-          <div class="problema-desc">${p.setor} · ${p.tipo} · ${fmtData(p.data)}</div>
-          <div class="problema-desc" style="margin-top:4px">${p.descricao}</div>
-        </div>
-        <button class="btn btn-sm btn-secondary" onclick="resolverProblema('${p.id}')">✔ Resolver</button>
-      </div>
-    </div>`).join('');
-}
-
-// ============================================================
-// PRODUÇÃO
-// ============================================================
-function renderProducao() {
-  filtrarProducao();
-}
-
-function filtrarProducao() {
-  const setor = document.getElementById('filtroSetor').value;
-  const produto = document.getElementById('filtroProduto').value.toLowerCase();
-  const cliente = document.getElementById('filtroCliente').value.toLowerCase();
-
-  let filtrado = [...registros];
-  if (setor) filtrado = filtrado.filter(r => r.setor === setor);
-  if (produto) filtrado = filtrado.filter(r => String(r.produto).toLowerCase().includes(produto));
-  if (cliente) filtrado = filtrado.filter(r => String(r.cliente).toLowerCase().includes(cliente));
-
-  const tbody = document.getElementById('corpoProducao');
-  if (!filtrado.length) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">Nenhum registro encontrado.</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = filtrado.map(r => {
-    const perc = parseInt(r.perc) || 0;
-    return `<tr>
-      <td>${fmtData(r.data)}</td>
-      <td><span class="badge badge-${setorBadgeClass(r.setor)}">${r.setor}</span></td>
-      <td style="font-weight:600">${r.produto || '—'}</td>
-      <td>${r.cliente || '—'}</td>
-      <td style="text-align:center">${r.numero || '—'}</td>
-      <td>
-        <div class="perc-wrap">
-          <div class="perc-bar"><div class="perc-fill ${percClass(perc)}" style="width:${perc}%"></div></div>
-          <div class="perc-text">${perc}%</div>
-        </div>
-      </td>
-      <td>${r.material === 'Sim'
-        ? `<span class="badge badge-red">⚠ Sim</span>`
-        : `<span class="badge badge-green">✓ Não</span>`}</td>
-      <td>${r.projeto === 'Sim'
-        ? `<span class="badge badge-red">⚠ Sim</span>`
-        : `<span class="badge badge-green">✓ Não</span>`}</td>
-      <td style="font-size:11px;max-width:160px;color:var(--muted)">${r.obs || '—'}</td>
-      <td>
-        <div style="display:flex;gap:4px">
-          <button class="btn btn-sm btn-secondary" onclick="editarRegistro('${r.id}')">✏</button>
-          <button class="btn btn-sm btn-danger" onclick="deletarRegistro('${r.id}')">🗑</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-// ============================================================
-// PROBLEMAS
-// ============================================================
-function renderProblemas() {
-  const div = document.getElementById('listaProblemas');
-  const abertos = problemas.filter(p => p.resolvido === 'Não' || !p.resolvido);
-  if (!abertos.length) {
-    div.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">✅ Nenhum problema em aberto.</div>';
-    return;
-  }
-  div.innerHTML = abertos.map(p => `
-    <div class="problema-card ${p.tipo === 'Projeto' ? 'projeto' : ''}">
-      <div class="problema-header">
-        <div>
-          <div class="problema-titulo">
-            ${p.tipo === 'Material' ? '🔩' : '📐'} ${p.produto} — ${p.cliente} (Nº ${p.numero})
-          </div>
-          <div class="problema-desc">${p.setor} · ${p.tipo} · ${fmtData(p.data)}</div>
-          <div class="problema-desc" style="margin-top:4px;font-weight:600">${p.descricao}</div>
-        </div>
-        <button class="btn btn-sm btn-primary" onclick="resolverProblema('${p.id}')">✔ Resolver</button>
-      </div>
-    </div>`).join('');
-}
-
-// ============================================================
-// HISTÓRICO
-// ============================================================
-function renderHistorico() {
-  filtrarHistorico();
-}
-
-function filtrarHistorico() {
-  const ini = document.getElementById('filtroDataIni').value;
-  const fim = document.getElementById('filtroDataFim').value;
-  const setor = document.getElementById('filtroSetorHist').value;
-
-  let filtrado = [...registros].sort((a,b) => new Date(b.data) - new Date(a.data));
-  if (ini) filtrado = filtrado.filter(r => r.data >= ini);
-  if (fim) filtrado = filtrado.filter(r => r.data <= fim);
-  if (setor) filtrado = filtrado.filter(r => r.setor === setor);
-
-  const tbody = document.getElementById('corpoHistorico');
-  if (!filtrado.length) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">Nenhum registro encontrado.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = filtrado.map(r => {
-    const perc = parseInt(r.perc) || 0;
-    return `<tr>
-      <td>${fmtData(r.data)}</td>
-      <td><span class="badge badge-${setorBadgeClass(r.setor)}">${r.setor}</span></td>
-      <td style="font-weight:600">${r.produto || '—'}</td>
-      <td>${r.cliente || '—'}</td>
-      <td style="text-align:center">${r.numero || '—'}</td>
-      <td><div class="perc-wrap">
-        <div class="perc-bar"><div class="perc-fill ${percClass(perc)}" style="width:${perc}%"></div></div>
-        <div class="perc-text">${perc}%</div>
-      </div></td>
-      <td>${r.material === 'Sim' ? '<span class="badge badge-red">⚠ Sim</span>' : '<span class="badge badge-green">✓ Não</span>'}</td>
-      <td>${r.projeto === 'Sim' ? '<span class="badge badge-red">⚠ Sim</span>' : '<span class="badge badge-green">✓ Não</span>'}</td>
-      <td style="font-size:11px;max-width:160px;color:var(--muted)">${r.obs || '—'}</td>
-      <td>
-        <div style="display:flex;gap:4px">
-          <button class="btn btn-sm btn-secondary" onclick="editarRegistro('${r.id}')">✏</button>
-          <button class="btn btn-sm btn-danger" onclick="deletarRegistro('${r.id}')">🗑</button>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-// ============================================================
-// FORMULÁRIO
-// ============================================================
-function toggleMaterial() {
-  document.getElementById('boxMaterial').classList.toggle(
-    'show', document.getElementById('fMaterial').value === 'Sim'
-  );
-}
-function toggleProjeto() {
-  document.getElementById('boxProjeto').classList.toggle(
-    'show', document.getElementById('fProjeto').value === 'Sim'
-  );
-}
-
-function limparForm() {
-  editId = null;
-  document.getElementById('formTitulo').textContent = 'Novo Apontamento';
-  ['fData','fProduto','fCliente','fNumero','fPerc','fMatDesc','fProjDesc','fObs']
-    .forEach(id => document.getElementById(id).value = '');
-  document.getElementById('fSetor').value = '';
-  document.getElementById('fMaterial').value = 'Não';
-  document.getElementById('fProjeto').value = 'Não';
-  toggleMaterial(); toggleProjeto();
-  // Data atual
-  document.getElementById('fData').value = new Date().toISOString().split('T')[0];
-}
-
-async function salvarApontamento() {
-  const data = document.getElementById('fData').value;
-  const setor = document.getElementById('fSetor').value;
-  const produto = document.getElementById('fProduto').value.trim();
-  const cliente = document.getElementById('fCliente').value.trim();
-  const numero = document.getElementById('fNumero').value.trim();
-  const perc = parseInt(document.getElementById('fPerc').value || '0');
-  const material = document.getElementById('fMaterial').value;
-  const matDesc = document.getElementById('fMatDesc').value.trim();
-  const projeto = document.getElementById('fProjeto').value;
-  const projDesc = document.getElementById('fProjDesc').value.trim();
-  const obs = document.getElementById('fObs').value.trim();
-
-  if (!data || !setor || !produto || !cliente) {
-    toast('Preencha pelo menos Data, Setor, Produto e Cliente', 'error');
-    return;
-  }
-
-  showLoading(true);
-  let res;
-  if (editId) {
-    res = await apiPost({ action: 'atualizar', id: editId, data, setor, produto, cliente, numero, perc, material, matDesc, projeto, projDesc, obs });
-    if (res && res.sucesso) toast('Apontamento atualizado com sucesso!');
-  } else {
-    res = await apiPost({ action: 'criar', data, setor, produto, cliente, numero, perc, material, matDesc, projeto, projDesc, obs });
-    if (res && res.sucesso) toast('Apontamento salvo com sucesso!');
-  }
-
-  showLoading(false);
-  if (res && res.sucesso) {
-    limparForm();
-    await carregarTudo();
-    mudarAba('producao');
-  }
-}
-
-function editarRegistro(id) {
-  const r = registros.find(x => x.id === id);
-  if (!r) return;
-  editId = id;
-  mudarAba('apontamento');
-  document.getElementById('formTitulo').textContent = 'Editar Apontamento';
-  document.getElementById('fData').value = r.data;
-  document.getElementById('fSetor').value = r.setor;
-  document.getElementById('fProduto').value = r.produto;
-  document.getElementById('fCliente').
+  <button class="tab ativo" onclick="mudarAba('dashboard')">📊 Dashboard</button>
+  <button class="tab" onclick="mudarAba('producao')">🏭 Produção</button>
+  <button class="tab" onclick="mudarAba('problemas')">⚠️ Problemas</button>
+  <button class="tab" onclick="mudarAba('histor
 
