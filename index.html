@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Megatec — Apontamento de Produção</title>
+<style>
+:root{
+  --verde:#1b5e20;--verde2:#2e7d32;--verde3:#43a047;
+  --amarelo:#f9a825;--vermelho:#c62828;--vermelho2:#ef5350;
+  --azul:#1565c0;--cinza:#f4f6f8;--borda:#dde1e7;
+  --texto:#1a1a2e;--muted:#6b7280;--branco:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--verde) 0%,var(--verde2) 100%);
+  color:#fff;height:60px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);position:sticky;top:0;z-index:50
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;background:rgba(255,255,255,.1)
+}
+.brand-title{font-size:16px;font-weight:700}
+.brand-sub{font-size:10px;opacity:.75}
+.header-date{font-size:12px;opacity:.85}
+
+/* TABS */
+.tabs{
+  display:flex;background:#fff;border-bottom:2px solid var(--borda);
+  padding:0 20px;gap:4px;overflow-x:auto
+}
+.tab{
+  padding:12px 18px;border:none;background:none;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--muted);
+  border-bottom:3px solid transparent;margin-bottom:-2px;
+  white-space:nowrap;transition:.2s
+}
+.tab.ativo{color:var(--verde2);border-bottom-color:var(--verde2)}
+.tab:hover:not(.ativo){color:var(--texto)}
+
+/* PAGES */
+.page{display:none;padding:20px;max-width:1300px;margin:0 auto}
+.page.ativo{display:block}
+
+/* CARDS DASHBOARD */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.card{
+  background:#fff;border-radius:12px;padding:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.07);border:1px solid var(--borda)
+}
+.card-valor{font-size:28px;font-weight:800;margin:4px 0}
+.card-label{font-size:12px;color:var(--muted);font-weight:600}
+.card.verde .card-valor{color:var(--verde2)}
+.card.amarelo .card-valor{color:var(--amarelo)}
+.card.vermelho .card-valor{color:var(--vermelho)}
+.card.azul .card-valor{color:var(--azul)}
+
+/* SEÇÃO */
+.secao{background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--borda);box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.secao-titulo{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--verde2);display:flex;align-items:center;gap:6px}
+
+/* GRÁFICO BARRAS SIMPLES */
+.barras{display:flex;flex-direction:column;gap:8px}
+.barra-item{display:flex;align-items:center;gap:8px;font-size:12px}
+.barra-label{width:130px;text-align:right;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra-track{flex:1;background:#f0f0f0;border-radius:20px;height:14px;overflow:hidden}
+.barra-fill{height:100%;border-radius:20px;background:var(--verde3);transition:.5s}
+.barra-val{width:40px;font-weight:700;font-size:12px}
+
+/* PROBLEMAS */
+.prob-card{
+  border-left:4px solid var(--vermelho2);background:#fff5f5;
+  border-radius:8px;padding:12px;margin-bottom:8px;font-size:12px
+}
+.prob-card.projeto{border-left-color:var(--amarelo);background:#fffde7}
+.prob-titulo{font-weight:700;font-size:13px;margin-bottom:4px}
+.prob-desc{color:var(--muted);margin-top:3px}
+
+/* TABELA */
+.tabela-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--verde2);color:#fff;padding:9px 10px;text-align:left;white-space:nowrap;font-weight:600}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+tr:hover td{background:#f8f9fa}
+tr:nth-child(even) td{background:#fafafa}
+tr:nth-child(even):hover td{background:#f0f4f8}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-verde{background:#e8f5e9;color:#2e7d32}
+.badge-vermelho{background:#ffebee;color:#c62828}
+.badge-amarelo{background:#fff8e1;color:#f57f17}
+.badge-azul{background:#e3f2fd;color:#1565c0}
+.badge-roxo{background:#f3e5f5;color:#6a1b9a}
+.badge-cinza{background:#f5f5f5;color:#555}
+
+/* BARRA PROGRESSO */
+.prog-wrap{display:flex;align-items:center;gap:6px}
+.prog-track{flex:1;min-width:60px;background:#e0e0e0;border-radius:10px;height:8px;overflow:hidden}
+.prog-fill{height:100%;border-radius:10px}
+.prog-low{background:#ef5350}
+.prog-mid{background:#ffa726}
+.prog-ok{background:#66bb6a}
+.prog-done{background:#2e7d32}
+.prog-text{font-size:11px;font-weight:700;width:30px}
+
+/* FORMULÁRIO */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:12px;font-weight:700;color:var(--muted)}
+.form-group input,.form-group select,.form-group textarea{
+  border:1px solid var(--borda);border-radius:8px;padding:9px 12px;
+  font-size:13px;outline:none;transition:.2s;background:#fff;font-family:inherit
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--verde2);box-shadow:0 0 0 3px rgba(46,125,50,.12)
+}
+.form-group textarea{resize:vertical;min-height:70px}
+.caixa-extra{background:#fff8f0;border:1px solid #ffe0b2;border-radius:8px;padding:12px;margin-top:4px;display:none}
+.caixa-extra.show{display:block}
+
+/* BOTÕES */
+.btn{border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-primary{background:var(--verde2);color:#fff}
+.btn-primary:hover{background:var(--verde)}
+.btn-secondary{background:#f0f0f0;color:var(--texto)}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-danger{background:#ffebee;color:var(--vermelho)}
+.btn-danger:hover{background:var(--vermelho);color:#fff}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+/* FILTROS */
+.filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.filtros input,.filtros select{
+  border:1px solid var(--borda);border-radius:8px;padding:8px 12px;
+  font-size:12px;outline:none;background:#fff
+}
+.filtros input:focus,.filtros select:focus{border-color:var(--verde2)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:#333;color:#fff;padding:12px 20px;
+  border-radius:10px;font-size:13px;z-index:9999;
+  transform:translateY(60px);opacity:0;transition:.3s;pointer-events:none
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{background:var(--verde2)}
+.toast.err{background:var(--vermelho)}
+
+/* SPINNER */
+.spin{display:none;width:18px;height:18px;border:3px solid rgba(255,255,255,.4);
+  border-top-color:#fff;border-radius:50%;animation:giro .7s linear infinite;vertical-align:middle}
+@keyframes giro{to{transform:rotate(360deg)}}
+
+/* RESPONSIVO */
+@media(max-width:600px){
+  .cards-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .brand-sub{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo">M</div>
+    <div>
+      <div class="brand-title">Megatec Indústria</div>
+      <div class="brand-sub">Apontamento de Produção</div>
+    </div>
+  </div>
+  <div class="header-date" id="lblHoje"></div>
+</header>
+
+<div class="tabs">
+  <button class="tab ativo" onclick="mudarAba('dashboard')">📊 Dashboard</button>
+  <button class="tab" onclick="mudarAba('producao')">🏭 Produção</button>
+  <button class="tab" onclick="mudarAba('problemas')">⚠️ Problemas</button>
+  <button class="tab" onclick="mudarAba('histor
+
