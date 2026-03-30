@@ -7,14 +7,12 @@
 <style>
 :root{
   --verde:#1b5e20;--verde2:#2e7d32;--verde3:#43a047;
-  --amarelo:#f9a825;--vermelho:#c62828;--vermelho2:#ef5350;
-  --azul:#1565c0;--cinza:#f4f6f8;--borda:#dde1e7;
-  --texto:#1a1a2e;--muted:#6b7280;--branco:#fff;
+  --amarelo:#f9a825;--vermelho:#c62828;--azul:#1565c0;
+  --cinza:#f4f6f8;--borda:#dde1e7;--texto:#1a1a2e;
+  --muted:#6b7280;--branco:#fff;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh}
-
-/* HEADER */
 header{
   background:linear-gradient(135deg,var(--verde) 0%,var(--verde2) 100%);
   color:#fff;height:60px;display:flex;align-items:center;
@@ -24,148 +22,120 @@ header{
 .brand{display:flex;align-items:center;gap:10px}
 .brand-logo{
   width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:14px;background:rgba(255,255,255,.1)
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
+  background:rgba(255,255,255,.1)
 }
-.brand-title{font-size:16px;font-weight:700}
-.brand-sub{font-size:10px;opacity:.75}
+.brand-title{font-size:17px;font-weight:700}
+.brand-sub{font-size:11px;opacity:.8}
 .header-date{font-size:12px;opacity:.85}
-
-/* TABS */
 .tabs{
-  display:flex;background:#fff;border-bottom:2px solid var(--borda);
-  padding:0 20px;gap:4px;overflow-x:auto
+  display:flex;gap:4px;padding:12px 16px 0;
+  background:#fff;border-bottom:2px solid var(--borda);
+  position:sticky;top:60px;z-index:40;
 }
 .tab{
-  padding:12px 18px;border:none;background:none;cursor:pointer;
-  font-size:13px;font-weight:600;color:var(--muted);
-  border-bottom:3px solid transparent;margin-bottom:-2px;
-  white-space:nowrap;transition:.2s
+  padding:10px 18px;border:none;background:none;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--muted);border-radius:8px 8px 0 0;
+  border-bottom:3px solid transparent;transition:.2s
 }
-.tab.ativo{color:var(--verde2);border-bottom-color:var(--verde2)}
-.tab:hover:not(.ativo){color:var(--texto)}
-
-/* PAGES */
-.page{display:none;padding:20px;max-width:1300px;margin:0 auto}
-.page.ativo{display:block}
-
-/* CARDS DASHBOARD */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.tab.ativo{color:var(--verde2);border-bottom-color:var(--verde2);background:#f0f7f0}
+.tab:hover:not(.ativo){background:#f5f5f5}
+.pagina{display:none;padding:20px;max-width:1400px;margin:0 auto}
+.pagina.ativa{display:block}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
 .card{
   background:#fff;border-radius:12px;padding:16px;
-  box-shadow:0 2px 8px rgba(0,0,0,.07);border:1px solid var(--borda)
+  box-shadow:0 1px 6px rgba(0,0,0,.07);border:1px solid var(--borda)
 }
-.card-valor{font-size:28px;font-weight:800;margin:4px 0}
-.card-label{font-size:12px;color:var(--muted);font-weight:600}
-.card.verde .card-valor{color:var(--verde2)}
-.card.amarelo .card-valor{color:var(--amarelo)}
-.card.vermelho .card-valor{color:var(--vermelho)}
-.card.azul .card-valor{color:var(--azul)}
-
-/* SEÇÃO */
-.secao{background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid var(--borda);box-shadow:0 2px 8px rgba(0,0,0,.07)}
-.secao-titulo{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--verde2);display:flex;align-items:center;gap:6px}
-
-/* GRÁFICO BARRAS SIMPLES */
-.barras{display:flex;flex-direction:column;gap:8px}
-.barra-item{display:flex;align-items:center;gap:8px;font-size:12px}
-.barra-label{width:130px;text-align:right;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.barra-track{flex:1;background:#f0f0f0;border-radius:20px;height:14px;overflow:hidden}
-.barra-fill{height:100%;border-radius:20px;background:var(--verde3);transition:.5s}
-.barra-val{width:40px;font-weight:700;font-size:12px}
-
-/* PROBLEMAS */
-.prob-card{
-  border-left:4px solid var(--vermelho2);background:#fff5f5;
-  border-radius:8px;padding:12px;margin-bottom:8px;font-size:12px
+.card-val{font-size:28px;font-weight:800;margin-bottom:4px}
+.card-lbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.card.verde .card-val{color:var(--verde2)}
+.card.vermelho .card-val{color:var(--vermelho)}
+.card.amarelo .card-val{color:#e65100}
+.card.azul .card-val{color:var(--azul)}
+.section-title{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--texto)}
+.problema-card{
+  background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;
+  border-left:4px solid var(--vermelho);box-shadow:0 1px 5px rgba(0,0,0,.06)
 }
-.prob-card.projeto{border-left-color:var(--amarelo);background:#fffde7}
-.prob-titulo{font-weight:700;font-size:13px;margin-bottom:4px}
-.prob-desc{color:var(--muted);margin-top:3px}
-
-/* TABELA */
-.tabela-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th{background:var(--verde2);color:#fff;padding:9px 10px;text-align:left;white-space:nowrap;font-weight:600}
-td{padding:8px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
-tr:hover td{background:#f8f9fa}
-tr:nth-child(even) td{background:#fafafa}
-tr:nth-child(even):hover td{background:#f0f4f8}
-
-/* BADGES */
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
-.badge-verde{background:#e8f5e9;color:#2e7d32}
+.problema-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.problema-titulo{font-weight:700;font-size:13px}
+.problema-desc{font-size:12px;color:var(--muted);margin-top:3px}
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:20px;
+  font-size:11px;font-weight:700;letter-spacing:.3px
+}
+.badge-verde{background:#e8f5e9;color:#1b5e20}
 .badge-vermelho{background:#ffebee;color:#c62828}
-.badge-amarelo{background:#fff8e1;color:#f57f17}
+.badge-amarelo{background:#fff8e1;color:#e65100}
 .badge-azul{background:#e3f2fd;color:#1565c0}
-.badge-roxo{background:#f3e5f5;color:#6a1b9a}
 .badge-cinza{background:#f5f5f5;color:#555}
-
-/* BARRA PROGRESSO */
-.prog-wrap{display:flex;align-items:center;gap:6px}
-.prog-track{flex:1;min-width:60px;background:#e0e0e0;border-radius:10px;height:8px;overflow:hidden}
-.prog-fill{height:100%;border-radius:10px}
-.prog-low{background:#ef5350}
-.prog-mid{background:#ffa726}
-.prog-ok{background:#66bb6a}
-.prog-done{background:#2e7d32}
-.prog-text{font-size:11px;font-weight:700;width:30px}
-
-/* FORMULÁRIO */
-.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.form-group{display:flex;flex-direction:column;gap:4px}
-.form-group label{font-size:12px;font-weight:700;color:var(--muted)}
-.form-group input,.form-group select,.form-group textarea{
-  border:1px solid var(--borda);border-radius:8px;padding:9px 12px;
-  font-size:13px;outline:none;transition:.2s;background:#fff;font-family:inherit
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{
+  background:#f8f9fa;padding:10px 8px;text-align:left;
+  font-weight:700;font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--borda)
 }
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
-  border-color:var(--verde2);box-shadow:0 0 0 3px rgba(46,125,50,.12)
+tbody tr{border-bottom:1px solid var(--borda);transition:.15s}
+tbody tr:hover{background:#f9fbff}
+tbody td{padding:9px 8px;vertical-align:middle}
+.perc-wrap{display:flex;align-items:center;gap:6px;min-width:90px}
+.perc-bar{flex:1;height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden}
+.perc-fill{height:100%;border-radius:3px;transition:.3s}
+.perc-verde{background:var(--verde3)}
+.perc-amarelo{background:var(--amarelo)}
+.perc-vermelho{background:var(--vermelho)}
+.perc-text{font-size:11px;font-weight:700;min-width:28px}
+.filtros-box{
+  background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;
+  border:1px solid var(--borda);display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end
 }
-.form-group textarea{resize:vertical;min-height:70px}
-.caixa-extra{background:#fff8f0;border:1px solid #ffe0b2;border-radius:8px;padding:12px;margin-top:4px;display:none}
-.caixa-extra.show{display:block}
-
-/* BOTÕES */
-.btn{border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.filtros-box label{font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px}
+.filtros-box input,.filtros-box select{
+  padding:7px 10px;border:1px solid var(--borda);border-radius:8px;
+  font-size:13px;background:#fff;outline:none;
+}
+.filtros-box input:focus,.filtros-box select:focus{border-color:var(--verde2)}
+.btn{
+  padding:8px 16px;border:none;border-radius:8px;cursor:pointer;
+  font-size:13px;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px
+}
 .btn-primary{background:var(--verde2);color:#fff}
 .btn-primary:hover{background:var(--verde)}
-.btn-secondary{background:#f0f0f0;color:var(--texto)}
+.btn-secondary{background:#f5f5f5;color:#333;border:1px solid var(--borda)}
 .btn-secondary:hover{background:#e0e0e0}
-.btn-danger{background:#ffebee;color:var(--vermelho)}
-.btn-danger:hover{background:var(--vermelho);color:#fff}
+.btn-danger{background:#ffebee;color:var(--vermelho);border:1px solid #ffcdd2}
+.btn-danger:hover{background:#ffcdd2}
 .btn-sm{padding:5px 10px;font-size:11px}
-.btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-
-/* FILTROS */
-.filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.filtros input,.filtros select{
-  border:1px solid var(--borda);border-radius:8px;padding:8px 12px;
-  font-size:12px;outline:none;background:#fff
+.table-wrap{background:#fff;border-radius:12px;border:1px solid var(--borda);overflow:auto}
+.form-card{background:#fff;border-radius:12px;padding:20px;border:1px solid var(--borda);max-width:700px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:12px;font-weight:700;color:var(--muted)}
+.form-group input,.form-group select,.form-group textarea{
+  padding:9px 12px;border:1px solid var(--borda);border-radius:8px;
+  font-size:13px;outline:none;font-family:inherit;
 }
-.filtros input:focus,.filtros select:focus{border-color:var(--verde2)}
-
-/* TOAST */
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--verde2)}
+.form-group textarea{resize:vertical;min-height:70px}
+.form-full{grid-column:1/-1}
+.cond-box{display:none;grid-column:1/-1;padding:12px;background:#fff8f8;border-radius:8px;border:1px solid #ffcdd2}
+.cond-box.show{display:block}
 .toast{
-  position:fixed;bottom:24px;right:24px;
-  background:#333;color:#fff;padding:12px 20px;
-  border-radius:10px;font-size:13px;z-index:9999;
+  position:fixed;bottom:24px;right:24px;background:#333;color:#fff;
+  padding:12px 20px;border-radius:10px;font-size:13px;z-index:9999;
   transform:translateY(60px);opacity:0;transition:.3s;pointer-events:none
 }
 .toast.show{transform:translateY(0);opacity:1}
 .toast.ok{background:var(--verde2)}
 .toast.err{background:var(--vermelho)}
-
-/* SPINNER */
-.spin{display:none;width:18px;height:18px;border:3px solid rgba(255,255,255,.4);
-  border-top-color:#fff;border-radius:50%;animation:giro .7s linear infinite;vertical-align:middle}
-@keyframes giro{to{transform:rotate(360deg)}}
-
-/* RESPONSIVO */
+.empty{text-align:center;color:var(--muted);padding:32px;font-size:13px}
+.setor-icon{font-size:13px}
 @media(max-width:600px){
   .cards-grid{grid-template-columns:1fr 1fr}
   .form-grid{grid-template-columns:1fr}
-  .brand-sub{display:none}
+  .tabs{overflow-x:auto}
+  .tab{white-space:nowrap;font-size:12px;padding:8px 12px}
 }
 </style>
 </head>
@@ -186,5 +156,517 @@ tr:nth-child(even):hover td{background:#f0f4f8}
   <button class="tab ativo" onclick="mudarAba('dashboard')">📊 Dashboard</button>
   <button class="tab" onclick="mudarAba('producao')">🏭 Produção</button>
   <button class="tab" onclick="mudarAba('problemas')">⚠️ Problemas</button>
-  <button class="tab" onclick="mudarAba('histor
+  <button class="tab" onclick="mudarAba('historico')">📋 Histórico</button>
+  <button class="tab" onclick="mudarAba('apontamento')">➕ Novo Apontamento</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="pagina ativa" id="pg-dashboard">
+  <div class="cards-grid" id="cards-dashboard"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap">
+    <div>
+      <div class="section-title">⚠️ Problemas em Aberto</div>
+      <div id="lista-problemas-dash"></div>
+    </div>
+    <div>
+      <div class="section-title">📈 Evolução por Setor (último apontamento)</div>
+      <div id="setor-status"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUÇÃO -->
+<div class="pagina" id="pg-producao">
+  <div class="filtros-box">
+    <div>
+      <label>Setor</label>
+      <select id="f-setor" onchange="filtrarProducao()">
+        <option value="">Todos</option>
+        <option>Corte e Dobra</option>
+        <option>Pré Montagem</option>
+        <option>Montagem</option>
+        <option>Pintura</option>
+        <option>Acabamento</option>
+      </select>
+    </div>
+    <div>
+      <label>Produto</label>
+      <input id="f-produto" placeholder="Buscar produto..." oninput="filtrarProducao()"/>
+    </div>
+    <div>
+      <label>Cliente</label>
+      <input id="f-cliente" placeholder="Buscar cliente..." oninput="filtrarProducao()"/>
+    </div>
+    <div>
+      <label>Data</label>
+      <input type="date" id="f-data" onchange="filtrarProducao()"/>
+    </div>
+    <button class="btn btn-secondary" onclick="limparFiltros()">✕ Limpar</button>
+    <button class="btn btn-primary" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
+          <th>Nº</th><th>Evolução</th><th>Material</th><th>Projeto</th><th>Obs</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-producao"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PROBLEMAS -->
+<div class="pagina" id="pg-problemas">
+  <div class="section-title" style="margin-bottom:16px">⚠️ Todos os Problemas Registrados</div>
+  <div id="lista-problemas-full"></div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="pagina" id="pg-historico">
+  <div class="filtros-box">
+    <div>
+      <label>Data Inicial</label>
+      <input type="date" id="h-ini" onchange="filtrarHistorico()"/>
+    </div>
+    <div>
+      <label>Data Final</label>
+      <input type="date" id="h-fim" onchange="filtrarHistorico()"/>
+    </div>
+    <div>
+      <label>Setor</label>
+      <select id="h-setor" onchange="filtrarHistorico()">
+        <option value="">Todos</option>
+        <option>Corte e Dobra</option>
+        <option>Pré Montagem</option>
+        <option>Montagem</option>
+        <option>Pintura</option>
+        <option>Acabamento</option>
+      </select>
+    </div>
+    <div>
+      <label>Produto</label>
+      <input id="h-produto" placeholder="Filtrar produto..." oninput="filtrarHistorico()"/>
+    </div>
+    <button class="btn btn-secondary" onclick="limparFiltrosHist()">✕ Limpar</button>
+    <button class="btn btn-primary" onclick="exportarCSVHist()">⬇️ Exportar CSV</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
+          <th>Nº</th><th>Evolução</th><th>Material?</th><th>Projeto?</th><th>Obs</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-historico"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- APONTAMENTO -->
+<div class="pagina" id="pg-apontamento">
+  <div class="form-card">
+    <div class="section-title" style="margin-bottom:16px">➕ Novo Apontamento de Produção</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Data *</label>
+        <input type="date" id="fData"/>
+      </div>
+      <div class="form-group">
+        <label>Setor *</label>
+        <select id="fSetor">
+          <option value="">Selecione...</option>
+          <option>Corte e Dobra</option>
+          <option>Pré Montagem</option>
+          <option>Montagem</option>
+          <option>Pintura</option>
+          <option>Acabamento</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Produto *</label>
+        <input id="fProduto" placeholder="Ex: Transbordo MGT 22.000"/>
+      </div>
+      <div class="form-group">
+        <label>Cliente *</label>
+        <input id="fCliente" placeholder="Ex: Zilor"/>
+      </div>
+      <div class="form-group">
+        <label>Número do Equipamento</label>
+        <input id="fNumero" placeholder="Ex: 1, Lote 5..."/>
+      </div>
+      <div class="form-group">
+        <label>% de Evolução</label>
+        <input type="number" id="fPerc" min="0" max="100" placeholder="0 a 100"/>
+      </div>
+      <div class="form-group">
+        <label>Falta de Material?</label>
+        <select id="fMaterial" onchange="toggleMaterial()">
+          <option value="Não">Não</option>
+          <option value="Sim">Sim</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Problema de Projeto?</label>
+        <select id="fProjeto" onchange="toggleProjeto()">
+          <option value="Não">Não</option>
+          <option value="Sim">Sim</option>
+        </select>
+      </div>
+      <div class="cond-box" id="boxMaterial">
+        <div class="form-group">
+          <label>Descreva o problema de material</label>
+          <textarea id="fMatDesc" placeholder="Ex: Falta chapa 2,65mm..."></textarea>
+        </div>
+      </div>
+      <div class="cond-box" id="boxProjeto">
+        <div class="form-group">
+          <label>Descreva o problema de projeto</label>
+          <textarea id="fProjDesc" placeholder="Ex: Projeto incompleto..."></textarea>
+        </div>
+      </div>
+      <div class="form-group form-full">
+        <label>Observações Gerais</label>
+        <textarea id="fObs" placeholder="Informações adicionais..."></textarea>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="salvarApontamento()">💾 Salvar Apontamento</button>
+      <button class="btn btn-secondary" onclick="limparForm()">✕ Limpar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DADOS REAIS DA PLANILHA =====
+const dadosIniciais = [
+  {data:'2025-05-29',setor:'Montagem',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'5',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:20,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Falta cota de assoalho',obs:''},
+  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'Lote 10',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'Lote 10',perc:20,material:'Sim',matDesc:'Faltou chapa 2,65',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:30,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'Lote 10',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Pintura',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Pintura',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-05-29',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'6',perc:50,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-02',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:70,material:'Sim',matDesc:'Falta de mangueiras hidráulicas',projeto:'Sim',projDesc:'Peças sendo produzidas após início da montagem',obs:''},
+  {data:'2025-06-02',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Falta espelhos, chapa de mancal, chapas de assoalho, tela expandida',projeto:'Sim',projDesc:'Desenho incompleto e com poucas informações',obs:'Fabricação de peças paralelo à montagem'},
+  {data:'2025-06-02',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Faltando arcos amarração para lona, 1 reforço inferior traseiro',projeto:'Sim',projDesc:'Quantidade de arcos desatualizada na ficha técnica',obs:'Hidráulica pronta'},
+  {data:'2025-06-02',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'8',perc:60,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Só falta colocar placa traseira'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Semirreboque Aplicador de Vinhaça',cliente:'SJC',num:'1',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Falta fazer furo do fluxômetro na tubulação de inox'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Semirreboque Aplicador de Vinhaça',cliente:'SJC',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Montagem pronta, falta pintar para por tanque e finalizar'},
+  {data:'2025-06-02',setor:'Acabamento',produto:'Bitrem Transbordo Traseiro',cliente:'SJC',num:'2',perc:10,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Iniciar finalização 03/06'},
+  {data:'2025-06-02',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'10',perc:10,material:'Sim',matDesc:'Falta matéria prima no corte/dobra',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-02',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'10',perc:90,material:'Sim',matDesc:'Matéria prima para produzir os cabeçalhos',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-03',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras hidráulicas, Espigão 2"',projeto:'Sim',projDesc:'Projeto incompleto',obs:''},
+  {data:'2025-06-03',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:60,material:'Sim',matDesc:'Espelhos 2,65 caixa, Espelhos mancal de giro, Chapas do assoalho',projeto:'Sim',projDesc:'Projeto faltando informações',obs:'Frente parada'},
+  {data:'2025-06-03',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Falta suportes engraxadeira duplo, Reforço inferior traseiro, Arcos de lona',projeto:'Não',projDesc:'',obs:'Aguardando pintura'},
+  {data:'2025-06-03',setor:'Acabamento',produto:'Carroceria Prancha',cliente:'Atvos Bioenergia',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-03',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'4',perc:50,material:'Sim',matDesc:'Colocar pistão do fominha',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-09',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Foi preciso trocar o módulo'},
+  {data:'2025-06-09',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Mesma situação 05/06',projeto:'Sim',projDesc:'Projeto faltando informações',obs:'Produto parado'},
+  {data:'2025-06-11',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'8',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-12',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'4',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-12',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-17',setor:'Montagem',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-17',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'8',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Finalizada e entregue'},
+  {data:'2025-06-23',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:60,material:'Sim',matDesc:'Falta de peças',projeto:'Sim',projDesc:'Falta de projeto',obs:''},
+  {data:'2025-06-23',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'2',perc:60,material:'Sim',matDesc:'Falta peças',projeto:'Sim',projDesc:'Falta projeto',obs:''},
+  {data:'2025-06-25',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'1',perc:100,material:'Sim',matDesc:'Montagem de pneus',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-06-30',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:100,material:'Sim',matDesc:'Liberado para pintura mas faltando peças',projeto:'Sim',projDesc:'',obs:''},
+  {data:'2025-07-07',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-08',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-15',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'7',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-16',setor:'Acabamento',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'5',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-18',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Biopar',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-22',setor:'Acabamento',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-24',setor:'Acabamento',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-28',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Rafael Dib',num:'1',perc:40,material:'Sim',matDesc:'Berços de fixação, chapas para fixação guarda corpo, rodas montadas',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-07-30',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'1',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-08-01',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Bitola 2,70'},
+  {data:'2025-08-04',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Biopar',num:'7',perc:70,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-08-05',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Santa Adélia',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:''},
+  {data:'2025-08-06',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Rafael Carrilo',num:'1',perc:10,material:'Sim',matDesc:'OP não está completa',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-08-06',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Zé Verdureiro',num:'1',perc:10,material:'Sim',matDesc:'OP não está completa',projeto:'Não',projDesc:'',obs:''},
+  {data:'2025-08-11',setor:'Montagem',produto:'Rodomuda',cliente:'Usina São Luiz',num:'1',perc:10,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-24',setor:'Montagem',produto:'Rodomuda',cliente:'Usina Nardini',num:'9',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-24',setor:'Montagem',produto:'Rodomuda',cliente:'Usina Nardini',num:'10',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-25',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:60,material:'Sim',matDesc:'Mola, bomba',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-25',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:60,material:'Sim',matDesc:'Mola, bomba',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-26',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'São João de Araras',num:'13',perc:90,material:'Sim',matDesc:'Falta Chapa 5/16 x 1200 x 2100',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-26',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Atvos Bioenergia',num:'14',perc:40,material:'Sim',matDesc:'Falta Chapa 5/16 x 1200 x 2100',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-27',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Cocal',num:'15',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-02-27',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Cocal',num:'16',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-04',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:70,material:'Sim',matDesc:'Tomada de força',projeto:'Sim',projDesc:'',obs:''},
+  {data:'2026-03-05',setor:'Montagem',produto:'Rodomuda',cliente:'Da Mata',num:'7',perc:90,material:'Sim',matDesc:'Reforços da caixa, quadro e chassis',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-07',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:90,material:'Sim',matDesc:'Aguardando eixo da tomada de força',projeto:'Sim',projDesc:'',obs:''},
+  {data:'2026-03-09',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:90,material:'Sim',matDesc:'Eixo da tomada de força',projeto:'Sim',projDesc:'',obs:''},
+  {data:'2026-03-09',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'2',perc:80,material:'Sim',matDesc:'Eixo da tomada de força',projeto:'Sim',projDesc:'',obs:''},
+  {data:'2026-03-10',setor:'Corte e Dobra',produto:'Protótipo SR MGT 32.000',cliente:'Estoque Megatec',num:'1',perc:10,material:'Sim',matDesc:'Falta chapa 2MM x 1200x3000',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-10',setor:'Corte e Dobra',produto:'Protótipo Basculante',cliente:'Estoque Megatec',num:'1',perc:10,material:'Sim',matDesc:'Falta Chapa 3/16x1500x3000',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-16',setor:'Montagem',produto:'Rodocargas',cliente:'Usina Lins',num:'1',perc:60,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-17',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:90,material:'Sim',matDesc:'Guarda corpo',projeto:'Sim',projDesc:'Medida da árvore',obs:''},
+  {data:'2026-03-18',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:30,material:'Sim',matDesc:'Guarda corpo',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-19',setor:'Montagem',produto:'Reboque 01+01',cliente:'Pedra Agroindustrial',num:'1',perc:90,material:'Sim',matDesc:'Mola',projeto:'Não',projDesc:'',obs:'Parado aguardando mola para montar suspensão'},
+  {data:'2026-03-20',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-23',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras erradas',projeto:'Sim',projDesc:'Mangueiras erradas, precisa ser feita novas',obs:''},
+  {data:'2026-03-24',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Usina Santa Terezinha',num:'2',perc:70,material:'Sim',matDesc:'Espigão, parafusos de fixação',projeto:'Sim',projDesc:'Mangueiras tamanhos errados',obs:''},
+  {data:'2026-03-25',setor:'Pré Montagem',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Projeto errado',obs:''},
+  {data:'2026-03-26',setor:'Corte e Dobra',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'4',perc:20,material:'Sim',matDesc:'Falta 2 Chapa 5/16 com 6 metros',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-27',setor:'Corte e Dobra',produto:'Reboque 01+01',cliente:'Estoque Megatec',num:'1',perc:90,material:'Sim',matDesc:'Falta Chapa 1/2 com 6 metros',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-27',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Atena',num:'4',perc:100,material:'Sim',matDesc:'Usinagem do cabeçalho móvel quantidade errada',projeto:'Sim',projDesc:'A lista de peças está incorreta com relação à usinagem do cabeçalho',obs:'Revisar projeto'},
+  {data:'2026-03-30',setor:'Acabamento',produto:'Reboque 01+01',cliente:'Pedra Agroindustrial',num:'2',perc:90,material:'Sim',matDesc:'Adaptador macho 22 X 16',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-27',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Atvos Bioenergia',num:'26',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-27',setor:'Montagem',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-25',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-25',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Usina Santa Terezinha',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+  {data:'2026-03-26',setor:'Acabamento',produto:'Rodomuda',cliente:'Fabiano Vargas',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+];
+
+// ===== ESTADO =====
+let registros = [];
+let editId = null;
+
+function gerarId(){return 'r'+Date.now()+'_'+Math.random().toString(36).substr(2,6)}
+function salvarLocal(){localStorage.setItem('megatec_reg',JSON.stringify(registros))}
+function carregarLocal(){
+  const s = localStorage.getItem('megatec_reg');
+  if(s){
+    registros = JSON.parse(s);
+  } else {
+    registros = dadosIniciais.map(r=>({...r, id:gerarId(), timestamp:new Date().toISOString()}));
+    salvarLocal();
+  }
+}
+
+// ===== NAVEGAÇÃO =====
+function mudarAba(aba){
+  document.querySelectorAll('.pagina').forEach(p=>p.classList.remove('ativa'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
+  document.getElementById('pg-'+aba).classList.add('ativa');
+  event.currentTarget.classList.add('ativo');
+  if(aba==='dashboard') renderDashboard();
+  if(aba==='producao') renderProducao();
+  if(aba==='problemas') renderProblemas();
+  if(aba==='historico') renderHistorico();
+  if(aba==='apontamento'){limparForm();}
+}
+
+// ===== TOAST =====
+function toast(msg,tipo='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(tipo==='ok'?'ok':'err');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== UTILS =====
+function fmtData(d){
+  if(!d) return '—';
+  const p = d.split('-');
+  return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;
+}
+function percClass(p){return p>=80?'perc-verde':p>=40?'perc-amarelo':'perc-vermelho'}
+function setorBadge(s){
+  const m={'Corte e Dobra':'azul','Pré Montagem':'cinza','Montagem':'amarelo','Pintura':'azul','Acabamento':'verde'};
+  return m[s]||'cinza';
+}
+
+// ===== DASHBOARD =====
+function renderDashboard(){
+  const total = registros.length;
+  const comProb = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').length;
+  const concluidos = registros.filter(r=>parseInt(r.perc)===100).length;
+  const percMedio = total>0?Math.round(registros.reduce((a,r)=>a+(parseInt(r.perc)||0),0)/total):0;
+
+  document.getElementById('cards-dashboard').innerHTML=`
+    <div class="card verde"><div class="card-val">${total}</div><div class="card-lbl">Total de Apontamentos</div></div>
+    <div class="card azul"><div class="card-val">${concluidos}</div><div class="card-lbl">Concluídos (100%)</div></div>
+    <div class="card vermelho"><div class="card-val">${comProb}</div><div class="card-lbl">Com Problemas</div></div>
+    <div class="card amarelo"><div class="card-val">${percMedio}%</div><div class="card-lbl">Evolução Média</div></div>
+  `;
+
+  const probs = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').slice(-8).reverse();
+  const lp = document.getElementById('lista-problemas-dash');
+  if(!probs.length){lp.innerHTML='<div class="empty">Nenhum problema registrado</div>';return;}
+  lp.innerHTML = probs.map(p=>`
+    <div class="problema-card">
+      <div class="problema-header">
+        <span class="problema-titulo">${p.produto} — ${p.cliente} (Nº ${p.num||'—'})</span>
+        <span class="badge badge-${setorBadge(p.setor)}">${p.setor}</span>
+      </div>
+      <div class="problema-desc">${fmtData(p.data)}</div>
+      ${p.material==='Sim'?`<div class="problema-desc" style="color:#c62828">🔩 Material: ${p.matDesc||'—'}</div>`:''}
+      ${p.projeto==='Sim'?`<div class="problema-desc" style="color:#1565c0">📐 Projeto: ${p.projDesc||'—'}</div>`:''}
+    </div>`).join('');
+
+  // Setor status
+  const setores = ['Corte e Dobra','Pré Montagem','Montagem','Pintura','Acabamento'];
+  const ss = document.getElementById('setor-status');
+  ss.innerHTML = setores.map(s=>{
+    const regs = registros.filter(r=>r.setor===s);
+    if(!regs.length) return '';
+    const ultimo = regs[regs.length-1];
+    const p = parseInt(ultimo.perc)||0;
+    return `<div class="card" style="margin-bottom:8px;padding:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:13px;font-weight:700">${s}</span>
+        <span class="badge badge-${setorBadge(s)}">${regs.length} reg.</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Último: ${ultimo.produto} — ${fmtData(ultimo.data)}</div>
+      <div class="perc-wrap">
+        <div class="perc-bar"><div class="perc-fill ${percClass(p)}" style="width:${p}%"></div></div>
+        <div class="perc-text">${p}%</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== PRODUÇÃO =====
+function renderProducao(){filtrarProducao();}
+function filtrarProducao(){
+  const setor = document.getElementById('f-setor').value;
+  const produto = document.getElementById('f-produto').value.toLowerCase();
+  const cliente = document.getElementById('f-cliente').value.toLowerCase();
+  const data = document.getElementById('f-data').value;
+
+  let filtrado = [...registros].reverse();
+  if(setor) filtrado = filtrado.filter(r=>r.setor===setor);
+  if(produto) filtrado = filtrado.filter(r=>r.produto.toLowerCase().includes(produto));
+  if(cliente) filtrado = filtrado.filter(r=>r.cliente.toLowerCase().includes(cliente));
+  if(data) filtrado = filtrado.filter(r=>r.data===data);
+
+  const tbody = document.getElementById('tabela-producao');
+  if(!filtrado.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Nenhum registro encontrado.</td></tr>';return;}
+  tbody.innerHTML = filtrado.map(r=>{
+    const p=parseInt(r.perc)||0;
+    return `<tr>
+      <td>${fmtData(r.data)}</td>
+      <td><span class="badge badge-${setorBadge(r.setor)}">${r.setor}</span></td>
+      <td style="font-weight:600">${r.produto||'—'}</td>
+      <td>${r.cliente||'—'}</td>
+      <td style="text-align:center">${r.num||'—'}</td>
+      <td><div class="perc-wrap">
+        <div class="perc-bar"><div class="perc-fill ${percClass(p)}" style="width:${p}%"></div></div>
+        <div class="perc-text">${p}%</div>
+      </div></td>
+      <td>${r.material==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
+      <td>${r.projeto==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
+      <td style="font-size:11px;color:var(--muted);max-width:150px">${r.obs||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+function limparFiltros(){
+  ['f-setor','f-produto','f-cliente','f-data'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  filtrarProducao();
+}
+
+// ===== PROBLEMAS =====
+function renderProblemas(){
+  const probs = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').reverse();
+  const el = document.getElementById('lista-problemas-full');
+  if(!probs.length){el.innerHTML='<div class="empty">Nenhum problema registrado.</div>';return;}
+  el.innerHTML = probs.map(p=>`
+    <div class="problema-card">
+      <div class="problema-header">
+        <span class="problema-titulo">${p.produto} — ${p.cliente} (Nº ${p.num||'—'})</span>
+        <span class="badge badge-${setorBadge(p.setor)}">${p.setor}</span>
+      </div>
+      <div class="problema-desc">📅 ${fmtData(p.data)}</div>
+      ${p.material==='Sim'?`<div class="problema-desc" style="color:#c62828;margin-top:4px">🔩 <b>Material:</b> ${p.matDesc||'Não descrito'}</div>`:''}
+      ${p.projeto==='Sim'?`<div class="problema-desc" style="color:#1565c0;margin-top:4px">📐 <b>Projeto:</b> ${p.projDesc||'Não descrito'}</div>`:''}
+      ${p.obs?`<div class="problema-desc" style="margin-top:4px">📝 ${p.obs}</div>`:''}
+    </div>`).join('');
+}
+
+// ===== HISTÓRICO =====
+function renderHistorico(){filtrarHistorico();}
+function filtrarHistorico(){
+  const ini = document.getElementById('h-ini').value;
+  const fim = document.getElementById('h-fim').value;
+  const setor = document.getElementById('h-setor').value;
+  const produto = document.getElementById('h-produto').value.toLowerCase();
+
+  let filtrado = [...registros].reverse();
+  if(ini) filtrado = filtrado.filter(r=>r.data>=ini);
+  if(fim) filtrado = filtrado.filter(r=>r.data<=fim);
+  if(setor) filtrado = filtrado.filter(r=>r.setor===setor);
+  if(produto) filtrado = filtrado.filter(r=>r.produto.toLowerCase().includes(produto));
+
+  const tbody = document.getElementById('tabela-historico');
+  if(!filtrado.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Nenhum registro.</td></tr>';return;}
+  tbody.innerHTML = filtrado.map(r=>{
+    const p=parseInt(r.perc)||0;
+    return `<tr>
+      <td>${fmtData(r.data)}</td>
+      <td><span class="badge badge-${setorBadge(r.setor)}">${r.setor}</span></td>
+      <td style="font-weight:600">${r.produto||'—'}</td>
+      <td>${r.cliente||'—'}</td>
+      <td style="text-align:center">${r.num||'—'}</td>
+      <td><div class="perc-wrap">
+        <div class="perc-bar"><div class="perc-fill ${percClass(p)}" style="width:${p}%"></div></div>
+        <div class="perc-text">${p}%</div>
+      </div></td>
+      <td>${r.material==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
+      <td>${r.projeto==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
+      <td style="font-size:11px;color:var(--muted)">${r.obs||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+function limparFiltrosHist(){
+  ['h-ini','h-fim','h-setor','h-produto'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  filtrarHistorico();
+}
+
+// ===== EXPORTAR CSV =====
+function exportarCSV(){gerarCSV(registros,'apontamentos_megatec.csv')}
+function exportarCSVHist(){
+  const ini=document.getElementById('h-ini').value;
+  const fim=document.getElementById('h-fim').value;
+  const setor=document.getElementById('h-setor').value;
+  const produto=document.getElementById('h-produto').value.toLowerCase();
+  let f=[...registros];
+  if(ini)f=f.filter(r=>r.data>=ini);
+  if(fim)f=f.filter(r=>r.data<=fim);
+  if(setor)f=f.filter(r=>r.setor===setor);
+  if(produto)f=f.filter(r=>r.produto.toLowerCase().includes(produto));
+  gerarCSV(f,'historico_megatec.csv');
+}
+function gerarCSV(dados,nome){
+  if(!dados.length){toast('Nenhum dado para exportar','err');return;}
+  const h=['data','setor','produto','cliente','num','perc','material','matDesc','projeto','projDesc','obs'];
+  const linhas=[h.join(';')];
+  dados.forEach(r=>{
+    linhas.push(h.map(c=>`"${String(r[c]||'').replace(/"/g,'""')}"`).join(';'));
+  });
+  const blob=new Blob(['\ufeff'+linhas.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=nome;document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(url);
+  toast('CSV exportado com sucesso!');
+}
+
+// ===== FORMULÁRIO =====
+function toggleMaterial(){
+  document.getElementById('boxMaterial').classList.toggle('show',document.getElementById('fMaterial').value==='Sim');
+}
+function toggleProjeto(){
+  document.getElementById('boxProjeto').classList.toggle('show',document.getElementById('fProjeto').value==='Sim');
+}
+function limparForm(){
+  editId=null;
+  ['fProduto','fCliente','fNumero','fPerc','fMatDesc','fProjDesc','fObs'].forEach(id=>document.getElementById(id
 
