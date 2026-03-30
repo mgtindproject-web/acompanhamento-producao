@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Megatec - Apontamento de Produção</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+:root {
+  --verde: #1b5e20;
+  --verde2: #2e7d32;
+  --verde3: #4caf50;
+  --amarelo: #f9a825;
+  --vermelho: #c62828;
+  --vermelho2: #ef5350;
+  --azul: #1565c0;
+  --cinza: #f4f6f8;
+  --borda: #dde1e7;
+  --texto: #1a1a2e;
+  --muted: #6b7280;
+  --branco: #ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--cinza);color:var(--texto)}
+
+/* Header */
+header{
+  height:64px;background:linear-gradient(135deg,var(--verde) 0%,var(--verde2) 100%);
+  color:#fff;display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;box-shadow:0 2px 10px rgba(0,0,0,.2);position:sticky;top:0;z-index:20
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;font-weight:800;
+  background:rgba(255,255,255,.1)
+}
+.brand-title{font-size:17px;font-weight:700}
+.brand-sub{font-size:11px;opacity:.8}
+.header-right{display:flex;align-items:center;gap:10px;font-size:12px}
+.btn-header{
+  border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);
+  color:#fff;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;
+  cursor:pointer;transition:.2s
+}
+.btn-header:hover{background:rgba(255,255,255,.25)}
+
+/* Tabs */
+.tabs{
+  display:flex;gap:4px;background:#fff;border-bottom:1px solid var(--borda);
+  padding:0 16px;overflow-x:auto
+}
+.tab{
+  padding:12px 16px;font-size:13px;font-weight:600;color:var(--muted);
+  border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap
+}
+.tab.active{color:var(--verde2);border-bottom-color:var(--verde2)}
+.tab:hover{color:var(--verde3)}
+
+/* Main */
+main{max-width:1400px;margin:0 auto;padding:20px}
+.page{display:none}
+.page.active{display:block}
+
+.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.section-title{font-size:20px;font-weight:800}
+.section-sub{font-size:13px;color:var(--muted)}
+
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;margin-bottom:24px
+}
+.kpi{
+  background:#fff;border-radius:12px;padding:14px 16px;
+  border-left:4px solid var(--verde3);box-shadow:0 1px 5px rgba(0,0,0,.03)
+}
+.kpi.yellow{border-left-color:var(--amarelo)}
+.kpi.red{border-left-color:var(--vermelho2)}
+.kpi.blue{border-left-color:var(--azul)}
+.kpi-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase}
+.kpi-value{font-size:28px;font-weight:800;margin:4px 0 2px}
+.kpi-sub{font-size:11px;color:var(--muted)}
+
+.card{
+  background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:18px;
+  box-shadow:0 1px 5px rgba(0,0,0,.04)
+}
+.card-title{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+
+.setor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.setor-card{
+  background:#fff;border-radius:12px;padding:14px 16px;
+  border-top:4px solid var(--verde3);box-shadow:0 1px 4px rgba(0,0,0,.03)
+}
+.setor-title{font-size:13px;font-weight:700;margin-bottom:8px}
+.setor-stat{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.setor-stat span:last-child{color:var(--texto);font-weight:700}
+.setor-bar-wrap{height:6px;border-radius:99px;background:#e5e7eb;margin-top:8px}
+.setor-bar{height:6px;border-radius:99px;background:var(--verde3)}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{
+  padding:8px 10px;background:#f1f5f9;border-bottom:1px solid var(--borda);
+  text-align:left;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px
+}
+td{padding:8px 10px;border-bottom:1px solid #e5e7eb;vertical-align:top}
+tr:hover td{background:#f8fafc}
+
+/* Badges */
+.badge{
+  display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700
+}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-red{background:#fee2e2;color:#b91c1c}
+.badge-yellow{background:#fef9c3;color:#854d0e}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.badge-gray{background:#e5e7eb;color:#374151}
+
+/* Progress bar mini */
+.prog-wrap{width:90px;height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden}
+.prog-bar{height:7px;border-radius:99px;background:var(--verde3)}
+.prog-bar.low{background:var(--vermelho2)}
+.prog-bar.mid{background:var(--amarelo)}
+.prog-cell{display:flex;align-items:center;gap:6px}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:8px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+input,select,textarea{
+  border:1px solid var(--borda);border-radius:8px;padding:8px 10px;font-size:13px;
+  font-family:inherit;background:#fff
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--verde3);box-shadow:0 0 0 1px rgba(76,175,80,.2)}
+textarea{resize:vertical;min-height:70px}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+
+/* Buttons */
+.btn{
+  border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.2s
+}
+.btn-primary{background:var(--verde2);color:#fff}
+.btn-primary:hover{background:var(--verde)}
+.btn-outline{background:transparent;border:1px solid var(--borda);color:var(--texto)}
+.btn-outline:hover{border-color:var(--verde3)}
+.btn-danger{background:var(--vermelho);color:#fff}
+.btn-sm{padding:4px 9px;font-size:11px}
+
+/* Filters */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.filter-bar input,.filter-bar select{padding:6px 10px;font-size:12px;border-radius:8px;border:1px solid var(--borda)}
+
+/* Problemas cards */
+.prob-card{
+  border-radius:10px;border:1px solid #fecaca;background:#fef2f2;
+  padding:10px 12px;margin-bottom:8px
+}
+.prob-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
+.prob-title{font-size:13px;font-weight:700}
+.prob-meta{font-size:11px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px}
+.prob-desc{font-size:12px;color:#4b5563;margin-top:6px}
+
+/* Toast */
+.toast-area{position:fixed;bottom:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{
+  background:#1e293b;color:#fff;padding:10px 12px;border-radius:8px;font-size:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);animation:slideIn .25s ease-out
+}
+.toast.success{background:var(--verde2)}
+.toast.error{background:var(--vermelho)}
+@keyframes slideIn{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* Misc */
+.empty{text-align:center;padding:32px 10px;font-size:13px;color:var(--muted)}
+#badgeProb{background:#ef4444;color:#fff;border-radius:10px;padding:0 7px;font-size:11px;margin-left:4px}
+@media(max-width:700px){
+  main{padding:14px}
+  .section-head{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo">M</div>
+    <div>
+      <div class="brand-title">Megatec Indústria</div>
+      <div class="brand-sub">Apontamento de Produção</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="lblHoje"></span>
+    <button class="btn-header" onclick="mudarPagina('apontamento')">+ Novo apontamento</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <div id="tab-dashboard" class="tab active" onclick="mudarPagina('dashboard')">📊 Dashboard</div>
+  <div id="tab-producao" class="tab" onclick="mudarPagina('producao')">🏭 Produção</div>
+  <div id="tab-problemas" class="tab" onclick="mudarPagina('problemas')">⚠️ Problemas <span id="badgeProb"></span></div>
+  <div id="tab-apontamento" class="tab" onclick="mudarPagina('apontamento')">📝 Apontar</div>
+  <div id="tab-historico" class="tab" onclick="mudarPagina('historico')">📋 Histórico</div>
+</div>
+
+<main>
+
+<!-- DASHBOARD -->
+<section id="page-dashboard" class="page active">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Dashboard de Produção</div>
+      <div class="section-sub">Resumo geral • Problemas de material e projeto em destaque</div>
+    </div>
+    <select id="fDashPeriodo" onchange="renderDashboard()">
+      <option value="todos">Todo o período</option>
+      <option value="hoje">Hoje</option>
+      <option value="7">Últimos 7 dias</option>
+      <option value="30">Últimos 30 dias</option>
+    </select>
+  </div>
+
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <div class="card">
+    <div class="card-title">📌 Situação por setor</div>
+    <div class="setor-grid" id="setorGrid"></div>
+  </div>
+
+  <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <div class="card">
+      <div class="card-title">⚠️ Problemas recentes</div>
+      <div id="dashProblemas"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🏆 Produtos mais apontados</div>
+      <div id="dashTopProdutos"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-title">🕒 Últimos apontamentos</div>
+    <div id="dashUltimos" class="table-wrap"></div>
+  </div>
+</section>
+
+<!-- PRODUÇÃO -->
+<section id="page-producao" class="page">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Produção por setor</div>
+      <div class="section-sub">Lista detalhada por dia, setor, produto e cliente</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <input type="date" id="fProdIni" onchange="renderProducao()" />
+    <input type="date" id="fProdFim" onchange="renderProducao()" />
+    <select id="fProdSetor" onchange="renderProducao()">
+      <option value="">Todos os setores</option>
+      <option>Corte e Dobra</option>
+      <option>Pré Montagem</option>
+      <option>Montagem</option>
+      <option>Pintura</option>
+      <option>Acabamento</option>
+    </select>
+    <input id="fProdCliente" placeholder="Cliente" oninput="renderProducao()" />
+    <input id="fProdProduto" placeholder="Produto" oninput="renderProducao()" />
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th><th>Nº</th>
+            <th>Evolução</th><th>Material</th><th>Projeto</th><th>Obs</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbodyProducao"></tbody>
+      </table>
+    </div>
+    <div id="producaoVazio" class="empty" style="display:none">Nenhum registro encontrado</div>
+  </div>
+</section>
+
+<!-- PROBLEMAS -->
+<section id="page-problemas" class="page">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Problemas de material e projeto</div>
+      <div class="section-sub">Registros com falta de material e/ou problema de engenharia</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <select id="fProbTipo" onchange="renderProblemas()">
+      <option value="">Todos os tipos</option>
+      <option value="material">Falta de material</option>
+      <option value="projeto">Problema de projeto</option>
+      <option value="ambos">Material + Projeto</option>
+    </select>
+    <select id="fProbSetor" onchange="renderProblemas()">
+      <option value="">Todos os setores</option>
+      <option>Corte e Dobra</option>
+      <option>Pré Montagem</option>
+      <option>Montagem</option>
+      <option>Pintura</option>
+      <option>Acabamento</option>
+    </select>
+    <input id="fProbCliente" placeholder="Cliente" oninput="renderProblemas()" />
+    <input id="fProbProduto" placeholder="Produto" oninput="renderProblemas()" />
+  </div>
+
+  <div class="card">
+    <div id="listaProblemas"></div>
+    <div id="problemaVazio" class="empty" style="display:none">Nenhum problema encontrado</div>
+  </div>
+</section>
+
+<!-- APONTAMENTO -->
+<section id="page-apontamento" class="page">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Novo apontamento</div>
+      <div class="section-sub">Registrar andamento diário da produção</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" id="fData" />
+      </div>
+      <div class="form-group">
+        <label>Setor</label>
+        <select id="fSetor">
+          <option value="">Selecione...</option>
+          <option>Corte e Dobra</option>
+          <option>Pré Montagem</option>
+          <option>Montagem</option>
+          <option>Pintura</option>
+          <option>Acabamento</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Produto / Implemento</label>
+        <input id="fProduto" placeholder="Ex: Transbordo MGT 22.000" />
+      </div>
+      <div class="form-group">
+        <label>Cliente</label>
+        <input id="fCliente" placeholder="Nome do cliente" />
+      </div>
+      <div class="form-group">
+        <label>Nº / Lote</label>
+        <input id="fNumero" placeholder="Ex: 1, 2, Lote 10..." />
+      </div>
+      <div class="form-group">
+        <label>Evolução (%)</label>
+        <input type="number" id="fPerc" min="0" max="100" />
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Falta de material?</label>
+        <select id="fMaterial" onchange="toggleMaterial()">
+          <option value="Não">Não</option>
+          <option value="Sim">Sim</option>
+        </select>
+      </div>
+      <div class="form-group" id="grpMatDesc" style="display:none">
+        <label>Descrição do material em falta</label>
+        <textarea id="fMatDesc"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Problema de projeto/engenharia?</label>
+        <select id="fProjeto" onchange="toggleProjeto()">
+          <option value="Não">Não</option>
+          <option value="Sim">Sim</option>
+        </select>
+      </div>
+      <div class="form-group" id="grpProjDesc" style="display:none">
+        <label>Descrição do problema de projeto</label>
+        <textarea id="fProjDesc"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Observações gerais</label>
+      <textarea id="fObs"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="salvarApontamento()">💾 Salvar apontamento</button>
+      <button class="btn btn-outline" onclick="limparForm()">Limpar</button>
+    </div>
+  </div>
+</section>
+
+<!-- HISTÓRICO -->
+<section id="page-historico" class="page">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Histórico de apontamentos</div>
+      <div class="section-sub">Consulta completa com filtros</div>
+    </div>
+    <button class="btn btn-outline" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+  </div>
+
+  <div class="filter-bar">
+    <input type="date" id="fHistIni" onchange="renderHistorico()" />
+    <input type="date" id="fHistFim" onchange="renderHistorico()" />
+    <select id="fHistSetor" onchange="renderHistorico()">
+      <option value="">Todos os setores</option>
+      <option>Corte e Dobra</option>
+      <option>Pré Montagem</option>
+      <option>Montagem</option>
+      <option>Pintura</option>
+      <option>Acabamento</option>
+    </select>
+    <input id="fHistBusca" placeholder="Buscar cliente/produto..." oninput="renderHistorico()" />
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th><th>Nº</th>
+            <th>Evolução</th><th>Material</th><th>Projeto</th><th>Obs</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbodyHistorico"></tbody>
+      </table>
+    </div>
+    <div id="histVazio" class="empty" style="display:none">Nenhum registro encontrado</div>
+  </div>
+</section>
+
+</main>
+
+<div id="toastArea" class="toast-area"></div>
+
+<script>
+// ========= Armazenamento (localStorage por enquanto) =========
+const STORAGE_KEY = 'megatec_apontamentos_v1';
+
+function loadRegistros() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return [];
+  try { return JSON.parse(raw); } catch(e){ return []; }
+}
+function saveRegistros(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+let registros = loadRegistros();
+
+// seed inicial com alguns exemplos (se vazio)
+if (registros.length === 0) {
+  registros = [
+    {id:1,data:'2025-05-29',setor:'Montagem',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',numero:'3',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+    {id:2,data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Zilor',numero:'Lote 10',perc:20,material:'Sim',matDesc:'Faltou chapa 2,65',projeto:'Não',projDesc:'',obs:''},
+    {id:3,data:'2025-06-02',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',numero:'1',perc:70,material:'Sim',matDesc:'Falta de mangueiras hidráulicas',projeto:'Sim',projDesc:'Peças sendo produzidas após início da montagem',obs:''},
+  ];
+  saveRegistros(registros);
+}
+
+let editId = null;
+
+// ========= Util =========
+function formatData(d){
+  if(!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+function toast(msg,tipo='success'){
+  const area = document.getElementById('toastArea');
+  const div = document.createElement('div');
+  div.className='toast '+(tipo==='error'?'error':'success');
+  div.textContent = msg;
+  area.appendChild(div);
+  setTimeout(()=>{div.remove();},3000);
+}
+
+// ========= Navegação =========
+function mudarPagina(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('tab-'+p).classList.add('active');
+
+  if(p==='dashboard') renderDashboard();
+  if(p==='producao') renderProducao();
+  if(p==='problemas') renderProblemas();
+  if(p==='historico') renderHistorico();
+  if(p==='apontamento') prepararForm();
+}
+
+// ========= Dashboard =========
+function filtrarPorPeriodo(lista,periodo){
+  if(periodo==='todos') return lista;
+  const hoje = new Date();
+  let ini = null;
+  if(periodo==='hoje'){
+    const d = hoje.toISOString().slice(0,10);
+    return lista.filter(r=>r.data===d);
+  }
+  if(periodo==='7') ini = new Date(hoje.getTime()-7*86400000);
+  if(periodo==='30') ini = new Date(hoje.getTime()-30*86400000);
+  if(!ini) return lista;
+  return lista.filter(r=>{
+    const d = new Date(r.data);
+    return d>=ini && d<=hoje;
+  });
+}
+
+function renderDashboard(){
+  const periodo = document.getElementById('fDashPeriodo').value;
+  const base = filtrarPorPeriodo(registros, periodo);
+
+  const total = base.length;
+  const comMaterial = base.filter(r=>r.material==='Sim').length;
+  const comProjeto = base.filter(r=>r.projeto==='Sim').length;
+  const comAmbos = base.filter(r=>r.material==='Sim' && r.projeto==='Sim').length;
+  const mediaPerc = base.length ? Math.round(base.reduce((a,r)=>a+(r.perc||0),0)/base.length) : 0;
+
+  const kpiGrid = document.getElementById('kpiGrid');
+  kpiGrid.innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Apontamentos</div>
+      <div class="kpi-value">${total}</div>
+      <div class="kpi-sub">Período filtrado</div>
+    </div>
+    <div class="kpi yellow">
+      <div class="kpi-label">Média de evolução</div>
+      <div class="kpi-value">${mediaPerc}%</div>
+      <div class="kpi-sub">Todos os setores</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Com problemas</div>
+      <div class="kpi-value">${comMaterial+comProjeto}</div>
+      <div class="kpi-sub">Material: ${comMaterial} • Projeto: ${comProjeto}</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Material + projeto</div>
+      <div class="kpi-value">${comAmbos}</div>
+      <div class="kpi-sub">Afeta diretamente o fluxo</div>
+    </div>
+  `;
+
+  // por setor
+  const setores = ['Corte e Dobra','Pré Montagem','Montagem','Pintura','Acabamento'];
+  const setorGrid = document.getElementById('setorGrid');
+  setorGrid.innerHTML='';
+  setores.forEach(s=>{
+    const lista = base.filter(r=>r.setor===s);
+    if(lista.length===0) return;
+    const n = lista.length;
+    const nProb = lista.filter(r=>r.material==='Sim'||r.projeto==='Sim').length;
+    const medPerc = Math.round(lista.reduce((a,r)=>a+(r.perc||0),0)/n);
+    const pctProb = Math.round(100*(nProb||0)/n);
+    const card = document.createElement('div');
+    card.className='setor-card';
+    card.innerHTML = `
+      <div class="setor-title">${s}</div>
+      <div class="setor-stat"><span>Apontamentos</span><span>${n}</span></div>
+      <div class="setor-stat"><span>Média de evolução</span><span>${medPerc}%</span></div>
+      <div class="setor-stat"><span>Com problemas</span><span>${nProb} (${pctProb}%)</span></div>
+      <div class="setor-bar-wrap"><div class="setor-bar" style="width:${medPerc}%;background:${pctProb>40?'#f97316':'#22c55e'}"></div></div>
+    `;
+    setorGrid.appendChild(card);
+  });
+
+  // problemas recentes
+  const problemas = base.filter(r=>r.material==='Sim'||r.projeto==='Sim')
+    .sort((a,b)=>b.id-a.id)
+    .slice(0,5);
+  const dashProb = document.getElementById('dashProblemas');
+  dashProb.innerHTML='';
+  if(problemas.length===0){
+    dashProb.innerHTML='<div class="empty">Nenhum problema registrado neste período.</div>';
+  } else {
+    problemas.forEach(r=>{
+      const div = document.createElement('div');
+      div.className='prob-card';
+      let tipos=[];
+      if(r.material==='Sim') tipos.push('Material');
+      if(r.projeto==='Sim') tipos.push('Projeto');
+      div.innerHTML=`
+        <div class="prob-head">
+          <div>
+            <div class="prob-title">${r.produto} • ${r.cliente}</div>
+            <div class="prob-meta">
+              <span>${formatData(r.data)}</span>
+              <span>${r.setor}</span>
+              <span>${tipos.join(' + ')}</span>
+            </div>
+          </div>
+        </div>
+        <div class="prob-desc">
+          ${r.material==='Sim' ? `<b>Material:</b> ${r.matDesc || '-'}<br>` : ''}
+          ${r.projeto==='Sim' ? `<b>Projeto:</b> ${r.projDesc || '-'}<br>` : ''}
+        </div>
+      `;
+      dashProb.appendChild(div);
+    });
+  }
+
+  // top produtos
+  const contProd = {};
+  base.forEach(r=>{
+    if(!contProd[r.produto]) contProd[r.produto] = 0;
+    contProd[r.produto]++;
+  });
+  const top = Object.entries(contProd).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const dashTop = document.getElementById('dashTopProdutos');
+  dashTop.innerHTML='';
+  if(top.length===0){
+    dashTop.innerHTML='<div class="empty">Sem registros neste período.</div>';
+  } else {
+    top.forEach(([prod,q])=>{
+      const p = document.createElement('div');
+      p.style.fontSize='13px';
+      p.style.display='flex';
+      p.style.justifyContent='space-between';
+      p.style.marginBottom='4px';
+      p.innerHTML=`<span>${prod}</span><span>${q}</span>`;
+      dashTop.appendChild(p);
+    });
+  }
+
+  // últimos apontamentos
+  const ult = base.slice().sort((a,b)=>b.id-a.id).slice(0,10);
+  const dashUlt = document.getElementById('dashUltimos');
+  if(ult.length===0){
+    dashUlt.innerHTML='<div class="empty">Sem registros.</div>';
+  } else {
+    let html = '<table><thead><tr><th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th><th>%</th><th>Prob.</th></tr></thead><tbody>';
+    ult.forEach(r=>{
+      const prob = (r.material==='Sim' || r.projeto==='Sim') ? '⚠️' : '';
+      html+=`<tr>
+        <td>${formatData(r.data)}</td>
+        <td>${r.setor}</td>
+        <td>${r.produto}</td>
+        <td>${r.cliente}</td>
+        <td>${r.perc}%</td>
+        <td>${prob}</td>
+      </tr>`;
+    });
+    html+='</tbody></table>';
+    dashUlt.innerHTML=html;
+  }
+
+  // badge problemas
+  const totProb = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').length;
+  document.getElementById('badgeProb').textContent = totProb>0?totProb:'';
+}
+
+// ========= Produção =========
+function aplicaFiltroBasico(r,ini,fim,setor,cli,prod){
+  if(ini && r.data<ini) return false;
+  if(fim && r.data>fim) return false;
+  if(setor && r.setor!==setor) return false;
+  if(cli && !r.cliente.toLowerCase().includes(cli.toLowerCase())) return false;
+  if(prod && !r.produto.toLowerCase().includes(prod.toLowerCase())) return false;
+  return true;
+}
+
+function renderProducao(){
+  const ini = document.getElementById('fProdIni').value || null;
+  const fim = document.getElementById('fProdFim').value || null;
+  const setor = document.getElementById('fProdSetor').value || '';
+  const cli = document.getElementById('fProdCliente').value || '';
+  const prod = document.getElementById('fProdProduto').value || '';
+  const tbody = document.getElementById('tbodyProducao');
+  const vazio = document.getElementById('producaoVazio');
+
+  const lista = registros.filter(r=>aplicaFiltroBasico(r,ini,fim,setor,cli,prod))
+    .sort((a,b)=>a.data.localeCompare(b.data));
+
+  tbody.innerHTML='';
+  if(lista.length===0){
+    vazio.style.display='block';
+    return;
+  }
+  vazio.style.display='none';
+
+  lista.forEach(r=>{
+    const tr = document.createElement('tr');
+    const perc = r.perc||0;
+    const clsPerc = perc<30?'low':(perc<70?'mid':'');
+    const probMat = r.material==='Sim' ? '<span class="badge badge-red">Sim</span>' : '<span class="badge badge-gray">Não</span>';
+    const probProj = r.projeto==='Sim' ? '<span class="badge badge-yellow">Sim</span>' : '<span class="badge badge-gray">Não</span>';
+    tr.innerHTML = `
+      <td>${formatData(r.data)}</td>
+      <td>${r.setor}</td>
+      <td>${r.produto}</td>
+      <td>${r.cliente}</td>
+      <td>${r.numero}</td>
+      <td>
+        <div class="prog-cell">
+          <div class="prog-wrap"><div class="prog-bar ${clsPerc}" style="width:${perc}%;"></div></div>
+          <span>${perc}%</span>
+        </div>
+      </td>
+      <td>${probMat}</td>
+      <td>${probProj}</td>
+      <td>${r.obs||''}</td>
+      <td>
+        <button class="btn btn-sm btn-outline" onclick="editarRegistro(${r.id})">Editar</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ========= Problemas =========
+function renderProblemas(){
+  const tipo = document.getElementById('fProbTipo').value;
+  const setor = document.getElementById('fProbSetor').value;
+  const cli = document.getElementById('fProbCliente').value;
+  const prod = document.getElementById('fProbProduto').value;
+  const listaDiv = document.getElementById('listaProblemas');
+  const vazio = document.getElementById('problemaVazio');
+
+  let lista = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim');
+
+  if(setor) lista = lista.filter(r=>r.setor===setor);
+  if(cli) lista = lista.filter(r=>r.cliente.toLowerCase().includes(cli.toLowerCase()));
+  if(prod) lista = lista.filter(r=>r.produto.toLowerCase().includes(prod.toLowerCase()));
+  if(tipo==='material') lista = lista.filter(r=>r.material==='Sim' && r.projeto!=='Sim');
+  if(tipo==='projeto') lista = lista.filter(r=>r.projeto==='Sim' && r.material!=='Sim');
+  if(tipo==='ambos') lista = lista.filter(r=>r.material==='Sim' && r.projeto==='Sim');
+
+  lista.sort((a,b)=>b.id-a.id);
+
+  listaDiv.innerHTML='';
+  if(lista.length===0){
+    vazio.style.display='block';
+    return;
+  }
+  vazio.style.display='none';
+
+  lista.forEach(r=>{
+    const div = document.createElement('div');
+    div.className='prob-card';
+    let tags=[];
+    if(r.material==='Sim') tags.push('Material');
+    if(r.projeto==='Sim') tags.push('Projeto');
+    div.innerHTML = `
+      <div class="prob-head">
+        <div>
+          <div class="prob-title">${r.produto} • ${r.cliente}</div>
+          <div class="prob-meta">
+            <span>${formatData(r.data)}</span>
+            <span>${r.setor}</span>
+            <span>${tags.join(' + ')}</span>
+          </div>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="editarRegistro(${r.id})">Apontar solução</button>
+      </div>
+      <div class="prob-desc">
+        ${r.material==='Sim'?`<b>Material:</b> ${r.matDesc||'-'}<br>`:''}
+        ${r.projeto==='Sim'?`<b>Projeto:</b> ${r.projDesc||'-'}<br>`:''}
+        ${r.obs?`<b>Obs:</b> ${r.obs}`:''}
+      </div>
+    `;
+    listaDiv.appendChild(div);
+  });
+}
+
+// ========= Histórico =========
+function renderHistorico(){
+  const ini = document.getElementById('fHistIni').value || null;
+  const fim = document.getElementById('fHistFim').value || null;
+  const setor = document.getElementById('fHistSetor').value || '';
+  const busca = document.getElementById('fHistBusca').value || '';
+  const tbody = document.getElementById('tbodyHistorico');
+  const vazio = document.getElementById('histVazio');
+
+  let lista = registros.filter(r=>aplicaFiltroBasico(r,ini,fim,setor,'',''));
+  if(busca){
+    const q = busca.toLowerCase();
+    lista = lista.filter(r=>
+      (r.cliente && r.cliente.toLowerCase().includes(q)) ||
+      (r.produto && r.produto.toLowerCase().includes(q))
+    );
+  }
+  lista.sort((a,b)=>a.data.localeCompare(b.data));
+
+  tbody.innerHTML='';
+  if(lista.length===0){
+    vazio.style.display='block';
+    return;
+  }
+  vazio.style.display='none';
+
+  lista.forEach(r=>{
+    const tr = document.createElement('tr');
+    const probMat = r.material==='Sim' ? '<span class="badge badge-red">Sim</span>' : '<span class="badge badge-gray">Não</span>';
+    const probProj = r.projeto==='Sim' ? '<span class="badge badge-yellow">Sim</span>' : '<span class="badge badge-gray">Não</span>';
+    tr.innerHTML=`
+      <td>${formatData(r.data)}</td>
+      <td>${r.setor}</td>
+      <td>${r.produto}</td>
+      <td>${r.cliente}</td>
+      <td>${r.numero}</td>
+      <td>${r.perc}%</td>
+      <td>${probMat}</td>
+      <td>${probProj}</td>
+      <td>${r.obs||''}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="editarRegistro(${r.id})">Editar</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ========= Formulário =========
+function prepararForm(){
+  const hoje = new Date().toISOString().slice(0,10);
+  if(!editId) document.getElementById('fData').value = hoje;
+}
+
+function toggleMaterial(){
+  const v = document.getElementById('fMaterial').value;
+  document.getElementById('grpMatDesc').style.display = v==='Sim'?'block':'none';
+}
+function toggleProjeto(){
+  const v = document.getElementById('fProjeto').value;
+  document.getElementById('grpProjDesc').style.display = v==='Sim'?'block':'none';
+}
+
+function limparForm(){
+  editId = null;
+  document.getElementById('fData').value='';
+  document.getElementById('fSetor').value='';
+  document.getElementById('fProduto').value='';
+  document.getElementById('fCliente').value='';
+  document.getElementById('fNumero').value='';
+  document.getElementById('fPerc').value='';
+  document.getElementById('fMaterial').value='Não';
+  document.getElementById('fMatDesc').value='';
+  document.getElementById('fProjeto').value='Não';
+  document.getElementById('fProjDesc').value='';
+  document.getElementById('fObs').value='';
+  toggleMaterial();
+  toggleProjeto();
+}
+
+function salvarApontamento(){
+  const data = document.getElementById('fData').value;
+  const setor = document.getElementById('fSetor').value;
+  const produto = document.getElementById('fProduto').value.trim();
+  const cliente = document.getElementById('fCliente').value.trim();
+  const numero = document.getElementById('fNumero').value.trim();
+  const perc = parseInt(document.getElementById('fPerc').value || '0',10);
+  const material = document.getElementById('fMaterial').value;
+  const matDesc = document.getElementById('fMatDesc').value.trim();
+  const projeto = document.getElementById('fProjeto').value;
+  const projDesc = document.getElementById('fProjDesc').value.trim();
+  const obs = document.getElementById('fObs').value.trim();
+
+  if(!data || !setor || !produto || !cliente){
+    toast('Preencha pelo menos Data, Setor, Produto e Cliente','error');
+    return;
+  }
+
+  if(editId){
+    const idx = registros.findIndex(r=>r.id===editId);
+    if(idx>=0){
+      registros[idx] = {id:editId,data,setor,produto,cliente,numero,perc,material,matDesc,projeto,projDesc,obs};
+    }
+    toast('Apontamento atualizado.');
+  } else {
+    const id = registros.length?Math.max(...registros.map(r=>r.id))+1:1;
+    registros.push({id,data,setor,produto,cliente,numero,perc,material,matDesc,projeto,projDesc,obs});
+    toast('Apontamento salvo.');
+  }
+  saveRegistros(registros);
+  limparForm();
+  renderDashboard();
+  renderProducao();
+  renderProblemas();
+  renderHistorico();
+}
+
+function editarRegistro(id){
+  const r = registros.find(r=>r.id===id);
+  if(!r) return;
+  editId = id;
+  mudarPagina('apontamento');
+  document.getElementById('fData').value=r.data;
+  document.getElementById('fSetor').value=r.setor;
+  document.getElementById('fProduto').value=r.produto;
+  document.getElementById('fCliente').value=r.cliente;
+  document.getElementById('fNumero').value=r.numero;
+  document.getElementById('fPerc').value=r.perc;
+  document.getElementById('fMaterial').value=r.material;
+  document.getElementById('fMatDesc').value=r.matDesc;
+  document.getElementById('fProjeto').value=r.projeto;
+  document.getElementById('fProjDesc').value=r.projDesc;
+  document.getElementById('fObs').value=r.obs;
+  toggleMaterial();
+  toggleProjeto();
+}
+
+// ========= Export CSV =========
+function exportarCSV(){
+  if(registros.length===0){
+    toast('Não há dados para exportar','error');
+    return;
+  }
+  const header = ['id','data','setor','produto','cliente','numero','perc','material','matDesc','projeto','projDesc','obs'];
+  const linhas = [header.join(';')];
+  registros.forEach(r=>{
+    const linha = header.map(c=>{
+      const v = (r[c]!==undefined && r[c]!==null) ? String(r[c]) : '';
+      return `"${v.replace(/"/g,'""')}"`;
+    }).join(';');
+    linhas.push(linha);
+  });
+  const blob = new Blob([linhas.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url;a.download='apontamentos_megatec.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ========= Inicialização =========
+(function init(){
+  const now = new Date();
+  const dia = String(now.getDate()).padStart(2,'0');
+  const mes = String(now.getMonth()+1).padStart(2,'0');
+  const ano = now.getFullYear();
+  document.getElementById('lblHoje').textContent = `Hoje: ${dia}/${mes}/${ano}`;
+
+  renderDashboard();
+})();
+</script>
+
+</body>
+</html>
