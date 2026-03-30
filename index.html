@@ -1,672 +1,1205 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Megatec — Apontamento de Produção</title>
-<style>
-:root{
-  --verde:#1b5e20;--verde2:#2e7d32;--verde3:#43a047;
-  --amarelo:#f9a825;--vermelho:#c62828;--azul:#1565c0;
-  --cinza:#f4f6f8;--borda:#dde1e7;--texto:#1a1a2e;
-  --muted:#6b7280;--branco:#fff;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--cinza);color:var(--texto);min-height:100vh}
-header{
-  background:linear-gradient(135deg,var(--verde) 0%,var(--verde2) 100%);
-  color:#fff;height:60px;display:flex;align-items:center;
-  justify-content:space-between;padding:0 20px;
-  box-shadow:0 2px 10px rgba(0,0,0,.25);position:sticky;top:0;z-index:50
-}
-.brand{display:flex;align-items:center;gap:10px}
-.brand-logo{
-  width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5);
-  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
-  background:rgba(255,255,255,.1)
-}
-.brand-title{font-size:17px;font-weight:700}
-.brand-sub{font-size:11px;opacity:.8}
-.header-date{font-size:12px;opacity:.85}
-.tabs{
-  display:flex;gap:4px;padding:12px 16px 0;
-  background:#fff;border-bottom:2px solid var(--borda);
-  position:sticky;top:60px;z-index:40;
-}
-.tab{
-  padding:10px 18px;border:none;background:none;cursor:pointer;
-  font-size:13px;font-weight:600;color:var(--muted);border-radius:8px 8px 0 0;
-  border-bottom:3px solid transparent;transition:.2s
-}
-.tab.ativo{color:var(--verde2);border-bottom-color:var(--verde2);background:#f0f7f0}
-.tab:hover:not(.ativo){background:#f5f5f5}
-.pagina{display:none;padding:20px;max-width:1400px;margin:0 auto}
-.pagina.ativa{display:block}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
-.card{
-  background:#fff;border-radius:12px;padding:16px;
-  box-shadow:0 1px 6px rgba(0,0,0,.07);border:1px solid var(--borda)
-}
-.card-val{font-size:28px;font-weight:800;margin-bottom:4px}
-.card-lbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.card.verde .card-val{color:var(--verde2)}
-.card.vermelho .card-val{color:var(--vermelho)}
-.card.amarelo .card-val{color:#e65100}
-.card.azul .card-val{color:var(--azul)}
-.section-title{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--texto)}
-.problema-card{
-  background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;
-  border-left:4px solid var(--vermelho);box-shadow:0 1px 5px rgba(0,0,0,.06)
-}
-.problema-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.problema-titulo{font-weight:700;font-size:13px}
-.problema-desc{font-size:12px;color:var(--muted);margin-top:3px}
-.badge{
-  display:inline-block;padding:2px 8px;border-radius:20px;
-  font-size:11px;font-weight:700;letter-spacing:.3px
-}
-.badge-verde{background:#e8f5e9;color:#1b5e20}
-.badge-vermelho{background:#ffebee;color:#c62828}
-.badge-amarelo{background:#fff8e1;color:#e65100}
-.badge-azul{background:#e3f2fd;color:#1565c0}
-.badge-cinza{background:#f5f5f5;color:#555}
-table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{
-  background:#f8f9fa;padding:10px 8px;text-align:left;
-  font-weight:700;font-size:11px;color:var(--muted);
-  text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--borda)
-}
-tbody tr{border-bottom:1px solid var(--borda);transition:.15s}
-tbody tr:hover{background:#f9fbff}
-tbody td{padding:9px 8px;vertical-align:middle}
-.perc-wrap{display:flex;align-items:center;gap:6px;min-width:90px}
-.perc-bar{flex:1;height:6px;background:#e0e0e0;border-radius:3px;overflow:hidden}
-.perc-fill{height:100%;border-radius:3px;transition:.3s}
-.perc-verde{background:var(--verde3)}
-.perc-amarelo{background:var(--amarelo)}
-.perc-vermelho{background:var(--vermelho)}
-.perc-text{font-size:11px;font-weight:700;min-width:28px}
-.filtros-box{
-  background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;
-  border:1px solid var(--borda);display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end
-}
-.filtros-box label{font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px}
-.filtros-box input,.filtros-box select{
-  padding:7px 10px;border:1px solid var(--borda);border-radius:8px;
-  font-size:13px;background:#fff;outline:none;
-}
-.filtros-box input:focus,.filtros-box select:focus{border-color:var(--verde2)}
-.btn{
-  padding:8px 16px;border:none;border-radius:8px;cursor:pointer;
-  font-size:13px;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px
-}
-.btn-primary{background:var(--verde2);color:#fff}
-.btn-primary:hover{background:var(--verde)}
-.btn-secondary{background:#f5f5f5;color:#333;border:1px solid var(--borda)}
-.btn-secondary:hover{background:#e0e0e0}
-.btn-danger{background:#ffebee;color:var(--vermelho);border:1px solid #ffcdd2}
-.btn-danger:hover{background:#ffcdd2}
-.btn-sm{padding:5px 10px;font-size:11px}
-.table-wrap{background:#fff;border-radius:12px;border:1px solid var(--borda);overflow:auto}
-.form-card{background:#fff;border-radius:12px;padding:20px;border:1px solid var(--borda);max-width:700px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-group{display:flex;flex-direction:column;gap:5px}
-.form-group label{font-size:12px;font-weight:700;color:var(--muted)}
-.form-group input,.form-group select,.form-group textarea{
-  padding:9px 12px;border:1px solid var(--borda);border-radius:8px;
-  font-size:13px;outline:none;font-family:inherit;
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--verde2)}
-.form-group textarea{resize:vertical;min-height:70px}
-.form-full{grid-column:1/-1}
-.cond-box{display:none;grid-column:1/-1;padding:12px;background:#fff8f8;border-radius:8px;border:1px solid #ffcdd2}
-.cond-box.show{display:block}
-.toast{
-  position:fixed;bottom:24px;right:24px;background:#333;color:#fff;
-  padding:12px 20px;border-radius:10px;font-size:13px;z-index:9999;
-  transform:translateY(60px);opacity:0;transition:.3s;pointer-events:none
-}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.ok{background:var(--verde2)}
-.toast.err{background:var(--vermelho)}
-.empty{text-align:center;color:var(--muted);padding:32px;font-size:13px}
-.setor-icon{font-size:13px}
-@media(max-width:600px){
-  .cards-grid{grid-template-columns:1fr 1fr}
-  .form-grid{grid-template-columns:1fr}
-  .tabs{overflow-x:auto}
-  .tab{white-space:nowrap;font-size:12px;padding:8px 12px}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apontamento de Produção — Megatec Indústria</title>
+  <style>
+    :root {
+      --verde: #2e7d32;
+      --verde-claro: #4caf50;
+      --amarelo: #f9a825;
+      --vermelho: #c62828;
+      --vermelho-claro: #ef5350;
+      --azul: #1565c0;
+      --cinza-fundo: #f4f6f8;
+      --cinza-card: #ffffff;
+      --cinza-borda: #dde1e7;
+      --texto: #1a1a2e;
+      --texto-muted: #6b7280;
+      --sombra: 0 2px 8px rgba(0,0,0,0.08);
+      --sombra-hover: 0 6px 20px rgba(0,0,0,0.14);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--cinza-fundo);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #388e3c 100%);
+      color: #fff;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-circle {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .header-title { font-size: 18px; font-weight: 700; letter-spacing: .3px; }
+    .header-sub { font-size: 11px; opacity: .75; margin-top: 1px; }
+
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-notif {
+      position: relative;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      border-radius: 8px;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background .2s;
+    }
+    .btn-notif:hover { background: rgba(255,255,255,0.22); }
+    .notif-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      background: var(--vermelho-claro);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      min-width: 18px;
+      text-align: center;
+    }
+    .header-user {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ── NAV TABS ── */
+    .nav-tabs {
+      background: #fff;
+      border-bottom: 1px solid var(--cinza-borda);
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all .2s;
+      user-select: none;
+    }
+    .nav-tab:hover { color: var(--verde); }
+    .nav-tab.active {
+      color: var(--verde);
+      border-bottom-color: var(--verde);
+    }
+
+    /* ── MAIN ── */
+    main {
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ── PAGE SECTIONS ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── SECTION TITLE ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--texto);
+    }
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--texto-muted);
+      margin-top: 2px;
+    }
+
+    /* ── KPI CARDS ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: var(--cinza-card);
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: var(--sombra);
+      border-left: 4px solid var(--verde);
+      transition: box-shadow .2s;
+    }
+    .kpi-card:hover { box-shadow: var(--sombra-hover); }
+    .kpi-card.amarelo { border-left-color: var(--amarelo); }
+    .kpi-card.vermelho { border-left-color: var(--vermelho-claro); }
+    .kpi-card.azul { border-left-color: var(--azul); }
+    .kpi-label { font-size: 11px; font-weight: 600; color: var(--texto-muted); text-transform: uppercase; letter-spacing: .5px; }
+    .kpi-value { font-size: 32px; font-weight: 800; margin: 6px 0 4px; line-height: 1; }
+    .kpi-sub { font-size: 12px; color: var(--texto-muted); }
+
+    /* ── SEMANA SELECTOR ── */
+    .week-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 10px;
+      padding: 8px 14px;
+      box-shadow: var(--sombra);
+    }
+    .week-btn {
+      background: none;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 6px;
+      width: 30px; height: 30px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .week-btn:hover { background: var(--verde); color: #fff; border-color: var(--verde); }
+    .week-label { font-size: 13px; font-weight: 600; min-width: 140px; text-align: center; }
+
+    /* ── GRID SEMANA ── */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .day-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    .day-card:hover { box-shadow: var(--sombra-hover); }
+    .day-header {
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: #fff;
+      background: var(--verde);
+    }
+    .day-header.hoje { background: var(--azul); }
+    .day-items { padding: 10px; min-height: 80px; }
+    .day-item {
+      background: var(--cinza-fundo);
+      border-radius: 7px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      border-left: 3px solid var(--verde);
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .day-item:hover { background: #e8f5e9; }
+    .day-item.problema { border-left-color: var(--vermelho-claro); }
+    .day-item.atencao { border-left-color: var(--amarelo); }
+    .day-item-cliente { font-weight: 700; color: var(--texto); }
+    .day-item-produto { color: var(--texto-muted); font-size: 11px; margin-top: 2px; }
+
+    /* ── TABELA DE ORDENS ── */
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--cinza-borda);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .card-title { font-size: 15px; font-weight: 700; }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-input {
+      border: 1px solid var(--cinza-borda);
+      border-radius: 7px;
+      padding: 7px 12px;
+      font-size: 13px;
+      outline: none;
+      transition: border .2s;
+      background: var(--cinza-fundo);
+    }
+    .filter-input:focus { border-color: var(--verde); background: #fff; }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary { background: var(--verde); color: #fff; }
+    .btn-primary:hover { background: var(--verde-claro); }
+    .btn-danger { background: var(--vermelho); color: #fff; }
+    .btn-danger:hover { background: var(--vermelho-claro); }
+    .btn-warning { background: var(--amarelo); color: #fff; }
+    .btn-outline {
+      background: transparent;
+      color: var(--verde);
+      border: 1.5px solid var(--verde);
+    }
+    .btn-outline:hover { background: var(--verde); color: #fff; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: #f8fafc;
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--texto-muted);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      border-bottom: 1px solid var(--cinza-borda);
+      white-space: nowrap;
+    }
+    td {
+      padding: 11px 14px;
+      font-size: 13px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    /* ── STATUS BADGE ── */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    .badge-verde { background: #e8f5e9; color: var(--verde); }
+    .badge-amarelo { background: #fff8e1; color: #e65100; }
+    .badge-vermelho { background: #ffebee; color: var(--vermelho); }
+    .badge-azul { background: #e3f2fd; color: var(--azul); }
+    .badge-cinza { background: #f1f5f9; color: #64748b; }
+
+    /* ── PIPELINE (LINHA DE PRODUÇÃO) ── */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .pipeline-col {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      overflow: hidden;
+      min-height: 300px;
+    }
+    .pipeline-header {
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pipeline-header.corte { background: #37474f; }
+    .pipeline-header.premontagem { background: #1565c0; }
+    .pipeline-header.montagem { background: #6a1b9a; }
+    .pipeline-header.pintura { background: #e65100; }
+    .pipeline-header.acabamento { background: var(--verde); }
+
+    .pipeline-count {
+      background: rgba(255,255,255,0.25);
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+    .pipeline-items { padding: 10px; }
+    .pipeline-card {
+      background: var(--cinza-fundo);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      border-left: 3px solid var(--verde);
+      cursor: pointer;
+      transition: all .2s;
+      position: relative;
+    }
+    .pipeline-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); transform: translateY(-1px); }
+    .pipeline-card.parado { border-left-color: var(--vermelho-claro); background: #fff8f8; }
+    .pipeline-card.atencao { border-left-color: var(--amarelo); background: #fffdf4; }
+    .pipeline-card-os { font-weight: 800; color: var(--texto); }
+    .pipeline-card-cliente { color: var(--texto-muted); margin-top: 2px; }
+    .pipeline-card-produto { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+    .pipeline-card-icons {
+      position: absolute;
+      top: 8px; right: 8px;
+      display: flex; gap: 4px;
+    }
+    .icon-alert {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .icon-material { background: #ffebee; color: var(--vermelho); }
+    .icon-engenharia { background: #fff8e1; color: #e65100; }
+
+    /* ── APONTAMENTO FORM ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 12px; font-weight: 700; color: var(--texto-muted); text-transform: uppercase; letter-spacing: .4px; }
+    input, select, textarea {
+      border: 1.5px solid var(--cinza-borda);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border .2s;
+      background: #fff;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--verde); box-shadow: 0 0 0 3px rgba(46,125,50,.08); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .form-actions {
+      padding: 16px 20px;
+      border-top: 1px solid var(--cinza-borda);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* ── PROBLEMA CARD ── */
+    .problema-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .problema-item {
+      background: #fff8f8;
+      border: 1.5px solid #fecaca;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .problema-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .problema-icon.material { background: #ffebee; }
+    .problema-icon.engenharia { background: #fff8e1; }
+    .problema-info { flex: 1; }
+    .problema-titulo { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+    .problema-desc { font-size: 12px; color: var(--texto-muted); }
+    .problema-meta {
+      font-size: 11px;
+      color: var(--texto-muted);
+      margin-top: 6px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .problema-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* ── MODAL / POPUP ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; animation: fadeIn .2s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp .2s;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--cinza-borda);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title { font-size: 17px; font-weight: 700; }
+    .modal-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: var(--cinza-fundo);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: #fee2e2; color: var(--vermelho); }
+    .modal-body { padding: 20px 24px; }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--cinza-borda);
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+
+    /* ── NOTIFICAÇÃO TOAST ── */
+    .toast-container {
+      position: fixed;
+      top: 80px; right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.18);
+      padding: 14px 16px;
+      max-width: 360px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border-left: 4px solid var(--vermelho-claro);
+      animation: slideIn .3s ease;
+    }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .toast-icon { font-size: 22px; flex-shrink: 0; }
+    .toast-content { flex: 1; }
+    .toast-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .toast-msg { font-size: 12px; color: var(--texto-muted); }
+    .toast-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--texto-muted); font-size: 16px; flex-shrink: 0;
+      padding: 0 2px;
+    }
+
+    /* ── NOTIF PAINEL ── */
+    .notif-panel {
+      position: fixed;
+      top: 64px; right: 0;
+      width: 360px;
+      height: calc(100vh - 64px);
+      background: #fff;
+      box-shadow: -4px 0 24px rgba(0,0,0,.12);
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+    }
+    .notif-panel.active { display: flex; }
+    .notif-panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--cinza-borda);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .notif-panel-title { font-size: 15px; font-weight: 700; }
+    .notif-panel-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 20px; color: var(--texto-muted);
+    }
+    .notif-list { flex: 1; overflow-y: auto; padding: 12px; }
+    .notif-item {
+      background: var(--cinza-fundo);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      border-left: 3px solid var(--vermelho-claro);
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .notif-item:hover { background: #fee2e2; }
+    .notif-item.resolvido { border-left-color: var(--verde); opacity: .6; }
+    .notif-item-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .notif-item-sub { font-size: 12px; color: var(--texto-muted); }
+    .notif-item-time { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+
+    /* ── TIMELINE ETAPAS ── */
+    .etapas-flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 20px 20px;
+      overflow-x: auto;
+    }
+    .etapa-box {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      position: relative;
+    }
+    .etapa-box:not(:last-child)::after {
+      content: '▶';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--cinza-borda);
+      font-size: 16px;
+      z-index: 1;
+    }
+    .etapa-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      border: 3px solid;
+    }
+    .etapa-circle.concluido { background: #e8f5e9; border-color: var(--verde); }
+    .etapa-circle.ativo { background: #e3f2fd; border-color: var(--azul); }
+    .etapa-circle.parado { background: #ffebee; border-color: var(--vermelho-claro); }
+    .etapa-circle.aguardando { background: var(--cinza-fundo); border-color: var(--cinza-borda); }
+    .etapa-nome { font-size: 11px; font-weight: 700; color: var(--texto-muted); text-transform: uppercase; }
+    .etapa-qtd { font-size: 20px; font-weight: 800; color: var(--texto); margin: 2px 0; }
+
+    /* ── RESPONSIVIDADE ── */
+    @media (max-width: 900px) {
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+      .week-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      main { padding: 12px; }
+      .pipeline { grid-template-columns: 1fr; }
+      .week-grid { grid-template-columns: 1fr; }
+      header { padding: 0 12px; }
+      .header-title { font-size: 14px; }
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar-wrap {
+      background: #f1f5f9;
+      border-radius: 10px;
+      height: 8px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 10px;
+      background: var(--verde);
+      transition: width .4s;
+    }
+    .progress-bar.amarelo { background: var(--amarelo); }
+    .progress-bar.vermelho { background: var(--vermelho-claro); }
+
+    /* ── MISC ── */
+    .divider { height: 1px; background: var(--cinza-borda); margin: 20px 0; }
+    .text-muted { color: var(--texto-muted); font-size: 12px; }
+    .mt-4 { margin-top: 4px; }
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--texto-muted);
+    }
+    .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state-text { font-size: 14px; }
+  </style>
 </head>
 <body>
 
+<!-- ══════════════ HEADER ══════════════ -->
 <header>
-  <div class="brand">
-    <div class="brand-logo">M</div>
+  <div class="header-brand">
+    <div class="logo-circle">M</div>
     <div>
-      <div class="brand-title">Megatec Indústria</div>
-      <div class="brand-sub">Apontamento de Produção</div>
+      <div class="header-title">Megatec Indústria</div>
+      <div class="header-sub">Controle de Produção</div>
     </div>
   </div>
-  <div class="header-date" id="lblHoje"></div>
+  <div class="header-actions">
+    <button class="btn-notif" onclick="toggleNotifPanel()" title="Notificações">
+      🔔
+      <span class="notif-badge" id="notifBadge">3</span>
+    </button>
+    <div class="header-user">👤 Operador</div>
+  </div>
 </header>
 
-<div class="tabs">
-  <button class="tab ativo" onclick="mudarAba('dashboard')">📊 Dashboard</button>
-  <button class="tab" onclick="mudarAba('producao')">🏭 Produção</button>
-  <button class="tab" onclick="mudarAba('problemas')">⚠️ Problemas</button>
-  <button class="tab" onclick="mudarAba('historico')">📋 Histórico</button>
-  <button class="tab" onclick="mudarAba('apontamento')">➕ Novo Apontamento</button>
-</div>
-
-<!-- DASHBOARD -->
-<div class="pagina ativa" id="pg-dashboard">
-  <div class="cards-grid" id="cards-dashboard"></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap">
-    <div>
-      <div class="section-title">⚠️ Problemas em Aberto</div>
-      <div id="lista-problemas-dash"></div>
-    </div>
-    <div>
-      <div class="section-title">📈 Evolução por Setor (último apontamento)</div>
-      <div id="setor-status"></div>
-    </div>
+<!-- ══════════════ NOTIFICAÇÃO PAINEL ══════════════ -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-panel-header">
+    <span class="notif-panel-title">🔔 Pendências / Alertas</span>
+    <button class="notif-panel-close" onclick="toggleNotifPanel()">✕</button>
+  </div>
+  <div class="notif-list" id="notifList">
+    <!-- preenchido via JS -->
   </div>
 </div>
 
-<!-- PRODUÇÃO -->
-<div class="pagina" id="pg-producao">
-  <div class="filtros-box">
-    <div>
-      <label>Setor</label>
-      <select id="f-setor" onchange="filtrarProducao()">
-        <option value="">Todos</option>
-        <option>Corte e Dobra</option>
-        <option>Pré Montagem</option>
-        <option>Montagem</option>
-        <option>Pintura</option>
-        <option>Acabamento</option>
-      </select>
-    </div>
-    <div>
-      <label>Produto</label>
-      <input id="f-produto" placeholder="Buscar produto..." oninput="filtrarProducao()"/>
-    </div>
-    <div>
-      <label>Cliente</label>
-      <input id="f-cliente" placeholder="Buscar cliente..." oninput="filtrarProducao()"/>
-    </div>
-    <div>
-      <label>Data</label>
-      <input type="date" id="f-data" onchange="filtrarProducao()"/>
-    </div>
-    <button class="btn btn-secondary" onclick="limparFiltros()">✕ Limpar</button>
-    <button class="btn btn-primary" onclick="exportarCSV()">⬇️ Exportar CSV</button>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
-          <th>Nº</th><th>Evolução</th><th>Material</th><th>Projeto</th><th>Obs</th>
-        </tr>
-      </thead>
-      <tbody id="tabela-producao"></tbody>
-    </table>
-  </div>
+<!-- ══════════════ TABS ══════════════ -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showPage('dashboard')">📊 Dashboard</div>
+  <div class="nav-tab" onclick="showPage('linha')">🏭 Linha de Produção</div>
+  <div class="nav-tab" onclick="showPage('ordens')">📋 Ordens de Produção</div>
+  <div class="nav-tab" onclick="showPage('apontamento')">✏️ Apontamento</div>
+  <div class="nav-tab" onclick="showPage('problemas')">⚠️ Problemas</div>
 </div>
 
-<!-- PROBLEMAS -->
-<div class="pagina" id="pg-problemas">
-  <div class="section-title" style="margin-bottom:16px">⚠️ Todos os Problemas Registrados</div>
-  <div id="lista-problemas-full"></div>
-</div>
+<!-- ══════════════ MAIN ══════════════ -->
+<main>
 
-<!-- HISTÓRICO -->
-<div class="pagina" id="pg-historico">
-  <div class="filtros-box">
-    <div>
-      <label>Data Inicial</label>
-      <input type="date" id="h-ini" onchange="filtrarHistorico()"/>
-    </div>
-    <div>
-      <label>Data Final</label>
-      <input type="date" id="h-fim" onchange="filtrarHistorico()"/>
-    </div>
-    <div>
-      <label>Setor</label>
-      <select id="h-setor" onchange="filtrarHistorico()">
-        <option value="">Todos</option>
-        <option>Corte e Dobra</option>
-        <option>Pré Montagem</option>
-        <option>Montagem</option>
-        <option>Pintura</option>
-        <option>Acabamento</option>
-      </select>
-    </div>
-    <div>
-      <label>Produto</label>
-      <input id="h-produto" placeholder="Filtrar produto..." oninput="filtrarHistorico()"/>
-    </div>
-    <button class="btn btn-secondary" onclick="limparFiltrosHist()">✕ Limpar</button>
-    <button class="btn btn-primary" onclick="exportarCSVHist()">⬇️ Exportar CSV</button>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Data</th><th>Setor</th><th>Produto</th><th>Cliente</th>
-          <th>Nº</th><th>Evolução</th><th>Material?</th><th>Projeto?</th><th>Obs</th>
-        </tr>
-      </thead>
-      <tbody id="tabela-historico"></tbody>
-    </table>
-  </div>
-</div>
+  <!-- ╔══════ PAGE: DASHBOARD ══════╗ -->
+  <div class="page active" id="page-dashboard">
 
-<!-- APONTAMENTO -->
-<div class="pagina" id="pg-apontamento">
-  <div class="form-card">
-    <div class="section-title" style="margin-bottom:16px">➕ Novo Apontamento de Produção</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Data *</label>
-        <input type="date" id="fData"/>
+    <div class="section-header">
+      <div>
+        <div class="section-title">Dashboard Semanal</div>
+        <div class="section-subtitle">Visão geral da produção — semana atual</div>
       </div>
-      <div class="form-group">
-        <label>Setor *</label>
-        <select id="fSetor">
-          <option value="">Selecione...</option>
-          <option>Corte e Dobra</option>
-          <option>Pré Montagem</option>
-          <option>Montagem</option>
-          <option>Pintura</option>
-          <option>Acabamento</option>
-        </select>
+      <div class="week-selector">
+        <button class="week-btn" onclick="changeWeek(-1)">◀</button>
+        <span class="week-label" id="weekLabel">Semana 47 — 2025</span>
+        <button class="week-btn" onclick="changeWeek(1)">▶</button>
       </div>
-      <div class="form-group">
-        <label>Produto *</label>
-        <input id="fProduto" placeholder="Ex: Transbordo MGT 22.000"/>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Ordens na Semana</div>
+        <div class="kpi-value" style="color:var(--verde)">12</div>
+        <div class="kpi-sub">↑ 2 vs semana anterior</div>
       </div>
-      <div class="form-group">
-        <label>Cliente *</label>
-        <input id="fCliente" placeholder="Ex: Zilor"/>
+      <div class="kpi-card amarelo">
+        <div class="kpi-label">Em Andamento</div>
+        <div class="kpi-value" style="color:var(--amarelo)">7</div>
+        <div class="kpi-sub">3 setores ativos</div>
       </div>
-      <div class="form-group">
-        <label>Número do Equipamento</label>
-        <input id="fNumero" placeholder="Ex: 1, Lote 5..."/>
+      <div class="kpi-card vermelho">
+        <div class="kpi-label">Com Problema</div>
+        <div class="kpi-value" style="color:var(--vermelho-claro)">3</div>
+        <div class="kpi-sub">Material: 2 | Engenharia: 1</div>
       </div>
-      <div class="form-group">
-        <label>% de Evolução</label>
-        <input type="number" id="fPerc" min="0" max="100" placeholder="0 a 100"/>
+      <div class="kpi-card azul">
+        <div class="kpi-label">Concluídas</div>
+        <div class="kpi-value" style="color:var(--azul)">5</div>
+        <div class="kpi-sub">41% da semana</div>
       </div>
-      <div class="form-group">
-        <label>Falta de Material?</label>
-        <select id="fMaterial" onchange="toggleMaterial()">
-          <option value="Não">Não</option>
-          <option value="Sim">Sim</option>
-        </select>
+      <div class="kpi-card">
+        <div class="kpi-label">Prev. Entrega</div>
+        <div class="kpi-value" style="color:var(--verde);font-size:22px">87%</div>
+        <div class="kpi-sub">no prazo</div>
       </div>
-      <div class="form-group">
-        <label>Problema de Projeto?</label>
-        <select id="fProjeto" onchange="toggleProjeto()">
-          <option value="Não">Não</option>
-          <option value="Sim">Sim</option>
-        </select>
+    </div>
+
+    <!-- Resumo etapas -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="card-header">
+        <span class="card-title">🔄 Status por Etapa</span>
+        <span class="text-muted">Quantidade de ordens em cada etapa</span>
       </div>
-      <div class="cond-box" id="boxMaterial">
-        <div class="form-group">
-          <label>Descreva o problema de material</label>
-          <textarea id="fMatDesc" placeholder="Ex: Falta chapa 2,65mm..."></textarea>
+      <div class="etapas-flow">
+        <div class="etapa-box">
+          <div class="etapa-circle ativo">✂️</div>
+          <div class="etapa-qtd">3</div>
+          <div class="etapa-nome">Corte & Dobra</div>
+        </div>
+        <div class="etapa-box">
+          <div class="etapa-circle ativo">🔩</div>
+          <div class="etapa-qtd">2</div>
+          <div class="etapa-nome">Pré-Montagem</div>
+        </div>
+        <div class="etapa-box">
+          <div class="etapa-circle parado">🔧</div>
+          <div class="etapa-qtd">2</div>
+          <div class="etapa-nome">Montagem</div>
+        </div>
+        <div class="etapa-box">
+          <div class="etapa-circle ativo">🎨</div>
+          <div class="etapa-qtd">1</div>
+          <div class="etapa-nome">Pintura</div>
+        </div>
+        <div class="etapa-box">
+          <div class="etapa-circle concluido">✅</div>
+          <div class="etapa-qtd">4</div>
+          <div class="etapa-nome">Acabamento</div>
         </div>
       </div>
-      <div class="cond-box" id="boxProjeto">
-        <div class="form-group">
-          <label>Descreva o problema de projeto</label>
-          <textarea id="fProjDesc" placeholder="Ex: Projeto incompleto..."></textarea>
+    </div>
+
+    <!-- Grade semanal -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📅 Grade da Semana — Entrada na Linha</span>
+        <span class="text-muted">Clique em um produto para detalhes</span>
+      </div>
+      <div class="week-grid" style="padding:16px">
+        <div class="day-card">
+          <div class="day-header">Seg 10/11</div>
+          <div class="day-items">
+            <div class="day-item" onclick="showDetalheOS('OS-2847')">
+              <div class="day-item-cliente">Raízen</div>
+              <div class="day-item-produto">Transbordo 20T — OS-2847</div>
+            </div>
+            <div class="day-item" onclick="showDetalheOS('OS-2848')">
+              <div class="day-item-cliente">Cosan</div>
+              <div class="day-item-produto">Semirreboque — OS-2848</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-card">
+          <div class="day-header hoje">Ter 11/11</div>
+          <div class="day-items">
+            <div class="day-item problema" onclick="showDetalheOS('OS-2849')">
+              <div class="day-item-cliente">São Martinho ⚠️</div>
+              <div class="day-item-produto">Rodocarga — OS-2849</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-card">
+          <div class="day-header">Qua 12/11</div>
+          <div class="day-items">
+            <div class="day-item" onclick="showDetalheOS('OS-2850')">
+              <div class="day-item-cliente">Virgolino</div>
+              <div class="day-item-produto">Tanque Pipa — OS-2850</div>
+            </div>
+            <div class="day-item atencao" onclick="showDetalheOS('OS-2851')">
+              <div class="day-item-cliente">Biosev 🔶</div>
+              <div class="day-item-produto">Aplicador Vinhaça — OS-2851</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-card">
+          <div class="day-header">Qui 13/11</div>
+          <div class="day-items">
+            <div class="day-item" onclick="showDetalheOS('OS-2852')">
+              <div class="day-item-cliente">CMAA</div>
+              <div class="day-item-produto">Carroceria Prancha — OS-2852</div>
+            </div>
+          </div>
+        </div>
+        <div class="day-card">
+          <div class="day-header">Sex 14/11</div>
+          <div class="day-items">
+            <div class="day-item" onclick="showDetalheOS('OS-2853')">
+              <div class="day-item-cliente">Zilor</div>
+              <div class="day-item-produto">Transbordo 15T — OS-2853</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="form-group form-full">
-        <label>Observações Gerais</label>
-        <textarea id="fObs" placeholder="Informações adicionais..."></textarea>
+    </div>
+
+  </div>
+  <!-- ╚══════════════════════════════╝ -->
+
+  <!-- ╔══════ PAGE: LINHA DE PRODUÇÃO ══════╗ -->
+  <div class="page" id="page-linha">
+    <div class="section-header">
+      <div>
+        <div class="section-title">🏭 Linha de Produção</div>
+        <div class="section-subtitle">Visualização em tempo real do fluxo de fabricação</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <span class="badge badge-vermelho">🔴 Parado: 2</span>
+        <span class="badge badge-amarelo">🟡 Atenção: 1</span>
+        <span class="badge badge-verde">🟢 OK: 9</span>
       </div>
     </div>
-    <div style="margin-top:16px;display:flex;gap:10px">
+
+    <!-- Pipeline -->
+    <div class="pipeline" id="pipelineBoard">
+      <!-- preenchido via JS -->
+    </div>
+
+    <!-- Legenda -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">📖 Legenda</span></div>
+      <div style="display:flex;gap:20px;padding:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:14px;height:14px;border-radius:3px;background:#ffebee;border:2px solid var(--vermelho-claro)"></div>
+          <span class="text-muted">Parado — Problema</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:14px;height:14px;border-radius:3px;background:#fffdf4;border:2px solid var(--amarelo)"></div>
+          <span class="text-muted">Atenção — Risco</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:14px;height:14px;border-radius:3px;background:#f4f6f8;border:2px solid #cbd5e1"></div>
+          <span class="text-muted">Em andamento normal</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:#ffebee;color:var(--vermelho);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">M</span>
+          <span class="text-muted">Problema de Material</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="background:#fff8e1;color:#e65100;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">E</span>
+          <span class="text-muted">Problema de Engenharia</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ╚═══════════════════════════════════╝ -->
+
+  <!-- ╔══════ PAGE: ORDENS ══════╗ -->
+  <div class="page" id="page-ordens">
+    <div class="section-header">
+      <div>
+        <div class="section-title">📋 Ordens de Produção</div>
+        <div class="section-subtitle">Listagem completa com filtros</div>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('apontamento')">+ Nova Ordem</button>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="filters">
+          <input class="filter-input" type="text" placeholder="🔍 Buscar OS, cliente..." id="searchInput" oninput="filtrarOrdens()">
+          <select class="filter-input" id="filterEtapa" onchange="filtrarOrdens()">
+            <option value="">Todas as Etapas</option>
+            <option>Corte e Dobra</option>
+            <option>Pré-Montagem</option>
+            <option>Montagem</option>
+            <option>Pintura</option>
+            <option>Acabamento/Finalização</option>
+          </select>
+          <select class="filter-input" id="filterStatus" onchange="filtrarOrdens()">
+            <option value="">Todos os Status</option>
+            <option>Em andamento</option>
+            <option>Parado</option>
+            <option>Concluído</option>
+            <option>Aguardando</option>
+          </select>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table id="tabelaOrdens">
+          <thead>
+            <tr>
+              <th>OS</th>
+              <th>Cliente</th>
+              <th>Produto</th>
+              <th>Etapa Atual</th>
+              <th>Status</th>
+              <th>Prev. Início</th>
+              <th>Prev. Entrega</th>
+              <th>Progresso</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaOrdensBody">
+            <!-- preenchido via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- ╚══════════════════════════╝ -->
+
+  <!-- ╔══════ PAGE: APONTAMENTO ══════╗ -->
+  <div class="page" id="page-apontamento">
+    <div class="section-header">
+      <div>
+        <div class="section-title">✏️ Apontamento de Produção</div>
+        <div class="section-subtitle">Registre o andamento, avance etapas e relate problemas</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><span class="card-title">📝 Dados da Ordem</span></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Número da OS</label>
+          <input type="text" id="ap_os" placeholder="Ex: OS-2849">
+        </div>
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" id="ap_cliente" placeholder="Ex: Raízen">
+        </div>
+        <div class="form-group">
+          <label>Produto / Implemento</label>
+          <select id="ap_produto">
+            <option value="">Selecione...</option>
+            <option>Transbordo 15T</option>
+            <option>Transbordo 20T</option>
+            <option>Semirreboque Plantio</option>
+            <option>Rodocarga</option>
+            <option>Aplicador de Vinhaça</option>
+            <option>Tanque Pipa</option>
+            <option>Carroceria Plataforma Prancha</option>
+            <option>Sistema de Enlonamento</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Etapa Atual</label>
+          <select id="ap_etapa">
+            <option>Corte e Dobra</option>
+            <option>Pré-Montagem</option>
+            <option>Montagem</option>
+            <option>Pintura</option>
+            <option>Acabamento/Finalização</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Data de Início</label>
+          <input type="date" id="ap_inicio">
+        </div>
+        <div class="form-group">
+          <label>Previsão de Entrega</label>
+          <input type="date" id="ap_entrega">
+        </div>
+        <div class="form-group">
+          <label>Responsável</label>
+          <input type="text" id="ap_responsavel" placeholder="Nome do operador">
+        </div>
+        <div class="form-group">
+          <label>% Conclusão</label>
+          <input type="number" id="ap_perc" min="0" max="100" placeholder="0 a 100">
+        </div>
+        <div class="form-group full">
+          <label>Observações</label>
+          <textarea id="ap_obs" placeholder="Descreva o andamento da etapa..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problema -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><span class="card-title">⚠️ Registrar Problema (Parada)</span></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Há problema de parada?</label>
+          <select id="ap_temProblema" onchange="toggleProblema()">
+            <option value="nao">Não — produção normal</option>
+            <option value="sim">Sim — há parada</option>
+          </select>
+        </div>
+        <div class="form-group" id="grp_tipoProblema" style="display:none">
+          <label>Tipo do Problema</label>
+          <select id="ap_tipoProblema">
+            <option>Problema de Material</option>
+            <option>Problema de Engenharia/Projeto</option>
+            <option>Problema de Mão de Obra</option>
+            <option>Equipamento/Ferramenta</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group full" id="grp_descProblema" style="display:none">
+          <label>Descrição do Problema</label>
+          <textarea id="ap_descProblema" placeholder="Descreva detalhadamente o problema que causou a parada..."></textarea>
+        </div>
+        <div class="form-group" id="grp_responsavelProblema" style="display:none">
+          <label>Responsável pela Resolução</label>
+          <input type="text" id="ap_respProblema" placeholder="Setor ou pessoa responsável">
+        </div>
+      </div>
+    </div>
+
+    <!-- Avançar etapa -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><span class="card-title">✅ Liberação para Próxima Etapa</span></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Etapa Concluída?</label>
+          <select id="ap_etapaConcluida">
+            <option value="nao">Não — em andamento</option>
+            <option value="sim">Sim — liberar para próxima etapa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Aprovado por</label>
+          <input type="text" id="ap_aprovador" placeholder="Supervisor responsável">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions" style="padding:0 0 24px">
+      <button class="btn btn-outline" onclick="limparApontamento()">Limpar</button>
       <button class="btn btn-primary" onclick="salvarApontamento()">💾 Salvar Apontamento</button>
-      <button class="btn btn-secondary" onclick="limparForm()">✕ Limpar</button>
+    </div>
+  </div>
+  <!-- ╚══════════════════════════════╝ -->
+
+  <!-- ╔══════ PAGE: PROBLEMAS ══════╗ -->
+  <div class="page" id="page-problemas">
+    <div class="section-header">
+      <div>
+        <div class="section-title">⚠️ Gestão de Problemas</div>
+        <div class="section-subtitle">Paradas na linha de produção — pendentes de resolução</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <span class="badge badge-vermelho" id="qtdProblemasAbertos">● 3 abertos</span>
+        <span class="badge badge-verde" id="qtdProblemasResolvidos">✓ 2 resolvidos</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🔴 Problemas em Aberto</span>
+        <div class="filters">
+          <select class="filter-input" id="filtroTipoProb">
+            <option value="">Todos os tipos</option>
+            <option>Problema de Material</option>
+            <option>Problema de Engenharia/Projeto</option>
+          </select>
+        </div>
+      </div>
+      <div class="problema-list" id="listaProblemas">
+        <!-- preenchido via JS -->
+      </div>
+    </div>
+  </div>
+  <!-- ╚═══════════════════════╝ -->
+
+</main>
+
+<!-- ══════════════ MODAL DETALHE OS ══════════════ -->
+<div class="modal-overlay" id="modalDetalhe">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalDetalheTitle">Detalhes da OS</span>
+      <button class="modal-close" onclick="closeModal('modalDetalhe')">✕</button>
+    </div>
+    <div class="modal-body" id="modalDetalheBody">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalDetalhe')">Fechar</button>
+      <button class="btn btn-primary" onclick="closeModal('modalDetalhe');showPage('apontamento')">✏️ Apontar</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ══════════════ MODAL PROBLEMA LIBERAÇÃO ══════════════ -->
+<div class="modal-overlay" id="modalLiberacao">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🔓 Liberar Etapa</span>
+      <button class="modal-close" onclick="closeModal('modalLiberacao')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:14px;font-size:14px">
+        Esta ação marca o problema como resolvido e libera a produção para a próxima etapa.
+        Todos os usuários serão notificados.
+      </p>
+      <div class="form-group">
+        <label>Confirmação — Responsável</label>
+        <input type="text" id="lib_responsavel" placeholder="Seu nome para registro">
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label>Ação tomada</label>
+        <textarea id="lib_acao" placeholder="Descreva brevemente o que foi feito para resolver..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modalLiberacao')">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarLiberacao()">✅ Confirmar Liberação</button>
+    </div>
+  </div>
+</div>
 
+<!-- ══════════════ TOAST CONTAINER ══════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ══════════════ JAVASCRIPT ══════════════ -->
 <script>
-// ===== DADOS REAIS DA PLANILHA =====
-const dadosIniciais = [
-  {data:'2025-05-29',setor:'Montagem',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'5',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:20,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Falta cota de assoalho',obs:''},
-  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'Lote 10',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'Lote 10',perc:20,material:'Sim',matDesc:'Faltou chapa 2,65',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Corte e Dobra',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:30,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'Lote 10',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Pintura',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Pintura',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-05-29',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'6',perc:50,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-02',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:70,material:'Sim',matDesc:'Falta de mangueiras hidráulicas',projeto:'Sim',projDesc:'Peças sendo produzidas após início da montagem',obs:''},
-  {data:'2025-06-02',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Falta espelhos, chapa de mancal, chapas de assoalho, tela expandida',projeto:'Sim',projDesc:'Desenho incompleto e com poucas informações',obs:'Fabricação de peças paralelo à montagem'},
-  {data:'2025-06-02',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Faltando arcos amarração para lona, 1 reforço inferior traseiro',projeto:'Sim',projDesc:'Quantidade de arcos desatualizada na ficha técnica',obs:'Hidráulica pronta'},
-  {data:'2025-06-02',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'8',perc:60,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-02',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Só falta colocar placa traseira'},
-  {data:'2025-06-02',setor:'Acabamento',produto:'Semirreboque Aplicador de Vinhaça',cliente:'SJC',num:'1',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Falta fazer furo do fluxômetro na tubulação de inox'},
-  {data:'2025-06-02',setor:'Acabamento',produto:'Semirreboque Aplicador de Vinhaça',cliente:'SJC',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Montagem pronta, falta pintar para por tanque e finalizar'},
-  {data:'2025-06-02',setor:'Acabamento',produto:'Bitrem Transbordo Traseiro',cliente:'SJC',num:'2',perc:10,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Iniciar finalização 03/06'},
-  {data:'2025-06-02',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'10',perc:10,material:'Sim',matDesc:'Falta matéria prima no corte/dobra',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-02',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'10',perc:90,material:'Sim',matDesc:'Matéria prima para produzir os cabeçalhos',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-03',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras hidráulicas, Espigão 2"',projeto:'Sim',projDesc:'Projeto incompleto',obs:''},
-  {data:'2025-06-03',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:60,material:'Sim',matDesc:'Espelhos 2,65 caixa, Espelhos mancal de giro, Chapas do assoalho',projeto:'Sim',projDesc:'Projeto faltando informações',obs:'Frente parada'},
-  {data:'2025-06-03',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:90,material:'Sim',matDesc:'Falta suportes engraxadeira duplo, Reforço inferior traseiro, Arcos de lona',projeto:'Não',projDesc:'',obs:'Aguardando pintura'},
-  {data:'2025-06-03',setor:'Acabamento',produto:'Carroceria Prancha',cliente:'Atvos Bioenergia',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-03',setor:'Acabamento',produto:'Rodocargas',cliente:'Grupo Vamos (Tereos)',num:'4',perc:50,material:'Sim',matDesc:'Colocar pistão do fominha',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-09',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Jose Ricardo Fontanari',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Foi preciso trocar o módulo'},
-  {data:'2025-06-09',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'2',perc:50,material:'Sim',matDesc:'Mesma situação 05/06',projeto:'Sim',projDesc:'Projeto faltando informações',obs:'Produto parado'},
-  {data:'2025-06-11',setor:'Montagem',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'8',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-12',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'4',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-12',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'7',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-17',setor:'Montagem',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-17',setor:'Acabamento',produto:'Rodomuda',cliente:'Grupo Vamos (Bevap)',num:'8',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Finalizada e entregue'},
-  {data:'2025-06-23',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:60,material:'Sim',matDesc:'Falta de peças',projeto:'Sim',projDesc:'Falta de projeto',obs:''},
-  {data:'2025-06-23',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'2',perc:60,material:'Sim',matDesc:'Falta peças',projeto:'Sim',projDesc:'Falta projeto',obs:''},
-  {data:'2025-06-25',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'1',perc:100,material:'Sim',matDesc:'Montagem de pneus',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-06-30',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'1',perc:100,material:'Sim',matDesc:'Liberado para pintura mas faltando peças',projeto:'Sim',projDesc:'',obs:''},
-  {data:'2025-07-07',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-08',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'Cofco International',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-15',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Zilor',num:'7',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-16',setor:'Acabamento',produto:'Transbordo MGT 13.000',cliente:'Usina São Luiz',num:'5',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-18',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Biopar',num:'3',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-22',setor:'Acabamento',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:80,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-24',setor:'Acabamento',produto:'Rodomuda',cliente:'Gerson Tonani',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-28',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'Rafael Dib',num:'1',perc:40,material:'Sim',matDesc:'Berços de fixação, chapas para fixação guarda corpo, rodas montadas',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-07-30',setor:'Montagem',produto:'Canavieiro Tela Expandida',cliente:'Estoque Megatec',num:'1',perc:90,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-08-01',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Estoque Megatec',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:'Bitola 2,70'},
-  {data:'2025-08-04',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Biopar',num:'7',perc:70,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-08-05',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Santa Adélia',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:''},
-  {data:'2025-08-06',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Rafael Carrilo',num:'1',perc:10,material:'Sim',matDesc:'OP não está completa',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-08-06',setor:'Pré Montagem',produto:'Transbordo MGT 13.000',cliente:'Zé Verdureiro',num:'1',perc:10,material:'Sim',matDesc:'OP não está completa',projeto:'Não',projDesc:'',obs:''},
-  {data:'2025-08-11',setor:'Montagem',produto:'Rodomuda',cliente:'Usina São Luiz',num:'1',perc:10,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-24',setor:'Montagem',produto:'Rodomuda',cliente:'Usina Nardini',num:'9',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-24',setor:'Montagem',produto:'Rodomuda',cliente:'Usina Nardini',num:'10',perc:40,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-25',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:60,material:'Sim',matDesc:'Mola, bomba',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-25',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:60,material:'Sim',matDesc:'Mola, bomba',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-26',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'São João de Araras',num:'13',perc:90,material:'Sim',matDesc:'Falta Chapa 5/16 x 1200 x 2100',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-26',setor:'Corte e Dobra',produto:'Transbordo MGT 22.000',cliente:'Atvos Bioenergia',num:'14',perc:40,material:'Sim',matDesc:'Falta Chapa 5/16 x 1200 x 2100',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-27',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Cocal',num:'15',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-02-27',setor:'Acabamento',produto:'Transbordo MGT 22.000',cliente:'Cocal',num:'16',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-04',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:70,material:'Sim',matDesc:'Tomada de força',projeto:'Sim',projDesc:'',obs:''},
-  {data:'2026-03-05',setor:'Montagem',produto:'Rodomuda',cliente:'Da Mata',num:'7',perc:90,material:'Sim',matDesc:'Reforços da caixa, quadro e chassis',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-07',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:90,material:'Sim',matDesc:'Aguardando eixo da tomada de força',projeto:'Sim',projDesc:'',obs:''},
-  {data:'2026-03-09',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'1',perc:90,material:'Sim',matDesc:'Eixo da tomada de força',projeto:'Sim',projDesc:'',obs:''},
-  {data:'2026-03-09',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Biopar',num:'2',perc:80,material:'Sim',matDesc:'Eixo da tomada de força',projeto:'Sim',projDesc:'',obs:''},
-  {data:'2026-03-10',setor:'Corte e Dobra',produto:'Protótipo SR MGT 32.000',cliente:'Estoque Megatec',num:'1',perc:10,material:'Sim',matDesc:'Falta chapa 2MM x 1200x3000',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-10',setor:'Corte e Dobra',produto:'Protótipo Basculante',cliente:'Estoque Megatec',num:'1',perc:10,material:'Sim',matDesc:'Falta Chapa 3/16x1500x3000',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-16',setor:'Montagem',produto:'Rodocargas',cliente:'Usina Lins',num:'1',perc:60,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-17',setor:'Montagem',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'2',perc:90,material:'Sim',matDesc:'Guarda corpo',projeto:'Sim',projDesc:'Medida da árvore',obs:''},
-  {data:'2026-03-18',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:30,material:'Sim',matDesc:'Guarda corpo',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-19',setor:'Montagem',produto:'Reboque 01+01',cliente:'Pedra Agroindustrial',num:'1',perc:90,material:'Sim',matDesc:'Mola',projeto:'Não',projDesc:'',obs:'Parado aguardando mola para montar suspensão'},
-  {data:'2026-03-20',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-23',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:80,material:'Sim',matDesc:'Mangueiras erradas',projeto:'Sim',projDesc:'Mangueiras erradas, precisa ser feita novas',obs:''},
-  {data:'2026-03-24',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Usina Santa Terezinha',num:'2',perc:70,material:'Sim',matDesc:'Espigão, parafusos de fixação',projeto:'Sim',projDesc:'Mangueiras tamanhos errados',obs:''},
-  {data:'2026-03-25',setor:'Pré Montagem',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'2',perc:80,material:'Não',matDesc:'',projeto:'Sim',projDesc:'Projeto errado',obs:''},
-  {data:'2026-03-26',setor:'Corte e Dobra',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'4',perc:20,material:'Sim',matDesc:'Falta 2 Chapa 5/16 com 6 metros',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-27',setor:'Corte e Dobra',produto:'Reboque 01+01',cliente:'Estoque Megatec',num:'1',perc:90,material:'Sim',matDesc:'Falta Chapa 1/2 com 6 metros',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-27',setor:'Pré Montagem',produto:'Transbordo MGT 22.000',cliente:'Atena',num:'4',perc:100,material:'Sim',matDesc:'Usinagem do cabeçalho móvel quantidade errada',projeto:'Sim',projDesc:'A lista de peças está incorreta com relação à usinagem do cabeçalho',obs:'Revisar projeto'},
-  {data:'2026-03-30',setor:'Acabamento',produto:'Reboque 01+01',cliente:'Pedra Agroindustrial',num:'2',perc:90,material:'Sim',matDesc:'Adaptador macho 22 X 16',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-27',setor:'Montagem',produto:'Transbordo MGT 22.000',cliente:'Atvos Bioenergia',num:'26',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-27',setor:'Montagem',produto:'Transbordo Sobre Chassi',cliente:'Umoe',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-25',setor:'Acabamento',produto:'Aplicador de Vinhaça',cliente:'São João de Araras',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-25',setor:'Acabamento',produto:'Transbordo Sobre Chassi',cliente:'Usina Santa Terezinha',num:'2',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
-  {data:'2026-03-26',setor:'Acabamento',produto:'Rodomuda',cliente:'Fabiano Vargas',num:'1',perc:100,material:'Não',matDesc:'',projeto:'Não',projDesc:'',obs:''},
+// ─── DADOS (simulação base planilha) ───────────────────────────────────────
+const ETAPAS = ['Corte e Dobra', 'Pré-Montagem', 'Montagem', 'Pintura', 'Acabamento/Finalização'];
+const ETAPA_KEYS = ['corte', 'premontagem', 'montagem', 'pintura', 'acabamento'];
+
+let ordens = [
+  { os:'OS-2847', cliente:'Raízen', produto:'Transbordo 20T', etapa:'Corte e Dobra', status:'Em andamento', inicio:'2025-11-10', entrega:'2025-11-25', perc:20, problema:null },
+  { os:'OS-2848', cliente:'Cosan', produto:'Semirreboque Plantio', etapa:'Corte e Dobra', status:'Em andamento', inicio:'2025-11-10', entrega:'2025-11-28', perc:15, problema:null },
+  { os:'OS-2849', cliente:'São Martinho', produto:'Rodocarga', etapa:'Montagem', status:'Parado', inicio:'2025-11-05', entrega:'2025-11-20', perc:60, problema:{tipo:'Problema de Material', desc:'Ausência de perfil estrutural 150x150mm — aguardando fornecedor', resp:'Compras', aberto:true, id:'P001'} },
+  { os:'OS-2850', cliente:'Virgolino', produto:'Tanque Pipa', etapa:'Pré-Montagem', status:'Em andamento', inicio:'2025-11-12', entrega:'2025-11-30', perc:10, problema:null },
+  { os:'OS-2851', cliente:'Biosev', produto:'Aplicador de Vinhaça', etapa:'Montagem', status:'Parado', inicio:'2025-11-06', entrega:'2025-11-22', perc:55, problema:{tipo:'Problema de Engenharia/Projeto', desc:'Revisão de projeto — dimensão do coletor divergente do memorial descritivo rev.3', resp:'Engenharia', aberto:true, id:'P002'} },
+  { os:'OS-2852', cliente:'CMAA', produto:'Carroceria Plataforma Prancha', etapa:'Pintura', status:'Em andamento', inicio:'2025-11-04', entrega:'2025-11-18', perc:75, problema:null },
+  { os:'OS-2853', cliente:'Zilor', produto:'Transbordo 15T', etapa:'Corte e Dobra', status:'Aguardando', inicio:'2025-11-14', entrega:'2025-12-05', perc:0, problema:null },
+  { os:'OS-2844', cliente:'Odebrecht Agro', produto:'Semirreboque Plantio', etapa:'Acabamento/Finalização', status:'Em andamento', inicio:'2025-10-28', entrega:'2025-11-15', perc:88, problema:{tipo:'Problema de Material', desc:'Falta de tinta epóxi cor branca — solicitado pedido emergencial', resp:'Almoxarifado', aberto:true, id:'P003'} },
+  { os:'OS-2840', cliente:'Bunge', produto:'Rodocarga', etapa:'Acabamento/Finalização', status:'Concluído', inicio:'2025-10-20', entrega:'2025-11-08', perc:100, problema:null },
+  { os:'OS-2838', cliente:'ADM', produto:'Tanque Pipa', etapa:'Acabamento/Finalização', status:'Concluído', inicio:'2025-10-15', entrega:'2025-11-05', perc:100, problema:null },
 ];
 
-// ===== ESTADO =====
-let registros = [];
-let editId = null;
+let problemas = [
+  { id:'P001', os:'OS-2849', cliente:'São Martinho', tipo:'Problema de Material', desc:'Ausência de perfil estrutural 150x150mm — aguardando fornecedor', resp:'Compras', data:'2025-11-11 08:32', aberto:true },
+  { id:'P002', os:'OS-2851', cliente:'Biosev', tipo:'Problema de Engenharia/Projeto', desc:'Revisão de projeto — dimensão do coletor divergente do memorial descritivo rev.3', resp:'Engenharia', data:'2025-11-09 14:15', aberto:true },
+  { id:'P003', os:'OS-2844', cliente:'Odebrecht Agro', tipo:'Problema de Material', desc:'Falta de tinta epóxi cor branca — solicitado pedido emergencial', resp:'Almoxarifado', data:'2025-11-11 10:50', aberto:true },
+  { id:'P004', os:'OS-2841', cliente:'Copersucar', tipo:'Problema de Engenharia/Projeto', desc:'Ajuste dimensional aprovado e implementado', resp:'Engenharia', data:'2025-11-07 16:00', aberto:false },
+  { id:'P005', os:'OS-2839', cliente:'Virgolino', tipo:'Problema de Material', desc:'Material reposto, produção retomada', resp:'Compras', data:'2025-11-06 09:20', aberto:false },
+];
 
-function gerarId(){return 'r'+Date.now()+'_'+Math.random().toString(36).substr(2,6)}
-function salvarLocal(){localStorage.setItem('megatec_reg',JSON.stringify(registros))}
-function carregarLocal(){
-  const s = localStorage.getItem('megatec_reg');
-  if(s){
-    registros = JSON.parse(s);
-  } else {
-    registros = dadosIniciais.map(r=>({...r, id:gerarId(), timestamp:new Date().toISOString()}));
-    salvarLocal();
-  }
-}
-
-// ===== NAVEGAÇÃO =====
-function mudarAba(aba){
-  document.querySelectorAll('.pagina').forEach(p=>p.classList.remove('ativa'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
-  document.getElementById('pg-'+aba).classList.add('ativa');
-  event.currentTarget.classList.add('ativo');
-  if(aba==='dashboard') renderDashboard();
-  if(aba==='producao') renderProducao();
-  if(aba==='problemas') renderProblemas();
-  if(aba==='historico') renderHistorico();
-  if(aba==='apontamento'){limparForm();}
-}
-
-// ===== TOAST =====
-function toast(msg,tipo='ok'){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+(tipo==='ok'?'ok':'err');
-  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-// ===== UTILS =====
-function fmtData(d){
-  if(!d) return '—';
-  const p = d.split('-');
-  return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;
-}
-function percClass(p){return p>=80?'perc-verde':p>=40?'perc-amarelo':'perc-vermelho'}
-function setorBadge(s){
-  const m={'Corte e Dobra':'azul','Pré Montagem':'cinza','Montagem':'amarelo','Pintura':'azul','Acabamento':'verde'};
-  return m[s]||'cinza';
-}
-
-// ===== DASHBOARD =====
-function renderDashboard(){
-  const total = registros.length;
-  const comProb = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').length;
-  const concluidos = registros.filter(r=>parseInt(r.perc)===100).length;
-  const percMedio = total>0?Math.round(registros.reduce((a,r)=>a+(parseInt(r.perc)||0),0)/total):0;
-
-  document.getElementById('cards-dashboard').innerHTML=`
-    <div class="card verde"><div class="card-val">${total}</div><div class="card-lbl">Total de Apontamentos</div></div>
-    <div class="card azul"><div class="card-val">${concluidos}</div><div class="card-lbl">Concluídos (100%)</div></div>
-    <div class="card vermelho"><div class="card-val">${comProb}</div><div class="card-lbl">Com Problemas</div></div>
-    <div class="card amarelo"><div class="card-val">${percMedio}%</div><div class="card-lbl">Evolução Média</div></div>
-  `;
-
-  const probs = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').slice(-8).reverse();
-  const lp = document.getElementById('lista-problemas-dash');
-  if(!probs.length){lp.innerHTML='<div class="empty">Nenhum problema registrado</div>';return;}
-  lp.innerHTML = probs.map(p=>`
-    <div class="problema-card">
-      <div class="problema-header">
-        <span class="problema-titulo">${p.produto} — ${p.cliente} (Nº ${p.num||'—'})</span>
-        <span class="badge badge-${setorBadge(p.setor)}">${p.setor}</span>
-      </div>
-      <div class="problema-desc">${fmtData(p.data)}</div>
-      ${p.material==='Sim'?`<div class="problema-desc" style="color:#c62828">🔩 Material: ${p.matDesc||'—'}</div>`:''}
-      ${p.projeto==='Sim'?`<div class="problema-desc" style="color:#1565c0">📐 Projeto: ${p.projDesc||'—'}</div>`:''}
-    </div>`).join('');
-
-  // Setor status
-  const setores = ['Corte e Dobra','Pré Montagem','Montagem','Pintura','Acabamento'];
-  const ss = document.getElementById('setor-status');
-  ss.innerHTML = setores.map(s=>{
-    const regs = registros.filter(r=>r.setor===s);
-    if(!regs.length) return '';
-    const ultimo = regs[regs.length-1];
-    const p = parseInt(ultimo.perc)||0;
-    return `<div class="card" style="margin-bottom:8px;padding:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:13px;font-weight:700">${s}</span>
-        <span class="badge badge-${setorBadge(s)}">${regs.length} reg.</span>
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Último: ${ultimo.produto} — ${fmtData(ultimo.data)}</div>
-      <div class="perc-wrap">
-        <div class="perc-bar"><div class="perc-fill ${percClass(p)}" style="width:${p}%"></div></div>
-        <div class="perc-text">${p}%</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ===== PRODUÇÃO =====
-function renderProducao(){filtrarProducao();}
-function filtrarProducao(){
-  const setor = document.getElementById('f-setor').value;
-  const produto = document.getElementById('f-produto').value.toLowerCase();
-  const cliente = document.getElementById('f-cliente').value.toLowerCase();
-  const data = document.getElementById('f-data').value;
-
-  let filtrado = [...registros].reverse();
-  if(setor) filtrado = filtrado.filter(r=>r.setor===setor);
-  if(produto) filtrado = filtrado.filter(r=>r.produto.toLowerCase().includes(produto));
-  if(cliente) filtrado = filtrado.filter(r=>r.cliente.toLowerCase().includes(cliente));
-  if(data) filtrado = filtrado.filter(r=>r.data===data);
-
-  const tbody = document.getElementById('tabela-producao');
-  if(!filtrado.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Nenhum registro encontrado.</td></tr>';return;}
-  tbody.innerHTML = filtrado.map(r=>{
-    const p=parseInt(r.perc)||0;
-    return `<tr>
-      <td>${fmtData(r.data)}</td>
-      <td><span class="badge badge-${setorBadge(r.setor)}">${r.setor}</span></td>
-      <td style="font-weight:600">${r.produto||'—'}</td>
-      <td>${r.cliente||'—'}</td>
-      <td style="text-align:center">${r.num||'—'}</td>
-      <td><div class="perc-wrap">
-        <div class="perc-bar"><div class="perc-fill ${percClass(p)}" style="width:${p}%"></div></div>
-        <div class="perc-text">${p}%</div>
-      </div></td>
-      <td>${r.material==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
-      <td>${r.projeto==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
-      <td style="font-size:11px;color:var(--muted);max-width:150px">${r.obs||'—'}</td>
-    </tr>`;
-  }).join('');
-}
-function limparFiltros(){
-  ['f-setor','f-produto','f-cliente','f-data'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.value='';
-  });
-  filtrarProducao();
-}
-
-// ===== PROBLEMAS =====
-function renderProblemas(){
-  const probs = registros.filter(r=>r.material==='Sim'||r.projeto==='Sim').reverse();
-  const el = document.getElementById('lista-problemas-full');
-  if(!probs.length){el.innerHTML='<div class="empty">Nenhum problema registrado.</div>';return;}
-  el.innerHTML = probs.map(p=>`
-    <div class="problema-card">
-      <div class="problema-header">
-        <span class="problema-titulo">${p.produto} — ${p.cliente} (Nº ${p.num||'—'})</span>
-        <span class="badge badge-${setorBadge(p.setor)}">${p.setor}</span>
-      </div>
-      <div class="problema-desc">📅 ${fmtData(p.data)}</div>
-      ${p.material==='Sim'?`<div class="problema-desc" style="color:#c62828;margin-top:4px">🔩 <b>Material:</b> ${p.matDesc||'Não descrito'}</div>`:''}
-      ${p.projeto==='Sim'?`<div class="problema-desc" style="color:#1565c0;margin-top:4px">📐 <b>Projeto:</b> ${p.projDesc||'Não descrito'}</div>`:''}
-      ${p.obs?`<div class="problema-desc" style="margin-top:4px">📝 ${p.obs}</div>`:''}
-    </div>`).join('');
-}
-
-// ===== HISTÓRICO =====
-function renderHistorico(){filtrarHistorico();}
-function filtrarHistorico(){
-  const ini = document.getElementById('h-ini').value;
-  const fim = document.getElementById('h-fim').value;
-  const setor = document.getElementById('h-setor').value;
-  const produto = document.getElementById('h-produto').value.toLowerCase();
-
-  let filtrado = [...registros].reverse();
-  if(ini) filtrado = filtrado.filter(r=>r.data>=ini);
-  if(fim) filtrado = filtrado.filter(r=>r.data<=fim);
-  if(setor) filtrado = filtrado.filter(r=>r.setor===setor);
-  if(produto) filtrado = filtrado.filter(r=>r.produto.toLowerCase().includes(produto));
-
-  const tbody = document.getElementById('tabela-historico');
-  if(!filtrado.length){tbody.innerHTML='<tr><td colspan="9" class="empty">Nenhum registro.</td></tr>';return;}
-  tbody.innerHTML = filtrado.map(r=>{
-    const p=parseInt(r.perc)||0;
-    return `<tr>
-      <td>${fmtData(r.data)}</td>
-      <td><span class="badge badge-${setorBadge(r.setor)}">${r.setor}</span></td>
-      <td style="font-weight:600">${r.produto||'—'}</td>
-      <td>${r.cliente||'—'}</td>
-      <td style="text-align:center">${r.num||'—'}</td>
-      <td><div class="perc-wrap">
-        <div class="perc-bar"><div class="perc-fill ${percClass(p)}" style="width:${p}%"></div></div>
-        <div class="perc-text">${p}%</div>
-      </div></td>
-      <td>${r.material==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
-      <td>${r.projeto==='Sim'?'<span class="badge badge-vermelho">⚠ Sim</span>':'<span class="badge badge-verde">✓ Não</span>'}</td>
-      <td style="font-size:11px;color:var(--muted)">${r.obs||'—'}</td>
-    </tr>`;
-  }).join('');
-}
-function limparFiltrosHist(){
-  ['h-ini','h-fim','h-setor','h-produto'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.value='';
-  });
-  filtrarHistorico();
-}
-
-// ===== EXPORTAR CSV =====
-function exportarCSV(){gerarCSV(registros,'apontamentos_megatec.csv')}
-function exportarCSVHist(){
-  const ini=document.getElementById('h-ini').value;
-  const fim=document.getElementById('h-fim').value;
-  const setor=document.getElementById('h-setor').value;
-  const produto=document.getElementById('h-produto').value.toLowerCase();
-  let f=[...registros];
-  if(ini)f=f.filter(r=>r.data>=ini);
-  if(fim)f=f.filter(r=>r.data<=fim);
-  if(setor)f=f.filter(r=>r.setor===setor);
-  if(produto)f=f.filter(r=>r.produto.toLowerCase().includes(produto));
-  gerarCSV(f,'historico_megatec.csv');
-}
-function gerarCSV(dados,nome){
-  if(!dados.length){toast('Nenhum dado para exportar','err');return;}
-  const h=['data','setor','produto','cliente','num','perc','material','matDesc','projeto','projDesc','obs'];
-  const linhas=[h.join(';')];
-  dados.forEach(r=>{
-    linhas.push(h.map(c=>`"${String(r[c]||'').replace(/"/g,'""')}"`).join(';'));
-  });
-  const blob=new Blob(['\ufeff'+linhas.join('\n')],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=nome;document.body.appendChild(a);a.click();
-  document.body.removeChild(a);URL.revokeObjectURL(url);
-  toast('CSV exportado com sucesso!');
-}
-
-// ===== FORMULÁRIO =====
-function toggleMaterial(){
-  document.getElementById('boxMaterial').classList.toggle('show',document.getElementById('fMaterial').value==='Sim');
-}
-function toggleProjeto(){
-  document.getElementById('boxProjeto').classList.toggle('show',document.getElementById('fProjeto').value==='Sim');
-}
-function limparForm(){
-  editId=null;
-  ['fProduto','fCliente','fNumero','fPerc','fMatDesc','fProjDesc','fObs'].forEach(id=>document.getElementById(id
+let notificacoes = [
+  { id:'N001', titulo:'⚠️ Parada — OS-2849 São Martinho', sub:'Problema de Material: Perfil 150x150mm', time:'hoje 08:32', resolvido:false, probId:'P001' },
+  { id:'N002', titulo:'⚠️ Parada — OS-2851 Biosev', sub:'Problema de Engenharia: Revisão de projeto', time:'09/11 14:15', resolvido:false
 
